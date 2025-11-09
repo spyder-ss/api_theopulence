@@ -148,13 +148,10 @@ Route::group(['prefix' => getAdminRouteName(), 'as' => getAdminRouteName() . '.'
 
     Route::group(['prefix' => 'properties', 'as' => 'properties.'], function () {
         Route::get('/', [PropertyController::class, 'index'])->name('index');
-        Route::match(['get', 'post'], 'add', [PropertyController::class, 'create'])->name('add');
-        Route::match(['get', 'post'], 'edit/{property}', [PropertyController::class, 'edit'])->name('edit');
-        Route::post('store', [PropertyController::class, 'store'])->name('store');
-        Route::put('update/{property}', [PropertyController::class, 'update'])->name('update');
-        Route::match(['post'], 'delete/{property}', [PropertyController::class, 'destroy'])->name('delete');
-        Route::match(['post'], 'ajax_property_img_delete', [PropertyController::class, 'ajax_property_img_delete'])->name('ajax_property_img_delete');
-        Route::post('generate-slug', [PropertyController::class, 'generateSlug'])->name('generate-slug');
+        Route::match(['get', 'post'], 'add', [PropertyController::class, 'add'])->name('add');
+        Route::match(['get', 'post'], 'edit/{id}', [PropertyController::class, 'add'])->name('add');
+        Route::match(['post'], 'delete/{id}', [PropertyController::class, 'delete'])->name('delete');
+        Route::match(['post'], 'ajax_img_delete', [PropertyController::class, 'ajax_img_delete'])->name('delete');
     });
 
     Route::match(['get'], 'logout', [App\Http\Controllers\Admin\AuthController::class, 'logout'])->name('logout');

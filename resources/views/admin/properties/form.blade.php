@@ -1,5 +1,8 @@
 @extends('layouts.admin.main')
 @section('content')
+    <!-- Toastr CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
     <div class="flex-1 p-6 overflow-auto bg-gray-50">
         <!-- Header Section -->
         <div class="mb-8">
@@ -26,11 +29,10 @@
             </div>
         </div>
 
-        <!-- Form Section -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
             <form method="POST" action="{{ url(getAdminRouteName() . '/properties/add' . (isset($property->id) ? '?id=' . $property->id : '')) }}" enctype="multipart/form-data" class="space-y-8">
                 @csrf
-                <!-- Basic Information Section -->
+
                 <div>
                     <div class="flex items-center space-x-3 mb-6">
                         <div class="p-2 bg-green-100 rounded-lg">
@@ -58,23 +60,24 @@
                             @enderror
                         </div>
 
-                        <div>
-                            <label for="slug" class="block text-sm font-medium text-gray-700 mb-2">
-                                Slug <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text"
-                                   id="slug"
-                                   name="slug"
-                                   value="{{ old('slug', $property->slug ?? '') }}"
-                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('slug') border-red-500 @enderror"
-                                   placeholder="Enter property slug"
-                                   required>
-                            @error('slug')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
+                        @if(isset($property->id))
+                            <div>
+                                <label for="slug" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Slug
+                                </label>
+                                <input type="text"
+                                       id="slug"
+                                       name="slug"
+                                       value="{{ old('slug', $property->slug ?? '') }}"
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('slug') border-red-500 @enderror"
+                                       placeholder="Slug will be generated automatically"
+                                       readonly>
+                                @error('slug')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        @endif
 
-                        <!-- Location -->
                         <div>
                             <label for="location" class="block text-sm font-medium text-gray-700 mb-2">
                                 Location
@@ -446,6 +449,60 @@
             $(document).ready(function() {
                 $('#amenities').select2();
 
+                // Auto-generate slug on title change for new properties
+                $('#title').on('keyup', function() {
+                    if (!$('#slug').length) { // Only generate if slug field is not present (i.e., on create page)
+                        let title = $(this).val();
+                        if (title.length > 0) {
+                            $.ajax({
+                                url: '{{ url(getAdminRouteName() . "/properties/generate-slug") }}',
+                                type: 'POST',
+                                data: {
+                                    _token: '{{ csrf_token() }}',
+                                    title: title
+                                },
+                                success: function(response) {
+                                    // If the slug field is not present, we don't need to update it visually
+                                    // The backend will handle the generation.
+                                    // This AJAX call is primarily for demonstration or if we decide to show it dynamically later.
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+        </script>
+
+        <!-- Toastr JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                // Toastr configuration
+                toastr.options = {
+                    "closeButton": true,
+                    "progressBar": true,
+                    "positionClass": "toast-top-right",
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                };
+
+                // Display success message
+                @if(session('success'))
+                    toastr.success("{{ session('success') }}");
+                @endif
+
+                // Display validation errors
+                @if($errors->any())
+                    @foreach ($errors->all() as $error)
+                        toastr.error("{{ $error }}");
+                    @endforeach
+                @endif
             });
         </script>
     @endpush

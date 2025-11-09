@@ -2,233 +2,275 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\Amenity;
 use App\Models\Property;
 use App\Models\PropertyImage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB; // Add this line
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class PropertyController extends Controller
 {
-    public function index()
+    private string $module_name = 'Properties';
+    private string $table_name = 'properties';
+    function index(Request $request)
     {
-        $properties = Property::all();
-        return view('admin.properties.index', compact('properties'));
+        $query = Property::orderBy('created_at', 'desc');
+
+        $data['model_data_lists'] = $query->get();
+
+        $data['module_name'] = $this->module_name;
+        return view('admin.properties.index', $data);
     }
 
-    public function create()
+    function add(Request $request)
     {
-        $amenities = Amenity::where('status', 1)->get();
-        return view('admin.properties.form', compact('amenities'));
-    }
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|unique:properties,slug',
-            'location' => 'nullable|string|max:255',
-            'guest_capacity' => 'nullable|integer',
-            'bedrooms' => 'nullable|integer',
-            'bathrooms' => 'nullable|integer',
-            'property_brief' => 'nullable|string',
-            'property_description' => 'nullable|string',
-            'property_experience' => 'nullable|string',
-            'spaces' => 'nullable|string',
-            'cancellation_policy' => 'nullable|string',
-            'other_important_information' => 'nullable|string',
-            'faqs' => 'nullable|string',
-            'amenities' => 'nullable|array', // Validate as array
-            'amenities.*' => 'exists:amenities,id', // Validate each amenity ID
-            'images' => 'nullable|array',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'main_image_id' => 'nullable|integer|exists:property_images,id',
-        ]);
-
-        $property = Property::create([
-            'title' => $request->title,
-            'slug' => Str::slug($request->slug),
-            'location' => $request->location,
-            'guest_capacity' => $request->guest_capacity,
-            'bedrooms' => $request->bedrooms,
-            'bathrooms' => $request->bathrooms,
-            'property_brief' => $request->property_brief,
-            'property_description' => $request->property_description,
-            'property_experience' => $request->property_experience,
-            'spaces' => $request->spaces,
-            'cancellation_policy' => $request->cancellation_policy,
-            'other_important_information' => $request->other_important_information,
-            'faqs' => $request->faqs,
-        ]);
-
-        if ($request->has('amenities')) {
-            $property->amenities()->sync($request->amenities);
-        }
-
-        // Handle multiple image uploads
-        if ($request->hasFile('images')) {
-            $imagePath = public_path('storage/property_images/' . $property->id);
-            if (!File::exists($imagePath)) {
-                File::makeDirectory($imagePath, 0777, true, true);
-            }
-
-            foreach ($request->file('images') as $image) {
-                $imageName = time() . '_' . $image->getClientOriginalName();
-                $image->move($imagePath, $imageName);
-
-                $property->images()->create([
-                    'image_path' => $imageName,
-                    'is_main' => false, // Default to false, will be updated later if main_image_id is set
-                ]);
+        $data['module_name'] = 'Add ' . $this->module_name;
+        $id = isset($request->id) ? $request->id : '';
+        if (!empty($id) && is_numeric($id)) {
+            $data['module_name'] = 'Edit ' . $this->module_name;
+            $is_exist = Property::where('id', $id)->first();
+            if (empty($is_exist)) {
+                Session::flash('error', $this->module_name . ' Not Found..!');
+                return redirect()->back();
+            } else {
+                $data['model_data'] = $is_exist;
             }
         }
 
-        // Set main image if provided
-        if ($request->has('main_image_id')) {
-            $property->images()->update(['is_main' => false]); // Unset all main images first
-            PropertyImage::where('id', $request->main_image_id)->update(['is_main' => true]);
-        } else {
-            // If no main image is explicitly selected, make the first image main
-            $firstImage = $property->images()->first();
-            if ($firstImage) {
-                $firstImage->update(['is_main' => true]);
+        $data['amenities'] = Amenity::where('status', 1)->get();
+
+        if ($request->method() == 'post' || $request->method() == 'POST') {
+            $rules['title'] = 'required';
+
+            $ext = 'jpg,jpeg,png,gif';
+            $rules['images'] = 'nullable|array';
+            $rules['images.*'] = 'image|mimes:' . $ext;
+            $this->validate($request, $rules);
+
+            $req['title'] = $request->title ?? '';
+            $req['location'] = $request->location ?? '';
+            $req['guest_capacity'] = $request->guest_capacity ?? 0;
+            $req['bedrooms'] = $request->bedrooms ?? 0;
+            $req['bathrooms'] = $request->bathrooms ?? 0;
+            $req['property_brief'] = $request->property_brief ?? '';
+            $req['property_description'] = $request->property_description ?? '';
+            $req['property_experience'] = $request->property_experience ?? '';
+            $req['spaces'] = $request->spaces ?? '';
+            $req['cancellation_policy'] = $request->cancellation_policy ?? '';
+            $req['other_important_information'] = $request->other_important_information ?? '';
+            $req['faqs'] = $request->faqs ?? '';
+            $req['status'] = $request->status ?? 1;
+
+            if (!empty($id) && is_numeric($id)) {
+                $req['slug'] = Helper::GetSlug('properties', 'slug', '', $request->title);
+                $is_saved = Property::where('id', $id)->update($req);
+                $action = 'edit';
+                $cms_page_id = $id;
+            } else {
+                $req['slug'] = Helper::GetSlug('properties', 'slug', '', $request->title);
+                $is_saved = Property::create($req);
+                $action = 'add';
+                $cms_page_id = $is_saved->id;
+            }
+
+            if ($is_saved) {
+                // Handle amenities
+                if (!empty($id) && is_numeric($id)) {
+                    $property = Property::find($id);
+                } else {
+                    $property = $is_saved;
+                }
+
+                if ($request->has('amenities')) {
+                    $property->amenities()->sync($request->amenities);
+                } else {
+                    $property->amenities()->detach();
+                }
+
+                $redirect_url = url(getAdminRouteName() . '/property/');
+
+                $images = $request->file('images');
+                if ($images) {
+                    foreach ($images as $image) {
+                        $photographs_mime_type = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $image);
+                        if (!in_array($photographs_mime_type, array('image/png', 'image/jpeg'))) {
+                            return redirect($redirect_url)->with('error', 'The image should be only jpeg,jpg or png type.');
+                        }
+
+                        if (filesize($image) >= 2000001) {
+                            return redirect($redirect_url)->with('error', 'The image size should be not more than 2 MB.');
+                        }
+
+                        $image = $this->saveImage($image, $cms_page_id, 'image', $request);
+                    }
+                }
+
+                // Set main image if provided
+                if ($request->has('main_image_id')) {
+                    $property->images()->update(['is_main' => false]);
+                    PropertyImage::where('id', $request->main_image_id)->update(['is_main' => true]);
+                } else {
+                    $firstImage = $property->images()->first();
+                    if ($firstImage) {
+                        $property->images()->update(['is_main' => false]);
+                        $firstImage->update(['is_main' => true]);
+                    }
+                }
+
+                $activity_params['added_by'] = Auth::user()->id;
+                $activity_params['client_id'] = '';
+                $activity_params['module'] = $this->module_name;
+                $activity_params['action'] = $action;
+                $activity_params['table_name'] = $this->table_name;
+                $activity_params['description'] = $action . ' : ' . $req['title'];
+                $activity_params['ip'] = $request->ip();
+                $activity_params['user_agent'] = UserDeviceDetails();
+                $activity_params['data_after_action'] = json_encode($req);
+                ActivityLog::ActivityLogCreate($activity_params);
+
+                Session::flash('success', $this->module_name . ' Has Been Save..!');
+                return redirect()->back();
+            } else {
+                Session::flash('error', 'Something Went Wrong..!');
+                return redirect()->back();
             }
         }
 
-        return redirect()->route('admin.properties.index')->with('success', 'Property created successfully.');
+        return view('admin.properties.form', $data);
     }
 
-    public function edit(Property $property)
+    function delete(Request $request)
     {
-        $amenities = Amenity::where('status', 1)->get();
-        return view('admin.properties.form', compact('property', 'amenities'));
-    }
+        $id = $request->id;
+        $method = $request->method();
+        $is_deleted = 0;
 
-    public function update(Request $request, Property $property)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|unique:properties,slug,' . $property->id,
-            'location' => 'nullable|string|max:255',
-            'guest_capacity' => 'nullable|integer',
-            'bedrooms' => 'nullable|integer',
-            'bathrooms' => 'nullable|integer',
-            'property_brief' => 'nullable|string',
-            'property_description' => 'nullable|string',
-            'property_experience' => 'nullable|string',
-            'spaces' => 'nullable|string',
-            'cancellation_policy' => 'nullable|string',
-            'other_important_information' => 'nullable|string',
-            'faqs' => 'nullable|string',
-            'amenities' => 'nullable|array', // Validate as array
-            'amenities.*' => 'exists:amenities,id', // Validate each amenity ID
-            'images' => 'nullable|array',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'main_image_id' => 'nullable|integer|exists:property_images,id',
-        ]);
-
-        $property->update([
-            'title' => $request->title,
-            'slug' => Str::slug($request->slug),
-            'location' => $request->location,
-            'guest_capacity' => $request->guest_capacity,
-            'bedrooms' => $request->bedrooms,
-            'bathrooms' => $request->bathrooms,
-            'property_brief' => $request->property_brief,
-            'property_description' => $request->property_description,
-            'property_experience' => $request->property_experience,
-            'spaces' => $request->spaces,
-            'cancellation_policy' => $request->cancellation_policy,
-            'other_important_information' => $request->other_important_information,
-            'faqs' => $request->faqs,
-        ]);
-
-        if ($request->has('amenities')) {
-            $property->amenities()->sync($request->amenities);
-        } else {
-            $property->amenities()->detach(); // If no amenities are selected, detach all
-        }
-
-        // Handle multiple image uploads for update
-        if ($request->hasFile('images')) {
-            $imagePath = public_path('storage/property_images/' . $property->id);
-            if (!File::exists($imagePath)) {
-                File::makeDirectory($imagePath, 0777, true, true);
+        if ($method == "POST") {
+            $exist_data = Property::find($id);
+            if (empty($exist_data)) {
+                return redirect()->back()->with('alert-danger', 'Invalid ' . $this->module_name . '.');
             }
 
-            foreach ($request->file('images') as $image) {
-                $imageName = time() . '_' . $image->getClientOriginalName();
-                $image->move($imagePath, $imageName);
+            if ($exist_data->is_delete == 1) {
+                return redirect()->back()->with('alert-danger', $this->module_name . ' has been already deleted');
+            }
 
-                $property->images()->create([
-                    'image_path' => $imageName,
-                    'is_main' => false,
-                ]);
+            $delete['is_delete'] = 1;
+            $is_delete = Property::where('id', $id)->update($delete);
+
+            if ($is_delete) {
+                $activity_params['added_by'] = Auth::user()->id;
+                $activity_params['client_id'] = '';
+                $activity_params['module'] = $this->module_name;
+                $activity_params['action'] = 'delete';
+                $activity_params['table_name'] = $this->table_name;
+                $activity_params['description'] = 'delete : ' . $exist_data->title;
+                $activity_params['ip'] = $request->ip();
+                $activity_params['user_agent'] = UserDeviceDetails();
+                $activity_params['data_after_action'] = '';
+                ActivityLog::ActivityLogCreate($activity_params);
+
+                Session::flash('success', $this->module_name . ' Has Been Deleted..!');
+                return redirect()->back();
+            } else {
+                Session::flash('error', 'Something Went Wrong..!');
+                return redirect()->back();
             }
         }
+    }
 
-        // Update main image if provided
-        if ($request->has('main_image_id')) {
-            $property->images()->update(['is_main' => false]); // Unset all main images first
-            PropertyImage::where('id', $request->main_image_id)->update(['is_main' => true]);
-        } else {
-            // If no main image is explicitly selected, and there are images, make the first one main
-            $firstImage = $property->images()->first();
-            if ($firstImage) {
-                $property->images()->update(['is_main' => false]); // Unset all main images first
-                $firstImage->update(['is_main' => true]);
-            }
+    public function saveImage($file, $id, $type, $request)
+    {
+        $is_exist = Property::where('id', $id)->first();
+        if (empty($is_exist)) {
+            return false;
         }
 
-        return redirect()->route('admin.properties.index')->with('success', 'Property updated successfully.');
-    }
+        $result['org_name'] = '';
+        $result['file_name'] = '';
 
-    public function destroy(Property $property)
-    {
-        $property->delete();
-        return redirect()->route('admin.properties.index')->with('success', 'Property deleted successfully.');
-    }
+        if ($file) {
+            $path = 'property_images/';
+            $profile_dimension = Helper::WebsiteSettingsArray(['PROFILE_IMG_HEIGHT', 'PROFILE_IMG_WIDTH', 'PROFILE_THUMB_HEIGHT', 'PROFILE_THUMB_WIDTH']);
 
-    public function ajax_property_img_delete(Request $request)
-    {
-        $request->validate([
-            'image_id' => 'required|exists:property_images,id',
-        ]);
+            $IMG_HEIGHT = $profile_dimension['PROFILE_IMG_HEIGHT']->value ?? 768;
+            $IMG_WIDTH = $profile_dimension['PROFILE_IMG_WIDTH']->value ?? 768;
+            $THUMB_HEIGHT = $profile_dimension['PROFILE_THUMB_HEIGHT']->value ?? 336;
+            $THUMB_WIDTH = $profile_dimension['PROFILE_THUMB_WIDTH']->value ?? 336;
 
-        $image = PropertyImage::find($request->image_id);
-        if ($image) {
-            $imagePath = public_path('storage/property_images/' . $image->property_id . '/' . $image->image_path);
-            if (File::exists($imagePath)) {
-                File::delete($imagePath);
+            $uploaded_data = Helper::UploadImage($file, $path, $IMG_HEIGHT, $IMG_WIDTH, $THUMB_HEIGHT, $THUMB_WIDTH, true, '', $id);
+
+            if ($type == 'image') {
+                $save_data['image_path'] = $uploaded_data['file_name'];
+                $save_data['property_id'] = $id;
+                $save_data['is_main'] = false;
             }
-            $image->delete();
 
-            // If the deleted image was the main image, and there are other images, set a new main image
-            if ($image->is_main) {
-                $property = Property::find($image->property_id);
-                if ($property && $property->images->count() > 0) {
-                    $property->images()->first()->update(['is_main' => true]);
+            if ($uploaded_data['success']) {
+                if (is_numeric($id) && ($id > 0)) {
+                    $isSaved = PropertyImage::create($save_data);
+
+                    if ($isSaved) {
+                        $activity_params['added_by'] = Auth::user()->id;
+                        $activity_params['client_id'] = '';
+                        $activity_params['module'] = $this->module_name . ' Image';
+                        $activity_params['action'] = 'add';
+                        $activity_params['table_name'] = 'property_images';
+                        $activity_params['description'] = 'add : ' . $type;
+                        $activity_params['ip'] = $request->ip();
+                        $activity_params['user_agent'] = UserDeviceDetails();
+                        $activity_params['data_after_action'] = json_encode($save_data);
+                        ActivityLog::ActivityLogCreate($activity_params);
+                    }
                 }
             }
-
-            return response()->json(['status' => 'ok', 'message' => 'Image deleted successfully.']);
         }
 
-        return response()->json(['status' => 'error', 'message' => 'Image not found.']);
+        return false;
     }
 
-    public function generateSlug(Request $request)
+    function ajax_img_delete(Request $request)
     {
-        $request->validate([
-            'title' => 'required|string',
-        ]);
+        $id = isset($request->id) ? $request->id : '';
+        $type = isset($request->type) ? $request->type : '';
 
-        $title = $request->input('title');
-        $slug = getSlug('properties', 'slug', $title); // Call the helper function
+        $method = $request->method();
+        $req = [];
 
-        return response()->json(['slug' => $slug]);
+        if ($method == "POST") {
+            $exist_data = PropertyImage::find($id);
+            if (empty($exist_data)) {
+                return response()->json(['status' => 'error', 'message' => $type . ' not found.']);
+            }
+
+            if ($type == 'image') {
+                if (file_exists('storage/property_images/' . $exist_data->property_id . '/' . $exist_data->image_path)) {
+                    unlink('storage/property_images/' . $exist_data->property_id . '/' . $exist_data->image_path);
+                }
+                $req['image_path'] = '';
+                $is_save = PropertyImage::where('id', $id)->delete();
+            }
+
+            if ($is_save) {
+                $activity_params['added_by'] = Auth::user()->id;
+                $activity_params['client_id'] = '';
+                $activity_params['module'] = $this->module_name;
+                $activity_params['action'] = 'delete';
+                $activity_params['table_name'] = 'property_images';
+                $activity_params['description'] = 'delete : ' . $exist_data->property->title . ' image';
+                $activity_params['ip'] = $request->ip();
+                $activity_params['user_agent'] = UserDeviceDetails();
+                $activity_params['data_after_action'] = '';
+                ActivityLog::ActivityLogCreate($activity_params);
+
+                return response()->json(['status' => 'ok', 'message' => $type . ' has been deleted..!']);
+            } else {
+                return response()->json(['status' => 'error', 'message' => 'Something Went Wrong..!']);
+            }
+        }
     }
 }
