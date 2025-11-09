@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\BlogApiController;
 use App\Http\Controllers\Api\EnquiryApiController;
 use App\Http\Controllers\Api\GalleryApiController;
+use App\Http\Controllers\Api\PropertyApiController;
 use App\Http\Controllers\Api\TestimonialApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,4 +28,9 @@ Route::group(['prefix' => 'gallery'], function () {
 
 Route::group(['prefix' => 'enquiries'], function () {
     Route::post('/', [EnquiryApiController::class, 'store']);
+});
+
+Route::group(['prefix' => 'properties'], function () {
+    Route::get('/', [PropertyApiController::class, 'index']);
+    Route::get('/{slug}', [PropertyApiController::class, 'show']);
 });
