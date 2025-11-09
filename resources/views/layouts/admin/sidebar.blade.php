@@ -44,6 +44,13 @@
         </a>
     </li>
     <li class="nav-item">
+        <a href="{{ url(getAdminRouteName() . '/amenities') }}"
+            class="nav-link @if(getCurrentPageUrl() == '/' . getAdminRouteName() . '/amenities') active @endif">
+            <i data-lucide="list"></i>
+            <span>Amenities</span>
+        </a>
+    </li>
+    <li class="nav-item">
         <a href="{{ url(getAdminRouteName() . '/cms_pages') }}"
             class="nav-link @if(getCurrentPageUrl() == '/' . getAdminRouteName() . '/cms_pages') active @endif">
             <i data-lucide="file-edit"></i>
@@ -133,6 +140,13 @@
         <a href="{{ url(getAdminRouteName() . '/users/customers') }}" class="nav-link">
             <i data-lucide="users"></i>
             <span>Customers</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ url(getAdminRouteName() . '/modules') }}"
+            class="nav-link @if(getCurrentPageUrl() == '/' . getAdminRouteName() . '/modules') active @endif">
+            <i data-lucide="grid"></i>
+            <span>Modules</span>
         </a>
     </li>
 </ul>
