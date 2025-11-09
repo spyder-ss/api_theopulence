@@ -15,8 +15,8 @@
             <!-- Logo Section -->
             <div class="logo-section">
                 <div class="logo">
-                    <div class="logo-icon">LM</div>
-                    <span>Lagan Matrimonials</span>
+                    <div class="logo-icon">TO</div>
+                    <span>The Opulence</span>
                 </div>
                 <h1 class="login-title">Admin Login</h1>
                 <p class="login-subtitle">Sign in to your admin account</p>

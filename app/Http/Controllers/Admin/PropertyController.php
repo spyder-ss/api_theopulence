@@ -102,7 +102,7 @@ class PropertyController extends Controller
                             return redirect($redirect_url)->with('error', 'The image should be only jpeg,jpg or png type.');
                         }
 
-                        if (filesize($image) >= 2000001) {
+                        if (filesize($image) >= 10000001) {
                             return redirect($redirect_url)->with('error', 'The image size should be not more than 2 MB.');
                         }
 
