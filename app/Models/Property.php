@@ -23,7 +23,6 @@ class Property extends Model
         'cancellation_policy',
         'other_important_information',
         'faqs',
-        'image', // Keep this for the featured image if it's still needed
     ];
 
     public function amenities()
@@ -34,5 +33,10 @@ class Property extends Model
     public function images()
     {
         return $this->hasMany(PropertyImage::class);
+    }
+
+    public function mainImage()
+    {
+        return $this->hasOne(PropertyImage::class)->where('is_main', 1);
     }
 }

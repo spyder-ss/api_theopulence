@@ -11,12 +11,17 @@ class PropertyApiController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Property::select('id', 'slug', 'title', 'location', 'guest_capacity', 'bedrooms', 'bathrooms', 'property_brief', 'image')
+        $query = Property::select('id', 'slug', 'title', 'location', 'guest_capacity', 'bedrooms', 'bathrooms', 'property_brief')
+            ->with('images')
             ->where('status', 1)
             ->where('is_delete', 0)
             ->orderBy('created_at', 'desc');
 
         $properties = $query->get()->map(function ($item) {
+            $img_path = $item->mainImage->image_path ?? '';
+            $img_id = $item->mainImage->id ?? '';
+
+            // dd(Helper::getImageUrl('property_images', $img_id, $img_path));
             return [
                 'id' => $item->id,
                 'slug' => $item->slug,
@@ -26,7 +31,7 @@ class PropertyApiController extends Controller
                 'bedrooms' => $item->bedrooms,
                 'bathrooms' => $item->bathrooms,
                 'property_brief' => $item->property_brief,
-                'image' => Helper::getImageUrl('property', $item->id, $item->image),
+                'image' => Helper::getImageUrl('property_images', $img_id, $img_path),
             ];
         });
 
