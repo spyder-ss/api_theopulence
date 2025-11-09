@@ -6,7 +6,7 @@
             <span>Dashboard</span>
         </a>
     </li>
-    {{--<li class="nav-item">
+    <li class="nav-item">
         <a href="#" class="nav-link" data-page="masterdata">
             <i data-lucide="database"></i>
             <span>Master Data</span>
@@ -42,7 +42,7 @@
             <i data-lucide="file-edit"></i>
             <span>Pages & Section</span>
         </a>
-    </li>--}}
+    </li>
     <li class="nav-item">
         <a href="{{ url(getAdminRouteName() . '/blogs') }}"
             class="nav-link @if(getCurrentPageUrl() == '/' . getAdminRouteName() . '/blogs') active @endif">
@@ -57,7 +57,7 @@
             <span>Success Stories</span>
         </a>
     </li>
-    {{-- <li class="nav-item">
+    <li class="nav-item">
         <a href="#" class="nav-link" data-page="gallery">
             <i data-lucide="image"></i>
             <span>Gallery</span>
@@ -79,7 +79,7 @@
                 </a>
             </li>
         </ul>
-    </li> --}}
+    </li>
     <li class="nav-item">
         <a href="{{ url(getAdminRouteName() . '/enquiries') }}" class="nav-link"
             class="nav-link @if(getCurrentPageUrl() == '/' . getAdminRouteName() . '/enquiries') active @endif">
@@ -87,7 +87,7 @@
             <span>Enquiries</span>
         </a>
     </li>
-    {{-- <li class="nav-item">
+    <li class="nav-item">
         <a href="{{ url(getAdminRouteName() . '/email_templates') }}" class="nav-link"
             class="nav-link @if(getCurrentPageUrl() == '/' . getAdminRouteName() . '/email_templates') active @endif">
             <i data-lucide="mail"></i>
@@ -121,11 +121,11 @@
             <i data-lucide="user-check"></i>
             <span>Roles</span>
         </a>
-    </li> --}}
-    {{-- <li class="nav-item">
+    </li>
+    <li class="nav-item">
         <a href="{{ url(getAdminRouteName() . '/users/customers') }}" class="nav-link">
             <i data-lucide="users"></i>
             <span>Customers</span>
         </a>
-    </li> --}}
+    </li>
 </ul>
