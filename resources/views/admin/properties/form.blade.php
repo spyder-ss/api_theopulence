@@ -42,8 +42,7 @@
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <!-- Title -->
-                        <div class="lg:col-span-2">
+                        <div>
                             <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
                                 Title <span class="text-red-500">*</span>
                             </label>
@@ -59,8 +58,7 @@
                             @enderror
                         </div>
 
-                        <!-- Slug -->
-                        <div class="lg:col-span-2">
+                        <div>
                             <label for="slug" class="block text-sm font-medium text-gray-700 mb-2">
                                 Slug <span class="text-red-500">*</span>
                             </label>
@@ -140,6 +138,29 @@
                             @enderror
                         </div>
 
+                         <!-- Amenities (Multiple Selection Enabled) -->
+                        <div>
+                            <label for="amenities" class="block text-sm font-medium text-gray-700 mb-2">
+                                Amenities
+                            </label>
+                            <select id="amenities"
+                                    name="amenities[]"
+                                    multiple
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('amenities') border-red-500 @enderror">
+                                @if(isset($amenities) && $amenities->count() > 0)
+                                    @foreach($amenities as $amenity)
+                                        <option value="{{ $amenity->id }}"
+                                            {{ (isset($property) && $property->amenities->contains($amenity->id)) ? 'selected' : '' }}>
+                                            {{ $amenity->name }}
+                                        </option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            @error('amenities')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <!-- Property Brief -->
                         <div class="lg:col-span-2">
                             <label for="property_brief" class="block text-sm font-medium text-gray-700 mb-2">
@@ -181,29 +202,6 @@
                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 ckeditor @error('property_experience') border-red-500 @enderror"
                                       placeholder="Describe the property experience">{{ old('property_experience', $property->property_experience ?? '') }}</textarea>
                             @error('property_experience')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Amenities (Multiple Selection Enabled) -->
-                        <div class="lg:col-span-2">
-                            <label for="amenities" class="block text-sm font-medium text-gray-700 mb-2">
-                                Amenities
-                            </label>
-                            <select id="amenities"
-                                    name="amenities[]"
-                                    multiple
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('amenities') border-red-500 @enderror">
-                                @if(isset($amenities) && $amenities->count() > 0)
-                                    @foreach($amenities as $amenity)
-                                        <option value="{{ $amenity->id }}"
-                                            {{ (isset($property) && $property->amenities->contains($amenity->id)) ? 'selected' : '' }}>
-                                            {{ $amenity->name }}
-                                        </option>
-                                    @endforeach
-                                @endif
-                            </select>
-                            @error('amenities')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
@@ -447,6 +445,7 @@
         <script>
             $(document).ready(function() {
                 $('#amenities').select2();
+
             });
         </script>
     @endpush

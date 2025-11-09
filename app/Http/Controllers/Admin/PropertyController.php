@@ -9,6 +9,7 @@ use App\Models\PropertyImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB; // Add this line
 
 class PropertyController extends Controller
 {
@@ -217,5 +218,17 @@ class PropertyController extends Controller
         }
 
         return response()->json(['status' => 'error', 'message' => 'Image not found.']);
+    }
+
+    public function generateSlug(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string',
+        ]);
+
+        $title = $request->input('title');
+        $slug = getSlug('properties', 'slug', $title); // Call the helper function
+
+        return response()->json(['slug' => $slug]);
     }
 }
