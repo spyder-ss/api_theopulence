@@ -138,7 +138,13 @@ Route::group(['prefix' => getAdminRouteName(), 'as' => getAdminRouteName() . '.'
         Route::match(['post'], 'ajax_img_delete', [GalleryImageController::class, 'ajax_img_delete'])->name('ajax_img_delete');
     });
 
-    Route::resource('amenities', AmenityController::class);
+    Route::group(['prefix' => 'amenities', 'as' => 'amenities'], routes: function () {
+        Route::get('/', [AmenityController::class, 'index'])->name('index');
+        Route::match(['get', 'post'], 'add', [AmenityController::class, 'add'])->name('add');
+        Route::match(['get', 'post'], 'edit/{id}', [AmenityController::class, 'add'])->name('add');
+        Route::match(['post'], 'delete/{id}', [AmenityController::class, 'delete'])->name('delete');
+        Route::match(['post'], 'ajax_img_delete', [AmenityController::class, 'ajax_img_delete'])->name('delete');
+    });
 
     Route::group(['prefix' => 'properties', 'as' => 'properties.'], function () {
         Route::get('/', [PropertyController::class, 'index'])->name('index');
