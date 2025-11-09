@@ -268,28 +268,43 @@
                             @enderror
                         </div>
 
-                        <!-- Image Upload -->
+                        <!-- Multiple Image Upload -->
                         <div class="lg:col-span-2">
-                            <label for="image" class="block text-sm font-medium text-gray-700 mb-2">
-                                Featured Image
+                            <label for="images" class="block text-sm font-medium text-gray-700 mb-2">
+                                Property Images
                             </label>
                             <input type="file"
-                                   id="image"
-                                   name="image"
+                                   id="images"
+                                   name="images[]"
                                    accept="image/*"
-                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('image') border-red-500 @enderror">
-                            @error('image')
+                                   multiple
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('images') border-red-500 @enderror">
+                            @error('images')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
-                            @if(isset($property->image) && $property->image)
-                                <div class="mt-2 flex items-center space-x-2">
-                                    <img src="{{ asset('storage/property/' . $property->id . '/' . $property->image) }}" alt="Current Image" class="w-20 h-20 object-cover rounded">
-                                    <span class="text-sm text-gray-500">Current image</span>
-                                    <button type="button" onclick="deleteImage({{ $property->id }}, 'image')" class="text-red-500 hover:text-red-700">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                        </svg>
-                                    </button>
+
+                            @if(isset($property) && $property->images->count() > 0)
+                                <div class="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                    @foreach($property->images as $image)
+                                        <div class="relative border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                                            <img src="{{ asset('storage/property_images/' . $image->property_id . '/' . $image->image_path) }}" alt="Property Image" class="w-full h-32 object-cover">
+                                            <div class="absolute top-2 right-2">
+                                                <button type="button" onclick="deletePropertyImage({{ $image->id }})" class="bg-red-500 hover:bg-red-600 text-white rounded-full p-1 text-xs">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            <div class="p-2 flex items-center justify-center bg-gray-50">
+                                                <input type="radio"
+                                                       name="main_image_id"
+                                                       value="{{ $image->id }}"
+                                                       {{ $image->is_main ? 'checked' : '' }}
+                                                       class="form-radio h-4 w-4 text-green-600 transition duration-150 ease-in-out">
+                                                <label class="ml-2 text-sm text-gray-700">Main</label>
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
                             @endif
                         </div>
@@ -397,6 +412,33 @@
                 .catch(error => {
                     console.error('Error:', error);
                     alert('An error occurred while deleting the image.');
+                });
+            }
+        }
+
+        function deletePropertyImage(imageId) {
+            if (confirm('Are you sure you want to delete this property image?')) {
+                let url = '{{ url(getAdminRouteName() . "/properties/ajax_property_img_delete") }}';
+                let formData = new FormData();
+                formData.append('_token', '{{ csrf_token() }}');
+                formData.append('image_id', imageId);
+
+                fetch(url, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'ok') {
+                        alert(data.message);
+                        location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the property image.');
                 });
             }
         }

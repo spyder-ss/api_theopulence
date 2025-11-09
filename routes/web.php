@@ -153,6 +153,7 @@ Route::group(['prefix' => getAdminRouteName(), 'as' => getAdminRouteName() . '.'
         Route::post('store', [PropertyController::class, 'store'])->name('store');
         Route::put('update/{property}', [PropertyController::class, 'update'])->name('update');
         Route::match(['post'], 'delete/{property}', [PropertyController::class, 'destroy'])->name('delete');
+        Route::match(['post'], 'ajax_property_img_delete', [PropertyController::class, 'ajax_property_img_delete'])->name('ajax_property_img_delete');
     });
 
     Route::match(['get'], 'logout', [App\Http\Controllers\Admin\AuthController::class, 'logout'])->name('logout');

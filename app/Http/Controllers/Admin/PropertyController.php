@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Amenity;
 use App\Models\Property;
+use App\Models\PropertyImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 class PropertyController extends Controller
@@ -40,6 +42,9 @@ class PropertyController extends Controller
             'faqs' => 'nullable|string',
             'amenities' => 'nullable|array', // Validate as array
             'amenities.*' => 'exists:amenities,id', // Validate each amenity ID
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'main_image_id' => 'nullable|integer|exists:property_images,id',
         ]);
 
         $property = Property::create([
@@ -60,6 +65,36 @@ class PropertyController extends Controller
 
         if ($request->has('amenities')) {
             $property->amenities()->sync($request->amenities);
+        }
+
+        // Handle multiple image uploads
+        if ($request->hasFile('images')) {
+            $imagePath = public_path('storage/property_images/' . $property->id);
+            if (!File::exists($imagePath)) {
+                File::makeDirectory($imagePath, 0777, true, true);
+            }
+
+            foreach ($request->file('images') as $image) {
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $image->move($imagePath, $imageName);
+
+                $property->images()->create([
+                    'image_path' => $imageName,
+                    'is_main' => false, // Default to false, will be updated later if main_image_id is set
+                ]);
+            }
+        }
+
+        // Set main image if provided
+        if ($request->has('main_image_id')) {
+            $property->images()->update(['is_main' => false]); // Unset all main images first
+            PropertyImage::where('id', $request->main_image_id)->update(['is_main' => true]);
+        } else {
+            // If no main image is explicitly selected, make the first image main
+            $firstImage = $property->images()->first();
+            if ($firstImage) {
+                $firstImage->update(['is_main' => true]);
+            }
         }
 
         return redirect()->route('admin.properties.index')->with('success', 'Property created successfully.');
@@ -89,6 +124,9 @@ class PropertyController extends Controller
             'faqs' => 'nullable|string',
             'amenities' => 'nullable|array', // Validate as array
             'amenities.*' => 'exists:amenities,id', // Validate each amenity ID
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'main_image_id' => 'nullable|integer|exists:property_images,id',
         ]);
 
         $property->update([
@@ -113,6 +151,37 @@ class PropertyController extends Controller
             $property->amenities()->detach(); // If no amenities are selected, detach all
         }
 
+        // Handle multiple image uploads for update
+        if ($request->hasFile('images')) {
+            $imagePath = public_path('storage/property_images/' . $property->id);
+            if (!File::exists($imagePath)) {
+                File::makeDirectory($imagePath, 0777, true, true);
+            }
+
+            foreach ($request->file('images') as $image) {
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $image->move($imagePath, $imageName);
+
+                $property->images()->create([
+                    'image_path' => $imageName,
+                    'is_main' => false,
+                ]);
+            }
+        }
+
+        // Update main image if provided
+        if ($request->has('main_image_id')) {
+            $property->images()->update(['is_main' => false]); // Unset all main images first
+            PropertyImage::where('id', $request->main_image_id)->update(['is_main' => true]);
+        } else {
+            // If no main image is explicitly selected, and there are images, make the first one main
+            $firstImage = $property->images()->first();
+            if ($firstImage) {
+                $property->images()->update(['is_main' => false]); // Unset all main images first
+                $firstImage->update(['is_main' => true]);
+            }
+        }
+
         return redirect()->route('admin.properties.index')->with('success', 'Property updated successfully.');
     }
 
@@ -120,5 +189,33 @@ class PropertyController extends Controller
     {
         $property->delete();
         return redirect()->route('admin.properties.index')->with('success', 'Property deleted successfully.');
+    }
+
+    public function ajax_property_img_delete(Request $request)
+    {
+        $request->validate([
+            'image_id' => 'required|exists:property_images,id',
+        ]);
+
+        $image = PropertyImage::find($request->image_id);
+        if ($image) {
+            $imagePath = public_path('storage/property_images/' . $image->property_id . '/' . $image->image_path);
+            if (File::exists($imagePath)) {
+                File::delete($imagePath);
+            }
+            $image->delete();
+
+            // If the deleted image was the main image, and there are other images, set a new main image
+            if ($image->is_main) {
+                $property = Property::find($image->property_id);
+                if ($property && $property->images->count() > 0) {
+                    $property->images()->first()->update(['is_main' => true]);
+                }
+            }
+
+            return response()->json(['status' => 'ok', 'message' => 'Image deleted successfully.']);
+        }
+
+        return response()->json(['status' => 'error', 'message' => 'Image not found.']);
     }
 }

@@ -23,10 +23,16 @@ class Property extends Model
         'cancellation_policy',
         'other_important_information',
         'faqs',
+        'image', // Keep this for the featured image if it's still needed
     ];
 
     public function amenities()
     {
         return $this->belongsToMany(Amenity::class, 'property_amenity');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(PropertyImage::class);
     }
 }
