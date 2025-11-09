@@ -18,7 +18,7 @@ class PropertyController extends Controller
     private string $table_name = 'properties';
     function index(Request $request)
     {
-        $query = Property::orderBy('created_at', 'desc');
+        $query = Property::where('is_delete', 0)->orderBy('created_at', 'desc');
 
         $data['model_data_lists'] = $query->get();
 
