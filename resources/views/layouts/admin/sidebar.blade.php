@@ -37,6 +37,13 @@
         </ul>
     </li>
     <li class="nav-item">
+        <a href="{{ url(getAdminRouteName() . '/properties') }}"
+            class="nav-link @if(getCurrentPageUrl() == '/' . getAdminRouteName() . '/properties') active @endif">
+            <i data-lucide="home"></i>
+            <span>Properties</span>
+        </a>
+    </li>
+    <li class="nav-item">
         <a href="{{ url(getAdminRouteName() . '/cms_pages') }}"
             class="nav-link @if(getCurrentPageUrl() == '/' . getAdminRouteName() . '/cms_pages') active @endif">
             <i data-lucide="file-edit"></i>
