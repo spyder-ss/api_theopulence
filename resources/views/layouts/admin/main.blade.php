@@ -20,6 +20,8 @@
     <!-- Common JS file -->
     <script src="{{ asset('js/common.js') }}"></script>
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     @yield('css')
 
@@ -160,6 +162,8 @@
     </div>
 
     @include('admin.ajax.common_ajax')
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @stack('scripts')
 </body>
 

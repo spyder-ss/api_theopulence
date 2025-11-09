@@ -185,7 +185,7 @@
                             @enderror
                         </div>
 
-                        <!-- Amenities -->
+                        <!-- Amenities (Multiple Selection Enabled) -->
                         <div class="lg:col-span-2">
                             <label for="amenities" class="block text-sm font-medium text-gray-700 mb-2">
                                 Amenities
@@ -401,4 +401,11 @@
             }
         }
     </script>
+    @push('scripts')
+        <script>
+            $(document).ready(function() {
+                $('#amenities').select2();
+            });
+        </script>
+    @endpush
 @endsection
