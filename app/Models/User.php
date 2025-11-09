@@ -25,7 +25,7 @@ class User extends Authenticatable
         'gender',
         'role_id',
         'status',
-        'emp_id',
+        'token',
         'is_delete',
     ];
 

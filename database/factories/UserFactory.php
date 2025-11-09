@@ -25,9 +25,15 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'gender' => fake()->randomElement(['male', 'female', 'other']),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
+            'phone' => fake()->phoneNumber(),
             'password' => static::$password ??= Hash::make('password'),
+            'status' => fake()->boolean(),
+            'token' => Str::random(10),
+            'role_id' => 3, // Default role_id as per schema
+            'is_delete' => 0, // Default is_delete as per schema
             'remember_token' => Str::random(10),
         ];
     }
