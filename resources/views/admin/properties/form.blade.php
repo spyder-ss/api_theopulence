@@ -30,7 +30,7 @@
         </div>
 
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
-            <form method="POST" action="{{ url(getAdminRouteName() . '/properties/add' . (isset($property->id) ? '?id=' . $property->id : '')) }}" enctype="multipart/form-data" class="space-y-8">
+            <form method="POST" action="{{ url(getAdminRouteName() . '/properties/add' . (isset($model_data->id) ? '?id=' . $model_data->id : '')) }}" enctype="multipart/form-data" class="space-y-8">
                 @csrf
 
                 <div>
@@ -51,7 +51,7 @@
                             <input type="text"
                                    id="title"
                                    name="title"
-                                   value="{{ old('title', $property->title ?? '') }}"
+                                   value="{{ old('title', $model_data->title ?? '') }}"
                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('title') border-red-500 @enderror"
                                    placeholder="Enter property title"
                                    required>
@@ -60,7 +60,7 @@
                             @enderror
                         </div>
 
-                        @if(isset($property->id))
+                        @if(isset($model_data->id))
                             <div>
                                 <label for="slug" class="block text-sm font-medium text-gray-700 mb-2">
                                     Slug
@@ -68,7 +68,7 @@
                                 <input type="text"
                                        id="slug"
                                        name="slug"
-                                       value="{{ old('slug', $property->slug ?? '') }}"
+                                       value="{{ old('slug', $model_data->slug ?? '') }}"
                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('slug') border-red-500 @enderror"
                                        placeholder="Slug will be generated automatically"
                                        readonly>
@@ -85,7 +85,7 @@
                             <input type="text"
                                    id="location"
                                    name="location"
-                                   value="{{ old('location', $property->location ?? '') }}"
+                                   value="{{ old('location', $model_data->location ?? '') }}"
                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('location') border-red-500 @enderror"
                                    placeholder="Enter property location">
                             @error('location')
@@ -101,7 +101,7 @@
                             <input type="number"
                                    id="guest_capacity"
                                    name="guest_capacity"
-                                   value="{{ old('guest_capacity', $property->guest_capacity ?? '') }}"
+                                   value="{{ old('guest_capacity', $model_data->guest_capacity ?? '') }}"
                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('guest_capacity') border-red-500 @enderror"
                                    placeholder="0">
                             @error('guest_capacity')
@@ -117,7 +117,7 @@
                             <input type="number"
                                    id="bedrooms"
                                    name="bedrooms"
-                                   value="{{ old('bedrooms', $property->bedrooms ?? '') }}"
+                                   value="{{ old('bedrooms', $model_data->bedrooms ?? '') }}"
                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('bedrooms') border-red-500 @enderror"
                                    placeholder="0">
                             @error('bedrooms')
@@ -133,7 +133,7 @@
                             <input type="number"
                                    id="bathrooms"
                                    name="bathrooms"
-                                   value="{{ old('bathrooms', $property->bathrooms ?? '') }}"
+                                   value="{{ old('bathrooms', $model_data->bathrooms ?? '') }}"
                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('bathrooms') border-red-500 @enderror"
                                    placeholder="0">
                             @error('bathrooms')
@@ -153,7 +153,7 @@
                                 @if(isset($amenities) && $amenities->count() > 0)
                                     @foreach($amenities as $amenity)
                                         <option value="{{ $amenity->id }}"
-                                            {{ (isset($property) && $property->amenities->contains($amenity->id)) ? 'selected' : '' }}>
+                                            {{ (isset($model_data) && $model_data->amenities->contains($amenity->id)) ? 'selected' : '' }}>
                                             {{ $amenity->name }}
                                         </option>
                                     @endforeach
@@ -173,7 +173,7 @@
                                       name="property_brief"
                                       rows="3"
                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 ckeditor @error('property_brief') border-red-500 @enderror"
-                                      placeholder="Brief description of the property">{{ old('property_brief', $property->property_brief ?? '') }}</textarea>
+                                      placeholder="Brief description of the property">{{ old('property_brief', $model_data->property_brief ?? '') }}</textarea>
                             @error('property_brief')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -188,7 +188,7 @@
                                       name="property_description"
                                       rows="6"
                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 ckeditor @error('property_description') border-red-500 @enderror"
-                                      placeholder="Full description of the property">{{ old('property_description', $property->property_description ?? '') }}</textarea>
+                                      placeholder="Full description of the property">{{ old('property_description', $model_data->property_description ?? '') }}</textarea>
                             @error('property_description')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -203,7 +203,7 @@
                                       name="property_experience"
                                       rows="6"
                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 ckeditor @error('property_experience') border-red-500 @enderror"
-                                      placeholder="Describe the property experience">{{ old('property_experience', $property->property_experience ?? '') }}</textarea>
+                                      placeholder="Describe the property experience">{{ old('property_experience', $model_data->property_experience ?? '') }}</textarea>
                             @error('property_experience')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -218,7 +218,7 @@
                                       name="spaces"
                                       rows="3"
                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 ckeditor @error('spaces') border-red-500 @enderror"
-                                      placeholder="Describe spaces">{{ old('spaces', $property->spaces ?? '') }}</textarea>
+                                      placeholder="Describe spaces">{{ old('spaces', $model_data->spaces ?? '') }}</textarea>
                             @error('spaces')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -233,7 +233,7 @@
                                       name="cancellation_policy"
                                       rows="3"
                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 ckeditor @error('cancellation_policy') border-red-500 @enderror"
-                                      placeholder="Enter cancellation policy">{{ old('cancellation_policy', $property->cancellation_policy ?? '') }}</textarea>
+                                      placeholder="Enter cancellation policy">{{ old('cancellation_policy', $model_data->cancellation_policy ?? '') }}</textarea>
                             @error('cancellation_policy')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -248,7 +248,7 @@
                                       name="other_important_information"
                                       rows="3"
                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 ckeditor @error('other_important_information') border-red-500 @enderror"
-                                      placeholder="Enter other important information">{{ old('other_important_information', $property->other_important_information ?? '') }}</textarea>
+                                      placeholder="Enter other important information">{{ old('other_important_information', $model_data->other_important_information ?? '') }}</textarea>
                             @error('other_important_information')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -263,7 +263,7 @@
                                       name="faqs"
                                       rows="3"
                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 ckeditor @error('faqs') border-red-500 @enderror"
-                                      placeholder="Enter FAQs">{{ old('faqs', $property->faqs ?? '') }}</textarea>
+                                      placeholder="Enter FAQs">{{ old('faqs', $model_data->faqs ?? '') }}</textarea>
                             @error('faqs')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -284,9 +284,9 @@
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
 
-                            @if(isset($property) && $property->images->count() > 0)
+                            @if(isset($model_data) && $model_data->images->count() > 0)
                                 <div class="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                                    @foreach($property->images as $image)
+                                    @foreach($model_data->images as $image)
                                         <div class="relative border border-gray-200 rounded-lg overflow-hidden shadow-sm">
                                             <img src="{{ asset('storage/property_images/' . $image->property_id . '/' . $image->image_path) }}" alt="Property Image" class="w-full h-32 object-cover">
                                             <div class="absolute top-2 right-2">
@@ -332,7 +332,7 @@
                             <input type="text"
                                    id="meta_title"
                                    name="meta_title"
-                                   value="{{ old('meta_title', $property->meta_title ?? '') }}"
+                                   value="{{ old('meta_title', $model_data->meta_title ?? '') }}"
                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('meta_title') border-red-500 @enderror"
                                    placeholder="SEO meta title">
                             @error('meta_title')
@@ -348,7 +348,7 @@
                             <input type="text"
                                    id="meta_keyword"
                                    name="meta_keyword"
-                                   value="{{ old('meta_keyword', $property->meta_keyword ?? '') }}"
+                                   value="{{ old('meta_keyword', $model_data->meta_keyword ?? '') }}"
                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('meta_keyword') border-red-500 @enderror"
                                    placeholder="SEO meta keywords">
                             @error('meta_keyword')
@@ -365,7 +365,7 @@
                                       name="meta_description"
                                       rows="3"
                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('meta_description') border-red-500 @enderror"
-                                      placeholder="SEO meta description">{{ old('meta_description', $property->meta_description ?? '') }}</textarea>
+                                      placeholder="SEO meta description">{{ old('meta_description', $model_data->meta_description ?? '') }}</textarea>
                             @error('meta_description')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -381,7 +381,7 @@
                     </a>
                     <button type="submit"
                             class="px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg font-medium shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200">
-                        {{ isset($property->id) ? 'Update Property' : 'Create Property' }}
+                        {{ isset($model_data->id) ? 'Update Property' : 'Create Property' }}
                     </button>
                 </div>
             </form>

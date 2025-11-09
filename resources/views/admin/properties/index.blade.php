@@ -132,7 +132,7 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <div class="flex items-center justify-end space-x-2">
-                                            <a href="{{ url(getAdminRouteName() . '/properties/add?id=' . $property->id) }}"
+                                            <a href="{{ url(getAdminRouteName() . '/properties/edit/' . $property->id) }}"
                                                class="p-2 text-blue-600 hover:text-blue-900 hover:bg-blue-50 rounded-lg transition-colors duration-200"
                                                title="Edit Property">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

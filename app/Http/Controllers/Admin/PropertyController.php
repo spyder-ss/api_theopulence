@@ -30,6 +30,7 @@ class PropertyController extends Controller
     {
         $data['module_name'] = 'Add ' . $this->module_name;
         $id = isset($request->id) ? $request->id : '';
+
         if (!empty($id) && is_numeric($id)) {
             $data['module_name'] = 'Edit ' . $this->module_name;
             $is_exist = Property::where('id', $id)->first();
