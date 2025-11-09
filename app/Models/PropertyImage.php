@@ -13,6 +13,8 @@ class PropertyImage extends Model
         'property_id',
         'image_path',
         'is_main',
+        'alt_text',
+        'sort_order',
     ];
 
     public function property()

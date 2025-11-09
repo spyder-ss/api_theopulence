@@ -46,7 +46,12 @@ class PropertyApiController extends Controller
         $property = Property::where('slug', $slug)
             ->where('status', 1)
             ->where('is_delete', 0)
-            ->with(['amenities', 'images'])
+            ->with([
+                'amenities',
+                'images' => function ($query) {
+                    $query->orderBy('sort_order', 'asc');
+                }
+            ])
             ->first();
 
         if (!$property) {
@@ -57,7 +62,6 @@ class PropertyApiController extends Controller
         }
 
         $propertyData = $property->toArray();
-        $propertyData['image'] = Helper::getImageUrl('property', $property->id, $property->image);
 
         $propertyId = $property->id;
 
@@ -65,7 +69,9 @@ class PropertyApiController extends Controller
         $propertyData['images'] = $property->images->map(function ($image) use ($propertyId) {
             return [
                 'id' => $image->id,
-                'image' => Helper::getImageUrl('property_images', $propertyId, $image->image),
+                'property_id' => $image->property_id,
+                'image' => Helper::getImageUrl('property_images', $propertyId, $image->image_path),
+                'is_main' => $image->is_main,
                 'alt_text' => $image->alt_text,
                 'sort_order' => $image->sort_order,
             ];
