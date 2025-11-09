@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\EnquiryController;
 use App\Http\Controllers\Admin\GalleryCategoryController;
 use App\Http\Controllers\Admin\GalleryImageController;
 use App\Http\Controllers\Admin\PropertyController;
+use App\Http\Controllers\Admin\AmenityController;
 use Illuminate\Support\Facades\Route;
 
 Route::match(['get', 'post'], '/', [AuthController::class, 'login'])->name('login');
@@ -136,6 +137,8 @@ Route::group(['prefix' => getAdminRouteName(), 'as' => getAdminRouteName() . '.'
         Route::match(['post'], 'delete/{id}', [GalleryImageController::class, 'delete'])->name('delete')->middleware('CheckPermission:gallery-images,Delete');
         Route::match(['post'], 'ajax_img_delete', [GalleryImageController::class, 'ajax_img_delete'])->name('ajax_img_delete');
     });
+
+    Route::resource('amenities', AmenityController::class);
 
     Route::group(['prefix' => 'properties', 'as' => 'properties.'], function () {
         Route::get('/', [PropertyController::class, 'index'])->name('index');

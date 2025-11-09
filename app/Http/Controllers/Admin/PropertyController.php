@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Amenity;
 use App\Models\Property;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -17,7 +18,8 @@ class PropertyController extends Controller
 
     public function create()
     {
-        return view('admin.properties.form');
+        $amenities = Amenity::where('status', 1)->get();
+        return view('admin.properties.form', compact('amenities'));
     }
 
     public function store(Request $request)
@@ -32,14 +34,15 @@ class PropertyController extends Controller
             'property_brief' => 'nullable|string',
             'property_description' => 'nullable|string',
             'property_experience' => 'nullable|string',
-            'amenities' => 'nullable|string',
             'spaces' => 'nullable|string',
             'cancellation_policy' => 'nullable|string',
             'other_important_information' => 'nullable|string',
             'faqs' => 'nullable|string',
+            'amenities' => 'nullable|array', // Validate as array
+            'amenities.*' => 'exists:amenities,id', // Validate each amenity ID
         ]);
 
-        Property::create([
+        $property = Property::create([
             'title' => $request->title,
             'slug' => Str::slug($request->slug),
             'location' => $request->location,
@@ -49,19 +52,23 @@ class PropertyController extends Controller
             'property_brief' => $request->property_brief,
             'property_description' => $request->property_description,
             'property_experience' => $request->property_experience,
-            'amenities' => $request->amenities,
             'spaces' => $request->spaces,
             'cancellation_policy' => $request->cancellation_policy,
             'other_important_information' => $request->other_important_information,
             'faqs' => $request->faqs,
         ]);
 
+        if ($request->has('amenities')) {
+            $property->amenities()->sync($request->amenities);
+        }
+
         return redirect()->route('admin.properties.index')->with('success', 'Property created successfully.');
     }
 
     public function edit(Property $property)
     {
-        return view('admin.properties.form', compact('property'));
+        $amenities = Amenity::where('status', 1)->get();
+        return view('admin.properties.form', compact('property', 'amenities'));
     }
 
     public function update(Request $request, Property $property)
@@ -76,11 +83,12 @@ class PropertyController extends Controller
             'property_brief' => 'nullable|string',
             'property_description' => 'nullable|string',
             'property_experience' => 'nullable|string',
-            'amenities' => 'nullable|string',
             'spaces' => 'nullable|string',
             'cancellation_policy' => 'nullable|string',
             'other_important_information' => 'nullable|string',
             'faqs' => 'nullable|string',
+            'amenities' => 'nullable|array', // Validate as array
+            'amenities.*' => 'exists:amenities,id', // Validate each amenity ID
         ]);
 
         $property->update([
@@ -93,12 +101,17 @@ class PropertyController extends Controller
             'property_brief' => $request->property_brief,
             'property_description' => $request->property_description,
             'property_experience' => $request->property_experience,
-            'amenities' => $request->amenities,
             'spaces' => $request->spaces,
             'cancellation_policy' => $request->cancellation_policy,
             'other_important_information' => $request->other_important_information,
             'faqs' => $request->faqs,
         ]);
+
+        if ($request->has('amenities')) {
+            $property->amenities()->sync($request->amenities);
+        } else {
+            $property->amenities()->detach(); // If no amenities are selected, detach all
+        }
 
         return redirect()->route('admin.properties.index')->with('success', 'Property updated successfully.');
     }

@@ -19,10 +19,14 @@ class Property extends Model
         'property_brief',
         'property_description',
         'property_experience',
-        'amenities',
         'spaces',
         'cancellation_policy',
         'other_important_information',
         'faqs',
     ];
+
+    public function amenities()
+    {
+        return $this->belongsToMany(Amenity::class, 'property_amenity');
+    }
 }

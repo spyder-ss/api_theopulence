@@ -22,7 +22,6 @@ return new class extends Migration
             $table->text('property_brief')->nullable();
             $table->longText('property_description')->nullable();
             $table->longText('property_experience')->nullable();
-            $table->longText('amenities')->nullable();
             $table->longText('spaces')->nullable();
             $table->text('cancellation_policy')->nullable();
             $table->longText('other_important_information')->nullable();

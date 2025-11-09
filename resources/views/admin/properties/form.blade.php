@@ -190,11 +190,19 @@
                             <label for="amenities" class="block text-sm font-medium text-gray-700 mb-2">
                                 Amenities
                             </label>
-                            <textarea id="amenities"
-                                      name="amenities"
-                                      rows="3"
-                                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 ckeditor @error('amenities') border-red-500 @enderror"
-                                      placeholder="List amenities">{{ old('amenities', $property->amenities ?? '') }}</textarea>
+                            <select id="amenities"
+                                    name="amenities[]"
+                                    multiple
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('amenities') border-red-500 @enderror">
+                                @if(isset($amenities) && $amenities->count() > 0)
+                                    @foreach($amenities as $amenity)
+                                        <option value="{{ $amenity->id }}"
+                                            {{ (isset($property) && $property->amenities->contains($amenity->id)) ? 'selected' : '' }}>
+                                            {{ $amenity->name }}
+                                        </option>
+                                    @endforeach
+                                @endif
+                            </select>
                             @error('amenities')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
