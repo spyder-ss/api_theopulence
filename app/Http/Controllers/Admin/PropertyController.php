@@ -91,7 +91,7 @@ class PropertyController extends Controller
                     $property->amenities()->detach();
                 }
 
-                $redirect_url = url(getAdminRouteName() . '/property/');
+                $redirect_url = url(getAdminRouteName() . '/properties/');
 
                 $images = $request->file('images');
                 if ($images) {

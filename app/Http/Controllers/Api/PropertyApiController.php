@@ -21,7 +21,6 @@ class PropertyApiController extends Controller
             $img_path = $item->mainImage->image_path ?? '';
             $img_id = $item->mainImage->id ?? '';
 
-            // dd(Helper::getImageUrl('property_images', $img_id, $img_path));
             return [
                 'id' => $item->id,
                 'slug' => $item->slug,

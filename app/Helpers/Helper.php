@@ -105,27 +105,41 @@ class Helper
     public static function GetSlug($table, $field_name, $exclude_id, $string)
     {
         $count = 1;
+
+        // Convert to lowercase
         $lower_case_string = strtolower($string);
-        $space_remove_string = str_replace(" ", "-", $lower_case_string);
-        $query = DB::table($table)->where($field_name, $space_remove_string);
+
+        // Remove special characters (keep letters, numbers, and spaces)
+        $clean_string = preg_replace('/[^a-z0-9\s-]/', '', $lower_case_string);
+
+        // Replace multiple spaces or hyphens with a single space
+        $clean_string = preg_replace('/[\s-]+/', ' ', $clean_string);
+
+        // Replace spaces with hyphens
+        $slug = str_replace(' ', '-', trim($clean_string));
+
+        // Check for duplicates
+        $query = DB::table($table)->where($field_name, $slug);
         if (!empty($exclude_id)) {
             $query->where('id', '!=', $exclude_id);
         }
 
         $is_exist = $query->first();
+
+        // If exists, append a number
         while (!empty($is_exist)) {
-            $space_remove_string = $lower_case_string . '-' . $count;
-            $query = DB::table($table)->where($field_name, $space_remove_string);
+            $slug = $slug . '-' . $count;
+            $query = DB::table($table)->where($field_name, $slug);
             if (!empty($exclude_id)) {
                 $query->where('id', '!=', $exclude_id);
             }
-
             $is_exist = $query->first();
             $count++;
         }
 
-        return $space_remove_string;
+        return $slug;
     }
+
 
     public static function UploadImage($file, $path, $imgHeight, $imgWidth, $thumbHeight, $thumbWidth, $createThumb = true, $oldFile = '', $folderName = '')
     {
