@@ -1,10 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 
 :root {
-    --primary: #cd2c58;
+    /* --primary: #cd2c58; */
+    --primary: #003b33;
     --primary-rgb: 203, 44, 88;
     --primary-foreground: #fff;
-    --accent: #e06b80;
+    /* --accent: #e06b80; */
+    --accent: #e7b52e;
     --accent-foreground: #fff;
     --background: linear-gradient(135deg, #fefde8 0%, #f3f4f6 100%);
     --foreground: #1f2937;
