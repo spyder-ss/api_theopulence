@@ -65,7 +65,11 @@
         <!-- Right Section: Promotional Content -->
         <div class="right-section">
             <div class="right-content">
-                <h1 class="opulence-logo">The Opulence</h1>
+                {{-- <h1 class="opulence-logo">The Opulence</h1> --}}
+                <h1 class="opulence-logo">
+                    <img src="{{ asset('img/logo.png') }}" alt="The Opulence Logo" class="logo-image"
+                        style="height: 140px; width: auto;">
+                </h1>
                 <h2 class="welcome-text">Welcome</h2>
                 <p class="destination-text">You Are At India's Best & Top Destination</p>
                 <p class="search-text">Searching Place</p>

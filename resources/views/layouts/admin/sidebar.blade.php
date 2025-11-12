@@ -6,7 +6,7 @@
             <span>Dashboard</span>
         </a>
     </li>
-    <li class="nav-item">
+    {{-- <li class="nav-item">
         <a href="#" class="nav-link" data-page="masterdata">
             <i data-lucide="database"></i>
             <span>Master Data</span>
@@ -35,7 +35,7 @@
                 </a>
             </li>
         </ul>
-    </li>
+    </li> --}}
     <li class="nav-item">
         <a href="{{ url(getAdminRouteName() . '/properties') }}"
             class="nav-link @if(getCurrentPageUrl() == '/' . getAdminRouteName() . '/properties') active @endif">
@@ -101,13 +101,13 @@
             <span>Enquiries</span>
         </a>
     </li>
-    <li class="nav-item">
+    {{-- <li class="nav-item">
         <a href="{{ url(getAdminRouteName() . '/email_templates') }}" class="nav-link"
             class="nav-link @if(getCurrentPageUrl() == '/' . getAdminRouteName() . '/email_templates') active @endif">
             <i data-lucide="mail"></i>
             <span>Email Templates</span>
         </a>
-    </li>
+    </li> --}}
     <li class="nav-item">
         <a href="{{ url(getAdminRouteName() . '/website_settings') }}"
             class="nav-link @if(getCurrentPageUrl() == '/' . getAdminRouteName() . '/website_settings') active @endif">
@@ -142,11 +142,11 @@
             <span>Customers</span>
         </a>
     </li>
-    <li class="nav-item">
+    {{-- <li class="nav-item">
         <a href="{{ url(getAdminRouteName() . '/modules') }}"
             class="nav-link @if(getCurrentPageUrl() == '/' . getAdminRouteName() . '/modules') active @endif">
             <i data-lucide="grid"></i>
             <span>Modules</span>
         </a>
-    </li>
+    </li> --}}
 </ul>
