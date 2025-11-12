@@ -1,14 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap");
 
 :root {
-    /* --primary: #cd2c58; */
     --primary: #003b33;
-    --primary-rgb: 203, 44, 88;
+    --primary-rgb: 0, 59, 51;
     --primary-foreground: #fff;
-    /* --accent: #e06b80; */
     --accent: #e7b52e;
     --accent-foreground: #fff;
-    --background: linear-gradient(135deg, #fefde8 0%, #f3f4f6 100%);
+    --background: #ffffff; /* Changed to white for the left section */
     --foreground: #1f2937;
     --card: #ffffff;
     --card-foreground: #1f2937;
@@ -27,21 +26,91 @@
 
 .login-page {
     font-family: "Inter", system-ui, -apple-system, sans-serif;
-    background: linear-gradient(135deg, #fefde8 0%, #f3f4f6 100%);
-    background-size: cover;
-    background-position: center;
     color: var(--foreground);
     line-height: 1.5;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: var(--background); /* Ensure body background is white */
 }
 
-.login-container {
-    max-width: 420px;
+.split-container {
+    display: flex;
     width: 100%;
-    margin: 2rem;
+    min-height: 100vh;
+}
+
+.left-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background);
+    padding: 2rem;
+}
+
+.right-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary); /* Dark green background */
+    position: relative;
+    overflow: hidden;
+    color: white;
+    padding: 2rem;
+}
+
+/* Grid pattern for right section */
+.right-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px; /* Adjust grid size as needed */
+    opacity: 0.8;
+    z-index: 1;
+}
+
+.right-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 400px;
+    padding: 2rem;
+}
+
+.opulence-logo {
+    font-family: "Great Vibes", cursive;
+    font-size: 4rem;
+    font-weight: 400;
+    color: white;
+    margin-bottom: 1rem;
+    line-height: 1;
+}
+
+.welcome-text {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.destination-text,
+.search-text {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0.25rem;
+}
+
+.login-container { /* This is no longer needed, replaced by .split-container */
+    max-width: none;
+    width: auto;
+    margin: 0;
 }
 
 .login-card {
@@ -52,44 +121,27 @@
     border: 1px solid var(--border);
     position: relative;
     overflow: hidden;
+    max-width: 420px; /* Limit card width within left section */
+    width: 100%;
 }
 
-.login-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--primary), var(--accent));
+.login-card::before { /* Remove the top border gradient */
+    content: none;
 }
 
-.logo-section {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.logo {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 1.5rem;
+.welcome-back {
+    font-size: 1.75rem;
     font-weight: 600;
-    color: var(--primary);
+    color: var(--foreground);
     margin-bottom: 0.5rem;
+    text-align: center;
 }
 
-.logo-icon {
-    width: 40px;
-    height: 40px;
-    background-color: var(--primary);
-    border-radius: 0.75rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--accent);
-    font-weight: 700;
-    font-size: 1.25rem;
+.welcome-subtitle {
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+    margin-bottom: 2rem;
+    text-align: center;
 }
 
 .login-title {
@@ -97,15 +149,18 @@
     font-weight: 600;
     color: var(--foreground);
     margin-bottom: 0.5rem;
+    text-align: center;
 }
 
 .login-subtitle {
     color: var(--muted-foreground);
     font-size: 0.875rem;
+    margin-bottom: 2.5rem; /* Increased spacing */
+    text-align: center;
 }
 
 .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.75rem; /* Increased spacing */
 }
 
 .form-label {
@@ -113,7 +168,7 @@
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--foreground);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem; /* Increased spacing */
 }
 
 .input-group {
@@ -122,7 +177,7 @@
 
 .form-input {
     width: 100%;
-    padding: 0.75rem 1rem 0.75rem 3rem;
+    padding: 0.75rem 1rem; /* Adjusted padding, removed left icon space */
     border: 1px solid var(--border);
     border-radius: var(--radius);
     background-color: white;
@@ -140,76 +195,66 @@
     border-color: #ef4444;
 }
 
-.input-icon {
+.input-icon { /* Adjusted for password toggle */
     position: absolute;
-    left: 1rem;
+    right: 1rem;
     top: 50%;
     transform: translateY(-50%);
     color: var(--muted-foreground);
     width: 18px;
     height: 18px;
+    cursor: pointer;
 }
 
-.checkbox-group {
+/* Role Selection Radio Buttons */
+.role-selection {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1.5rem;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
 }
 
-.checkbox-input {
-    display: none;
-}
-
-.checkbox-label {
+.radio-label {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     font-size: 0.875rem;
-    color: var(--muted-foreground);
+    color: var(--foreground);
     cursor: pointer;
 }
 
-.checkbox-custom {
+.radio-input {
+    display: none;
+}
+
+.radio-custom {
     width: 16px;
     height: 16px;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    background-color: white;
+    border: 2px solid var(--border);
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
+    flex-shrink: 0;
 }
 
-.checkbox-input:checked + .checkbox-label .checkbox-custom {
-    background-color: var(--primary);
+.radio-input:checked + .radio-custom {
     border-color: var(--primary);
 }
 
-.checkbox-input:checked + .checkbox-label .checkbox-custom::after {
-    content: "✓";
-    color: white;
-    font-size: 10px;
-    font-weight: 700;
-}
-
-.forgot-link {
-    font-size: 0.875rem;
-    color: var(--primary);
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-
-.forgot-link:hover {
-    color: var(--accent);
-    text-decoration: underline;
+.radio-input:checked + .radio-custom::after {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background-color: var(--primary);
+    border-radius: 50%;
 }
 
 .btn-login {
     width: 100%;
     padding: 0.875rem 1.5rem;
-    background: linear-gradient(135deg, var(--primary), var(--accent));
+    background-color: var(--primary); /* Solid primary color */
     color: white;
     border: none;
     border-radius: var(--radius);
@@ -221,9 +266,11 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
+    margin-top: 2.5rem; /* Increased space above the button */
 }
 
 .btn-login:hover {
+    opacity: 0.9;
     transform: translateY(-1px);
     box-shadow: var(--shadow);
 }
@@ -252,24 +299,47 @@
     margin-bottom: 0.25rem;
 }
 
+.signup-link {
+    text-align: center;
+    margin-top: 2rem; /* Increased space above the link */
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+}
+
+.signup-link .link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.signup-link .link:hover {
+    text-decoration: underline;
+}
+
 /* Responsive Design */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+    .split-container {
+        flex-direction: column;
+    }
+
+    .right-section {
+        min-height: 300px; /* Adjust height for mobile */
+    }
+
+    .left-section {
+        padding: 1.5rem;
+    }
+
     .login-card {
         padding: 2rem 1.5rem;
     }
 
-    .logo {
-        font-size: 1.25rem;
+    .opulence-logo {
+        font-size: 3rem;
     }
 
-    .logo-icon {
-        width: 32px;
-        height: 32px;
-        font-size: 1rem;
-    }
-
-    .login-title {
-        font-size: 1.5rem;
+    .welcome-text {
+        font-size: 2rem;
     }
 }
 
