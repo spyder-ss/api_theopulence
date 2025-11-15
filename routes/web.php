@@ -31,42 +31,42 @@ Route::group(['prefix' => getAdminRouteName(), 'as' => getAdminRouteName() . '.'
     Route::group(['prefix' => 'modules', 'as' => 'modules'], function () {
         Route::get('/', [ModuleController::class, 'index'])->name('index');
         Route::match(['get', 'post'], 'add', [ModuleController::class, 'add'])->name('add');
-        Route::match(['get', 'post'], 'edit/{id}', [ModuleController::class, 'add'])->name('add');
+        Route::match(['get', 'post'], 'edit/{id}', [ModuleController::class, 'add'])->name('edit');
         Route::match(['post'], 'delete/{id}', [ModuleController::class, 'delete'])->name('delete');
     });
 
     Route::group(['prefix' => 'email_templates', 'as' => 'email_templates'], function () {
         Route::get('/', [EmailTemplateController::class, 'index'])->name('index');
         Route::match(['get', 'post'], 'add', [EmailTemplateController::class, 'add'])->name('add');
-        Route::match(['get', 'post'], 'edit/{id}', [EmailTemplateController::class, 'add'])->name('add');
+        Route::match(['get', 'post'], 'edit/{id}', [EmailTemplateController::class, 'add'])->name('edit');
         Route::match(['post'], 'delete/{id}', [EmailTemplateController::class, 'delete'])->name('delete');
     });
 
     Route::group(['prefix' => 'countries', 'as' => 'countries'], function () {
         Route::get('/', [CountryController::class, 'index'])->name('index');
         Route::match(['get', 'post'], 'add', [CountryController::class, 'add'])->name('add');
-        Route::match(['get', 'post'], 'edit/{id}', [CountryController::class, 'add'])->name('add');
+        Route::match(['get', 'post'], 'edit/{id}', [CountryController::class, 'add'])->name('edit');
         Route::match(['post'], 'delete/{id}', [CountryController::class, 'delete'])->name('delete');
     });
 
     Route::group(['prefix' => 'states', 'as' => 'states'], function () {
         Route::get('/', [StateController::class, 'index'])->name('index');
         Route::match(['get', 'post'], 'add', [StateController::class, 'add'])->name('add');
-        Route::match(['get', 'post'], 'edit/{id}', [StateController::class, 'add'])->name('add');
+        Route::match(['get', 'post'], 'edit/{id}', [StateController::class, 'add'])->name('edit');
         Route::match(['post'], 'delete/{id}', [StateController::class, 'delete'])->name('delete');
     });
 
     Route::group(['prefix' => 'cities', 'as' => 'cities'], function () {
         Route::get('/', [CityController::class, 'index'])->name('index');
         Route::match(['get', 'post'], 'add', [CityController::class, 'add'])->name('add');
-        Route::match(['get', 'post'], 'edit/{id}', [CityController::class, 'add'])->name('add');
+        Route::match(['get', 'post'], 'edit/{id}', [CityController::class, 'add'])->name('edit');
         Route::match(['post'], 'delete/{id}', [CityController::class, 'delete'])->name('delete');
     });
 
     Route::group(['prefix' => 'testimonials', 'as' => 'testimonials'], function () {
         Route::get('/', [TestimonialController::class, 'index'])->name('index');
         Route::match(['get', 'post'], 'add', [TestimonialController::class, 'add'])->name('add');
-        Route::match(['get', 'post'], 'edit/{id}', [TestimonialController::class, 'add'])->name('add');
+        Route::match(['get', 'post'], 'edit/{id}', [TestimonialController::class, 'add'])->name('edit');
         Route::match(['post'], 'delete/{id}', [TestimonialController::class, 'delete'])->name('delete');
         Route::match(['post'], 'ajax_img_delete', [TestimonialController::class, 'ajax_img_delete'])->name('ajax_img_delete');
     });
@@ -74,7 +74,7 @@ Route::group(['prefix' => getAdminRouteName(), 'as' => getAdminRouteName() . '.'
     Route::group(['prefix' => 'cms_pages', 'as' => 'cms_pages'], function () {
         Route::get('/', [CmsPageController::class, 'index'])->name('index');
         Route::match(['get', 'post'], 'add', [CmsPageController::class, 'add'])->name('add');
-        Route::match(['get', 'post'], 'edit/{id}', [CmsPageController::class, 'add'])->name('add');
+        Route::match(['get', 'post'], 'edit/{id}', [CmsPageController::class, 'add'])->name('edit');
         Route::match(['post'], 'delete/{id}', [CmsPageController::class, 'delete'])->name('delete');
         Route::match(['post'], 'ajax_img_delete', [CmsPageController::class, 'ajax_img_delete'])->name('delete');
     });
@@ -82,7 +82,7 @@ Route::group(['prefix' => getAdminRouteName(), 'as' => getAdminRouteName() . '.'
     Route::group(['prefix' => 'blogs', 'as' => 'blogs'], routes: function () {
         Route::get('/', [BlogController::class, 'index'])->name('index');
         Route::match(['get', 'post'], 'add', [BlogController::class, 'add'])->name('add');
-        Route::match(['get', 'post'], 'edit/{id}', [BlogController::class, 'add'])->name('add');
+        Route::match(['get', 'post'], 'edit/{id}', [BlogController::class, 'add'])->name('edit');
         Route::match(['post'], 'delete/{id}', [BlogController::class, 'delete'])->name('delete');
         Route::match(['post'], 'ajax_img_delete', [BlogController::class, 'ajax_img_delete'])->name('delete');
     });
@@ -95,7 +95,7 @@ Route::group(['prefix' => getAdminRouteName(), 'as' => getAdminRouteName() . '.'
     Route::group(['prefix' => 'website_settings', 'as' => 'website_settings'], function () {
         Route::get('/', [WebsiteSettingController::class, 'index'])->name('index');
         Route::match(['get', 'post'], 'add', [WebsiteSettingController::class, 'add'])->name('add');
-        Route::match(['get', 'post'], 'edit/{id}', [WebsiteSettingController::class, 'add'])->name('add');
+        Route::match(['get', 'post'], 'edit/{id}', [WebsiteSettingController::class, 'add'])->name('edit');
         Route::match(['post'], 'delete/{id}', [WebsiteSettingController::class, 'delete'])->name('delete');
     });
 
@@ -117,17 +117,15 @@ Route::group(['prefix' => getAdminRouteName(), 'as' => getAdminRouteName() . '.'
     Route::group(['prefix' => 'roles', 'as' => 'roles'], function () {
         Route::get('/', [RoleController::class, 'index'])->name('index');
         Route::match(['get', 'post'], 'add', [RoleController::class, 'add'])->name('add');
-        Route::match(['get', 'post'], 'edit/{id}', [RoleController::class, 'add'])->name('add');
+        Route::match(['get', 'post'], 'edit/{id}', [RoleController::class, 'add'])->name('edit');
         Route::match(['post'], 'delete/{id}', [RoleController::class, 'delete'])->name('delete');
     });
 
-    Route::group(['prefix' => 'gallery-categories', 'as' => 'gallery-categories.'], function () {
-        Route::get('/', [GalleryCategoryController::class, 'index'])->name('index')->middleware('CheckPermission:gallery-categories,View');
-        Route::match(['get', 'post'], 'add', [GalleryCategoryController::class, 'create'])->name('add')->middleware('CheckPermission:gallery-categories,Add');
-        Route::match(['get', 'post'], 'edit/{gallery_category}', [GalleryCategoryController::class, 'edit'])->name('edit')->middleware('CheckPermission:gallery-categories,Edit');
-        Route::match(['post'], 'delete/{gallery_category}', [GalleryCategoryController::class, 'destroy'])->name('delete')->middleware('CheckPermission:gallery-categories,Delete');
-        Route::post('store', [GalleryCategoryController::class, 'store'])->name('store')->middleware('CheckPermission:gallery-categories,Add');
-        Route::put('update/{gallery_category}', [GalleryCategoryController::class, 'update'])->name('update')->middleware('CheckPermission:gallery-categories,Edit');
+    Route::group(['prefix' => 'gallery-categories', 'as' => 'gallery-categories'], function () {
+        Route::get('/', [GalleryCategoryController::class, 'index'])->name('index');
+        Route::match(['get', 'post'], 'add', [GalleryCategoryController::class, 'add'])->name('add');
+        Route::match(['get', 'post'], 'edit/{id}', [GalleryCategoryController::class, 'add'])->name('edit');
+        Route::match(['post'], 'delete/{id}', [GalleryCategoryController::class, 'delete'])->name('delete');
     });
 
     Route::group(['prefix' => 'gallery-images', 'as' => 'gallery-images.'], function () {
@@ -141,7 +139,7 @@ Route::group(['prefix' => getAdminRouteName(), 'as' => getAdminRouteName() . '.'
     Route::group(['prefix' => 'amenities', 'as' => 'amenities'], routes: function () {
         Route::get('/', [AmenityController::class, 'index'])->name('index');
         Route::match(['get', 'post'], 'add', [AmenityController::class, 'add'])->name('add');
-        Route::match(['get', 'post'], 'edit/{id}', [AmenityController::class, 'add'])->name('add');
+        Route::match(['get', 'post'], 'edit/{id}', [AmenityController::class, 'add'])->name('edit');
         Route::match(['post'], 'delete/{id}', [AmenityController::class, 'delete'])->name('delete');
         Route::match(['post'], 'ajax_img_delete', [AmenityController::class, 'ajax_img_delete'])->name('delete');
     });
@@ -149,7 +147,7 @@ Route::group(['prefix' => getAdminRouteName(), 'as' => getAdminRouteName() . '.'
     Route::group(['prefix' => 'properties', 'as' => 'properties.'], function () {
         Route::get('/', [PropertyController::class, 'index'])->name('index');
         Route::match(['get', 'post'], 'add', [PropertyController::class, 'add'])->name('add');
-        Route::match(['get', 'post'], 'edit/{id}', [PropertyController::class, 'add'])->name('add');
+        Route::match(['get', 'post'], 'edit/{id}', [PropertyController::class, 'add'])->name('edit');
         Route::match(['post'], 'delete/{id}', [PropertyController::class, 'delete'])->name('delete');
         Route::match(['post'], 'ajax_img_delete', [PropertyController::class, 'ajax_img_delete'])->name('delete');
     });
