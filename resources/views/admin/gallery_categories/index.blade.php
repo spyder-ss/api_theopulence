@@ -77,8 +77,8 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
-                        @if(isset($categories) && $categories->count() > 0)
-                            @foreach ($categories as $category)
+                        @if(isset($model_data_lists) && $model_data_lists->count() > 0)
+                            @foreach ($model_data_lists as $category)
                                 <tr class="hover:bg-gray-50 transition-colors duration-150" data-status="{{ $category->status }}" data-name="{{ $category->name }}">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">

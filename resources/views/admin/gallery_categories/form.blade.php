@@ -33,10 +33,10 @@
         <!-- Form Section -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
             <form method="POST"
-                action="{{ isset($category) ? route('admin.gallery-categories.edit', $category->id) : route('admin.gallery-categories.add') }}"
+                action="{{ isset($model_data) ? route('admin.gallery-categories.edit', $model_data->id) : route('admin.gallery-categories.add') }}"
                 class="space-y-8">
                 @csrf
-                @if (isset($category))
+                @if (isset($model_data))
                     @method('PUT')
                 @endif
 
@@ -58,7 +58,7 @@
                             <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
                                 Category Name <span class="text-red-500">*</span>
                             </label>
-                            <input type="text" id="name" name="name" value="{{ old('name', $category->name ?? '') }}"
+                            <input type="text" id="name" name="name" value="{{ old('name', $model_data->name ?? '') }}"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('name') border-red-500 @enderror"
                                 placeholder="Enter category name" required>
                             @error('name')
@@ -71,7 +71,7 @@
                             <label for="slug" class="block text-sm font-medium text-gray-700 mb-2">
                                 Slug <span class="text-red-500">*</span>
                             </label>
-                            <input type="text" id="slug" name="slug" value="{{ old('slug', $category->slug ?? '') }}"
+                            <input type="text" id="slug" name="slug" value="{{ old('slug', $model_data->slug ?? '') }}"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('slug') border-red-500 @enderror"
                                 placeholder="Enter category slug" required>
                             @error('slug')
@@ -85,7 +85,7 @@
                                 Sort Order
                             </label>
                             <input type="number" id="sort_order" name="sort_order"
-                                value="{{ old('sort_order', $category->sort_order ?? 0) }}"
+                                value="{{ old('sort_order', $model_data->sort_order ?? 0) }}"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('sort_order') border-red-500 @enderror"
                                 placeholder="0">
                             @error('sort_order')
@@ -100,9 +100,9 @@
                             </label>
                             <select id="status" name="status"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('status') border-red-500 @enderror">
-                                <option value="1" {{ old('status', $category->status ?? 1) == '1' ? 'selected' : '' }}>
+                                <option value="1" {{ old('status', $model_data->status ?? 1) == '1' ? 'selected' : '' }}>
                                     Active</option>
-                                <option value="0" {{ old('status', $category->status ?? 1) == '0' ? 'selected' : '' }}>
+                                <option value="0" {{ old('status', $model_data->status ?? 1) == '0' ? 'selected' : '' }}>
                                     Inactive</option>
                             </select>
                             @error('status')
@@ -128,25 +128,25 @@
                         <div class="flex items-center">
                             <input type="checkbox" name="field_configuration[title]" id="title_checkbox" value="1"
                                 class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                                {{ isset($category) && ($category->field_configuration['title'] ?? false) ? 'checked' : '' }}>
+                                {{ isset($model_data) && ($model_data->field_configuration['title'] ?? false) ? 'checked' : '' }}>
                             <label for="title_checkbox" class="ml-2 block text-sm text-gray-900">Title</label>
                         </div>
                         <div class="flex items-center">
                             <input type="checkbox" name="field_configuration[subtitle]" id="subtitle_checkbox" value="1"
                                 class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                                {{ isset($category) && ($category->field_configuration['subtitle'] ?? false) ? 'checked' : '' }}>
+                                {{ isset($model_data) && ($model_data->field_configuration['subtitle'] ?? false) ? 'checked' : '' }}>
                             <label for="subtitle_checkbox" class="ml-2 block text-sm text-gray-900">Subtitle</label>
                         </div>
                         <div class="flex items-center">
                             <input type="checkbox" name="field_configuration[brief]" id="brief_checkbox" value="1"
                                 class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                                {{ isset($category) && ($category->field_configuration['brief'] ?? false) ? 'checked' : '' }}>
+                                {{ isset($model_data) && ($model_data->field_configuration['brief'] ?? false) ? 'checked' : '' }}>
                             <label for="brief_checkbox" class="ml-2 block text-sm text-gray-900">Brief</label>
                         </div>
                         <div class="flex items-center">
                             <input type="checkbox" name="field_configuration[description]" id="description_checkbox" value="1"
                                 class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                                {{ isset($category) && ($category->field_configuration['description'] ?? false) ? 'checked' : '' }}>
+                                {{ isset($model_data) && ($model_data->field_configuration['description'] ?? false) ? 'checked' : '' }}>
                             <label for="description_checkbox" class="ml-2 block text-sm text-gray-900">Description</label>
                         </div>
                     </div>
@@ -160,7 +160,7 @@
                     </a>
                     <button type="submit"
                         class="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg font-medium shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
-                        {{ isset($category) ? 'Update Category' : 'Create Category' }}
+                        {{ isset($model_data) ? 'Update Category' : 'Create Category' }}
                     </button>
                 </div>
             </form>
