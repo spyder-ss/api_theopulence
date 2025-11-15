@@ -33,7 +33,7 @@
         <!-- Form Section -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
             <form method="POST"
-                action="{{ isset($category) ? route('admin.gallery-categories.update', $category->id) : route('admin.gallery-categories.store') }}"
+                action="{{ isset($category) ? route('admin.gallery-categories.edit', $category->id) : route('admin.gallery-categories.add') }}"
                 class="space-y-8">
                 @csrf
                 @if (isset($category))
