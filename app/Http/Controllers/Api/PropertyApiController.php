@@ -20,6 +20,7 @@ class PropertyApiController extends Controller
         $properties = $query->get()->map(function ($item) {
             $img_path = $item->mainImage->image_path ?? '';
             $img_id = $item->mainImage->id ?? '';
+            $property_id = $item->id ?? '';
 
             return [
                 'id' => $item->id,
@@ -32,7 +33,7 @@ class PropertyApiController extends Controller
                 'property_brief' => $item->property_brief,
                 'price' => $item->price,
                 'external_redirection_url' => $item->external_redirection_url,
-                'image' => Helper::getImageUrl('property_images', $img_id, $img_path),
+                'image' => Helper::getImageUrl('property_images', $property_id, $img_path),
             ];
         });
 
