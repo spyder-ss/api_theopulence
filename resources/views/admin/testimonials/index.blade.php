@@ -66,7 +66,7 @@
                                 Designation
                             </th> --}}
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">
-                                Testimonial
+                                Description
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">
                                 Status
@@ -100,11 +100,11 @@
                                         {{ $testimonial->designation }}
                                     </td> --}}
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 hidden lg:table-cell max-w-xs">
-                                        <div class="truncate" title="{{ $testimonial->testimonial }}">
-                                            @if(strlen($testimonial->testimonial) > 50)
-                                                {{ substr($testimonial->testimonial, 0, 50) }}...
+                                        <div class="truncate" title="{{ $testimonial->description }}">
+                                            @if(strlen($testimonial->description) > 50)
+                                                {!! substr($testimonial->description, 0, 50) !!}...
                                             @else
-                                                {{ $testimonial->testimonial }}
+                                                {!! $testimonial->description !!}
                                             @endif
                                         </div>
                                     </td>

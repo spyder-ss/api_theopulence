@@ -50,9 +50,7 @@ class TestimonialController extends Controller
 
             $req['name'] = $request->name ?? '';
             $req['designation'] = $request->designation ?? '';
-            $req['video'] = $request->video ?? '';
-            $req['testimonial'] = $request->testimonial ?? '';
-            $req['featured'] = $request->featured ?? '0';
+            $req['description'] = $request->description ?? '';
             $req['sort_order'] = $request->sort_order ?? '';
             $req['status'] = $request->status ?? '1';
             $req['property_id'] = $request->property_id ?? null;

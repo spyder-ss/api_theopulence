@@ -71,7 +71,7 @@
                                 <option value="">-- Select Property --</option>
                                 @foreach($properties as $property)
                                     <option value="{{ $property->id }}" {{ old('property_id', $model_data->property_id ?? '') == $property->id ? 'selected' : '' }}>
-                                        {{ $property->name }}
+                                        {{ $property->title }}
                                     </option>
                                 @endforeach
                             </select>
@@ -147,17 +147,17 @@
                             @enderror
                         </div>
 
-                        <!-- Testimonial -->
+                        <!-- Description -->
                         <div class="lg:col-span-2">
-                            <label for="testimonial" class="block text-sm font-medium text-gray-700 mb-2">
-                                Testimonial <span class="text-red-500">*</span>
+                            <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+                                Description <span class="text-red-500">*</span>
                             </label>
-                            <textarea id="testimonial"
-                                      name="testimonial"
+                            <textarea id="description"
+                                      name="description"
                                       rows="6"
-                                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors duration-200 ckeditor @error('testimonial') border-red-500 @enderror"
-                                      placeholder="Enter the customer's testimonial">{{ old('testimonial', $model_data->testimonial ?? '') }}</textarea>
-                            @error('testimonial')
+                                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors duration-200 ckeditor @error('description') border-red-500 @enderror"
+                                      placeholder="Enter the customer's testimonial">{{ old('description', $model_data->description ?? '') }}</textarea>
+                            @error('description')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
