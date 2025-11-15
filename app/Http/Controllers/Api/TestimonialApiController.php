@@ -26,6 +26,8 @@ class TestimonialApiController extends Controller
                 'testimonial' => $item->testimonial,
                 'sort_order' => $item->sort_order,
                 'featured' => $item->featured,
+                'rating' => $item->rating,
+                'property_id' => $item->property_id,
             ];
         });
 

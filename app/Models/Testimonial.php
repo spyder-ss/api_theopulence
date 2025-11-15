@@ -19,5 +19,12 @@ class Testimonial extends Model
         'featured',
         'status',
         'is_delete',
+        'property_id',
+        'rating',
     ];
+
+    public function property()
+    {
+        return $this->belongsTo(Property::class);
+    }
 }

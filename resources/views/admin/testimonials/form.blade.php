@@ -60,6 +60,46 @@
                             @enderror
                         </div>
 
+                        <!-- Property Selection -->
+                        <div>
+                            <label for="property_id" class="block text-sm font-medium text-gray-700 mb-2">
+                                Select Property (Optional)
+                            </label>
+                            <select id="property_id"
+                                    name="property_id"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors duration-200 @error('property_id') border-red-500 @enderror">
+                                <option value="">-- Select Property --</option>
+                                @foreach($properties as $property)
+                                    <option value="{{ $property->id }}" {{ old('property_id', $model_data->property_id ?? '') == $property->id ? 'selected' : '' }}>
+                                        {{ $property->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('property_id')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Rating -->
+                        <div>
+                            <label for="rating" class="block text-sm font-medium text-gray-700 mb-2">
+                                Rating (1-5 Stars) (Optional)
+                            </label>
+                            <select id="rating"
+                                    name="rating"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors duration-200 @error('rating') border-red-500 @enderror">
+                                <option value="">-- Select Rating --</option>
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <option value="{{ $i }}" {{ old('rating', $model_data->rating ?? '') == $i ? 'selected' : '' }}>
+                                        {{ $i }} Star{{ $i > 1 ? 's' : '' }}
+                                    </option>
+                                @endfor
+                            </select>
+                            @error('rating')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         {{-- <div>
                             <label for="designation" class="block text-sm font-medium text-gray-700 mb-2">
                                 Designation / Company
