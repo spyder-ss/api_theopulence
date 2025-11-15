@@ -52,6 +52,7 @@ class PropertyController extends Controller
             $rules['images.*'] = 'image|mimes:' . $ext;
             $rules['price'] = 'nullable|numeric';
             $rules['external_redirection_url'] = 'nullable|url';
+            $rules['is_featured'] = 'nullable|boolean';
             $this->validate($request, $rules);
 
             $req['title'] = $request->title ?? '';
@@ -68,6 +69,7 @@ class PropertyController extends Controller
             $req['faqs'] = $request->faqs ?? '';
             $req['price'] = $request->price ?? null;
             $req['external_redirection_url'] = $request->external_redirection_url ?? null;
+            $req['is_featured'] = $request->has('is_featured'); // Convert checkbox value to boolean
             $req['status'] = $request->status ?? 1;
 
             if (!empty($id) && is_numeric($id)) {

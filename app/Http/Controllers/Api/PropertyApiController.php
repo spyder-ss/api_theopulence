@@ -11,7 +11,7 @@ class PropertyApiController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Property::select('id', 'slug', 'title', 'location', 'guest_capacity', 'bedrooms', 'bathrooms', 'property_brief', 'price', 'external_redirection_url')
+        $query = Property::select('id', 'slug', 'title', 'location', 'guest_capacity', 'bedrooms', 'bathrooms', 'property_brief', 'price', 'external_redirection_url', 'is_featured')
             ->with('images')
             ->where('status', 1)
             ->where('is_delete', 0)
@@ -33,6 +33,7 @@ class PropertyApiController extends Controller
                 'property_brief' => $item->property_brief,
                 'price' => $item->price,
                 'external_redirection_url' => $item->external_redirection_url,
+                'is_featured' => (bool) $item->is_featured,
                 'image' => Helper::getImageUrl('property_images', $property_id, $img_path),
             ];
         });

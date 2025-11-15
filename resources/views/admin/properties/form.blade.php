@@ -174,6 +174,22 @@
                             @enderror
                         </div>
 
+                        <!-- Is Featured Checkbox -->
+                        <div class="flex items-center mt-4">
+                            <input type="checkbox"
+                                   id="is_featured"
+                                   name="is_featured"
+                                   value="1"
+                                   {{ old('is_featured', $model_data->is_featured ?? false) ? 'checked' : '' }}
+                                   class="form-checkbox h-5 w-5 text-green-600 rounded focus:ring-green-500">
+                            <label for="is_featured" class="ml-2 block text-sm font-medium text-gray-700">
+                                Mark as Featured Property
+                            </label>
+                            @error('is_featured')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                          <!-- Amenities (Multiple Selection Enabled) -->
                         <div>
                             <label for="amenities" class="block text-sm font-medium text-gray-700 mb-2">

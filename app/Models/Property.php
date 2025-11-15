@@ -25,6 +25,7 @@ class Property extends Model
         'faqs',
         'price',
         'external_redirection_url',
+        'is_featured',
     ];
 
     public function amenities()
