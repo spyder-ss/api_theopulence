@@ -50,6 +50,8 @@ class PropertyController extends Controller
             $ext = 'jpg,jpeg,png,gif';
             $rules['images'] = 'nullable|array';
             $rules['images.*'] = 'image|mimes:' . $ext;
+            $rules['price'] = 'nullable|numeric';
+            $rules['external_redirection_url'] = 'nullable|url';
             $this->validate($request, $rules);
 
             $req['title'] = $request->title ?? '';
@@ -64,6 +66,8 @@ class PropertyController extends Controller
             $req['cancellation_policy'] = $request->cancellation_policy ?? '';
             $req['other_important_information'] = $request->other_important_information ?? '';
             $req['faqs'] = $request->faqs ?? '';
+            $req['price'] = $request->price ?? null;
+            $req['external_redirection_url'] = $request->external_redirection_url ?? null;
             $req['status'] = $request->status ?? 1;
 
             if (!empty($id) && is_numeric($id)) {

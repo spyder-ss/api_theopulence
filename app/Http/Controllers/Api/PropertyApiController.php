@@ -11,7 +11,7 @@ class PropertyApiController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Property::select('id', 'slug', 'title', 'location', 'guest_capacity', 'bedrooms', 'bathrooms', 'property_brief')
+        $query = Property::select('id', 'slug', 'title', 'location', 'guest_capacity', 'bedrooms', 'bathrooms', 'property_brief', 'price', 'external_redirection_url')
             ->with('images')
             ->where('status', 1)
             ->where('is_delete', 0)
@@ -30,6 +30,8 @@ class PropertyApiController extends Controller
                 'bedrooms' => $item->bedrooms,
                 'bathrooms' => $item->bathrooms,
                 'property_brief' => $item->property_brief,
+                'price' => $item->price,
+                'external_redirection_url' => $item->external_redirection_url,
                 'image' => Helper::getImageUrl('property_images', $img_id, $img_path),
             ];
         });
@@ -61,7 +63,6 @@ class PropertyApiController extends Controller
         }
 
         $propertyData = $property->toArray();
-
         $propertyId = $property->id;
 
         // Transform images

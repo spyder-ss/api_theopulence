@@ -141,6 +141,39 @@
                             @enderror
                         </div>
 
+                        <!-- Price -->
+                        <div>
+                            <label for="price" class="block text-sm font-medium text-gray-700 mb-2">
+                                Price
+                            </label>
+                            <input type="number"
+                                   id="price"
+                                   name="price"
+                                   value="{{ old('price', $model_data->price ?? '') }}"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('price') border-red-500 @enderror"
+                                   placeholder="0.00"
+                                   step="0.01">
+                            @error('price')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- External Redirection URL -->
+                        <div>
+                            <label for="external_redirection_url" class="block text-sm font-medium text-gray-700 mb-2">
+                                External Redirection URL
+                            </label>
+                            <input type="url"
+                                   id="external_redirection_url"
+                                   name="external_redirection_url"
+                                   value="{{ old('external_redirection_url', $model_data->external_redirection_url ?? '') }}"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('external_redirection_url') border-red-500 @enderror"
+                                   placeholder="https://example.com">
+                            @error('external_redirection_url')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                          <!-- Amenities (Multiple Selection Enabled) -->
                         <div>
                             <label for="amenities" class="block text-sm font-medium text-gray-700 mb-2">
