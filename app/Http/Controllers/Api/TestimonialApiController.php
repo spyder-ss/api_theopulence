@@ -11,7 +11,8 @@ class TestimonialApiController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Testimonial::where('status', 1)
+        $query = Testimonial::with('property')
+            ->where('status', 1)
             ->where('is_delete', 0)
             ->orderBy('sort_order', 'asc')
             ->orderBy('created_at', 'desc');
@@ -20,14 +21,12 @@ class TestimonialApiController extends Controller
             return [
                 'id' => $item->id,
                 'name' => $item->name,
-                'designation' => $item->designation,
+                // 'designation' => $item->designation,
+                'description' => $item->description,
                 'image' => Helper::getImageUrl('testimonials', $item->id, $item->image),
-                'video' => $item->video,
-                'testimonial' => $item->testimonial,
                 'sort_order' => $item->sort_order,
-                'featured' => $item->featured,
                 'rating' => $item->rating,
-                'property_id' => $item->property_id,
+                'property_id' => $item->property->title ?? null,
             ];
         });
 
