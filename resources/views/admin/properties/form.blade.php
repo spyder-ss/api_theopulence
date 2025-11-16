@@ -468,10 +468,11 @@
 
         function deletePropertyImage(imageId) {
             if (confirm('Are you sure you want to delete this property image?')) {
-                let url = '{{ url(getAdminRouteName() . "/properties/ajax_property_img_delete") }}';
+                let url = '{{ url(getAdminRouteName() . "/properties/ajax_img_delete") }}';
                 let formData = new FormData();
                 formData.append('_token', '{{ csrf_token() }}');
-                formData.append('image_id', imageId);
+                formData.append('id', imageId);
+                formData.append('type', 'image');
 
                 fetch(url, {
                     method: 'POST',

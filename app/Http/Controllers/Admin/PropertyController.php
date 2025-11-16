@@ -242,24 +242,29 @@ class PropertyController extends Controller
 
     function ajax_img_delete(Request $request)
     {
-        $id = isset($request->id) ? $request->id : '';
-        $type = isset($request->type) ? $request->type : '';
+        $id = $request->id;
+        $type = $request->type;
 
         $method = $request->method();
-        $req = [];
+        $is_save = false;
 
         if ($method == "POST") {
+            if (empty($id)) {
+                return response()->json(['status' => 'error', 'message' => 'Image ID not provided.']);
+            }
+
             $exist_data = PropertyImage::find($id);
             if (empty($exist_data)) {
-                return response()->json(['status' => 'error', 'message' => $type . ' not found.']);
+                return response()->json(['status' => 'error', 'message' => 'Image not found.']);
             }
 
             if ($type == 'image') {
                 if (file_exists('storage/property_images/' . $exist_data->property_id . '/' . $exist_data->image_path)) {
                     unlink('storage/property_images/' . $exist_data->property_id . '/' . $exist_data->image_path);
                 }
-                $req['image_path'] = '';
                 $is_save = PropertyImage::where('id', $id)->delete();
+            } else {
+                return response()->json(['status' => 'error', 'message' => 'Invalid image type for deletion.']);
             }
 
             if ($is_save) {
@@ -274,10 +279,11 @@ class PropertyController extends Controller
                 $activity_params['data_after_action'] = '';
                 ActivityLog::ActivityLogCreate($activity_params);
 
-                return response()->json(['status' => 'ok', 'message' => $type . ' has been deleted..!']);
+                return response()->json(['status' => 'ok', 'message' => 'Image has been deleted..!']);
             } else {
                 return response()->json(['status' => 'error', 'message' => 'Something Went Wrong..!']);
             }
         }
+        return response()->json(['status' => 'error', 'message' => 'Invalid request method.']);
     }
 }
