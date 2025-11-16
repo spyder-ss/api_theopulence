@@ -73,7 +73,7 @@ class PropertyController extends Controller
             $req['status'] = $request->status ?? 1;
 
             if (!empty($id) && is_numeric($id)) {
-                $req['slug'] = Helper::GetSlug('properties', 'slug', '', $request->title);
+                // $req['slug'] = Helper::GetSlug('properties', 'slug', '', $request->title);
                 $is_saved = Property::where('id', $id)->update($req);
                 $action = 'edit';
                 $cms_page_id = $id;
