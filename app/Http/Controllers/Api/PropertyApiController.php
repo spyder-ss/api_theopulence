@@ -68,16 +68,20 @@ class PropertyApiController extends Controller
         $propertyId = $property->id;
 
         // Transform images
-        $propertyData['images'] = $property->images->map(function ($image) use ($propertyId) {
-            return [
-                'id' => $image->id,
-                'property_id' => $image->property_id,
-                'image' => Helper::getImageUrl('property_images', $propertyId, $image->image_path),
-                'is_main' => $image->is_main,
-                'alt_text' => $image->alt_text,
-                'sort_order' => $image->sort_order,
-            ];
-        });
+        $propertyData['images'] = $property->images()
+            ->orderByDesc('is_main')
+            ->orderBy('sort_order')
+            ->get()
+            ->map(function ($image) use ($propertyId) {
+                return [
+                    'id' => $image->id,
+                    'property_id' => $image->property_id,
+                    'image' => Helper::getImageUrl('property_images', $propertyId, $image->image_path),
+                    'is_main' => $image->is_main,
+                    'alt_text' => $image->alt_text,
+                    'sort_order' => $image->sort_order,
+                ];
+            });
 
         // Transform amenities
         $propertyData['amenities'] = $property->amenities->map(function ($amenity) {

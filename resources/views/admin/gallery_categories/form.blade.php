@@ -13,7 +13,9 @@
                         </svg>
                     </div>
                     <div>
-                        <h1 class="text-3xl font-bold text-gray-800 mb-1">{{ $module_name ?? 'Gallery Category Management' }}</h1>
+                        <h1 class="text-3xl font-bold text-gray-800 mb-1">
+                            {{ $module_name ?? 'Gallery Category Management' }}
+                        </h1>
                         <p class="text-gray-600 text-lg">Create and manage gallery categories</p>
                     </div>
                 </div>
@@ -35,10 +37,8 @@
             <form method="POST"
                 action="{{ isset($model_data) ? route('admin.gallery-categories.edit', $model_data->id) : route('admin.gallery-categories.add') }}"
                 class="space-y-8">
+
                 @csrf
-                @if (isset($model_data))
-                    @method('PUT')
-                @endif
 
                 <!-- Basic Information Section -->
                 <div>
@@ -53,21 +53,44 @@
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div>
+                            <label for="parent_id" class="block text-sm font-medium text-gray-700 mb-2">
+                                Parent Category
+                            </label>
+
+                            <select id="parent_id" name="parent_id"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('status') border-red-500 @enderror">
+                                <option value="">Select</option>
+
+                                @foreach($gallery_categories as $category)
+                                    <option value="{{ $category->id }}" {{ old('parent_id', $model_data->parent_id ?? 1) == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name ?? '' }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            @error('parent_id')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <!-- Name -->
-                        <div class="lg:col-span-2">
+                        <div>
                             <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
                                 Category Name <span class="text-red-500">*</span>
                             </label>
+
                             <input type="text" id="name" name="name" value="{{ old('name', $model_data->name ?? '') }}"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('name') border-red-500 @enderror"
                                 placeholder="Enter category name" required>
+
                             @error('name')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- Slug -->
-                        <div class="lg:col-span-2">
+                        <div>
                             <label for="slug" class="block text-sm font-medium text-gray-700 mb-2">
                                 Slug <span class="text-red-500">*</span>
                             </label>
@@ -127,26 +150,22 @@
                     <div class="space-y-4">
                         <div class="flex items-center">
                             <input type="checkbox" name="field_configuration[title]" id="title_checkbox" value="1"
-                                class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                                {{ isset($model_data) && ($model_data->field_configuration['title'] ?? false) ? 'checked' : '' }}>
+                                class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" {{ isset($model_data) && ($model_data->field_configuration['title'] ?? false) ? 'checked' : '' }}>
                             <label for="title_checkbox" class="ml-2 block text-sm text-gray-900">Title</label>
                         </div>
                         <div class="flex items-center">
                             <input type="checkbox" name="field_configuration[subtitle]" id="subtitle_checkbox" value="1"
-                                class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                                {{ isset($model_data) && ($model_data->field_configuration['subtitle'] ?? false) ? 'checked' : '' }}>
+                                class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" {{ isset($model_data) && ($model_data->field_configuration['subtitle'] ?? false) ? 'checked' : '' }}>
                             <label for="subtitle_checkbox" class="ml-2 block text-sm text-gray-900">Subtitle</label>
                         </div>
                         <div class="flex items-center">
                             <input type="checkbox" name="field_configuration[brief]" id="brief_checkbox" value="1"
-                                class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                                {{ isset($model_data) && ($model_data->field_configuration['brief'] ?? false) ? 'checked' : '' }}>
+                                class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" {{ isset($model_data) && ($model_data->field_configuration['brief'] ?? false) ? 'checked' : '' }}>
                             <label for="brief_checkbox" class="ml-2 block text-sm text-gray-900">Brief</label>
                         </div>
                         <div class="flex items-center">
-                            <input type="checkbox" name="field_configuration[description]" id="description_checkbox" value="1"
-                                class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                                {{ isset($model_data) && ($model_data->field_configuration['description'] ?? false) ? 'checked' : '' }}>
+                            <input type="checkbox" name="field_configuration[description]" id="description_checkbox"
+                                value="1" class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" {{ isset($model_data) && ($model_data->field_configuration['description'] ?? false) ? 'checked' : '' }}>
                             <label for="description_checkbox" class="ml-2 block text-sm text-gray-900">Description</label>
                         </div>
                     </div>

@@ -54,6 +54,7 @@ class GalleryCategoryController extends Controller
 
             $this->validate($request, $rules);
 
+            $req['parent_id'] = $request->parent_id ?? null;
             $req['name'] = $request->name ?? '';
             $req['sort_order'] = $request->sort_order ?? 0;
             $req['status'] = $request->status ?? 1;
@@ -91,6 +92,7 @@ class GalleryCategoryController extends Controller
             }
         }
 
+        $data['gallery_categories'] = GalleryCategory::where('status', 1)->get();
         return view('admin.gallery_categories.form', $data);
     }
 
