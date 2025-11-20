@@ -24,6 +24,7 @@ Route::group(['prefix' => 'blogs'], function () {
 Route::group(['prefix' => 'gallery'], function () {
     Route::get('/categories', [GalleryApiController::class, 'categories']);
     Route::get('/images/{slug}', [GalleryApiController::class, 'images']);
+    Route::get('/sub-categories/{slug}', [GalleryApiController::class, 'subCategories']);
 });
 
 Route::group(['prefix' => 'enquiries'], function () {
