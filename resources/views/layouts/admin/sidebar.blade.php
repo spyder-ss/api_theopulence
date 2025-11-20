@@ -74,7 +74,7 @@
     <li class="nav-item">
         <a href="#" class="nav-link" data-page="gallery">
             <i data-lucide="image"></i>
-            <span>Gallery</span>
+            <span>Banner</span>
             <i data-lucide="chevron-down" class="nav-chevron"></i>
         </a>
         <ul class="nav-submenu">
