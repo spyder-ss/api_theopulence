@@ -47,7 +47,7 @@ class GalleryCategoryController extends Controller
             $rules['field_configuration'] = 'nullable|array';
 
             if (!empty($id) && is_numeric($id)) {
-                $rules['slug'] = 'required|string|max:255|unique:gallery_categories,slug,' . $id;
+                // $rules['slug'] = 'required|string|max:255|unique:gallery_categories,slug,' . $id;
             } else {
                 $req['slug'] = Helper::GetSlug($this->table_name, 'slug', '', $request->name);
             }
@@ -63,7 +63,7 @@ class GalleryCategoryController extends Controller
             $req['brief'] = $request->brief ?? null;
 
             if (!empty($id) && is_numeric($id)) {
-                $req['slug'] = Helper::GetSlug($this->table_name, 'slug', $id, $request->name);
+                // $req['slug'] = Helper::GetSlug($this->table_name, 'slug', $id, $request->name);
                 $is_saved = GalleryCategory::where('id', $id)->update($req);
                 $action = 'edit';
                 $category_id = $id;

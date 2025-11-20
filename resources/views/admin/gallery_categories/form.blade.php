@@ -108,9 +108,9 @@
                                     Slug <span class="text-red-500">*</span>
                                 </label>
 
-                                <input type="text" id="slug" name="slug" value="{{ old('slug', $slug) }}"
+                                <input type="text" value="{{ old('slug', $slug) }}"
                                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('slug') border-red-500 @enderror"
-                                    placeholder="Enter category slug" required>
+                                    placeholder="Enter category slug" readonly>
 
                                 @error('slug')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
