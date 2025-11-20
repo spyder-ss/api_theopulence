@@ -42,14 +42,14 @@ class GalleryCategoryController extends Controller
 
         if ($request->method() == 'post' || $request->method() == 'POST') {
             $rules['name'] = 'required|string|max:255';
-            $rules['sort_order'] = 'required|integer';
+            // $rules['sort_order'] = 'required|integer';
             $rules['status'] = 'required|boolean';
             $rules['field_configuration'] = 'nullable|array';
 
             if (!empty($id) && is_numeric($id)) {
                 $rules['slug'] = 'required|string|max:255|unique:gallery_categories,slug,' . $id;
             } else {
-                $rules['slug'] = 'required|string|max:255|unique:gallery_categories';
+                $req['slug'] = Helper::GetSlug($this->table_name, 'slug', '', $request->name);
             }
 
             $this->validate($request, $rules);
@@ -59,6 +59,8 @@ class GalleryCategoryController extends Controller
             $req['sort_order'] = $request->sort_order ?? 0;
             $req['status'] = $request->status ?? 1;
             $req['field_configuration'] = $request->field_configuration ?? null;
+            $req['title'] = $request->title ?? null;
+            $req['brief'] = $request->brief ?? null;
 
             if (!empty($id) && is_numeric($id)) {
                 $req['slug'] = Helper::GetSlug($this->table_name, 'slug', $id, $request->name);

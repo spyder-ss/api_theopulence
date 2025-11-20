@@ -14,6 +14,8 @@ class GalleryCategory extends Model
         'name',
         'slug',
         'field_configuration',
+        'title',
+        'brief',
         'status',
         'sort_order',
     ];
