@@ -19,6 +19,8 @@ use App\Http\Controllers\Admin\GalleryCategoryController;
 use App\Http\Controllers\Admin\GalleryImageController;
 use App\Http\Controllers\Admin\PropertyController;
 use App\Http\Controllers\Admin\AmenityController;
+use App\Http\Controllers\Admin\CommonImageCategoryController;
+use App\Http\Controllers\Admin\CommonImageController;
 use Illuminate\Support\Facades\Route;
 
 Route::match(['get', 'post'], '/', [AuthController::class, 'login'])->name('login');
@@ -150,6 +152,21 @@ Route::group(['prefix' => getAdminRouteName(), 'as' => getAdminRouteName() . '.'
         Route::match(['get', 'post'], 'edit/{id}', [PropertyController::class, 'add'])->name('edit');
         Route::match(['post'], 'delete/{id}', [PropertyController::class, 'delete'])->name('delete');
         Route::match(['post'], 'ajax_img_delete', [PropertyController::class, 'ajax_img_delete'])->name('delete');
+    });
+
+    Route::group(['prefix' => 'common-image-categories', 'as' => 'common-image-categories.'], function () {
+        Route::get('/', [CommonImageCategoryController::class, 'index'])->name('index');
+        Route::match(['get', 'post'], 'add', [CommonImageCategoryController::class, 'add'])->name('add');
+        Route::match(['get', 'post'], 'edit/{id}', [CommonImageCategoryController::class, 'add'])->name('edit');
+        Route::match(['post'], 'delete/{id}', [CommonImageCategoryController::class, 'delete'])->name('delete');
+    });
+
+    Route::group(['prefix' => 'common-images', 'as' => 'common-images.'], function () {
+        Route::get('/', [CommonImageController::class, 'index'])->name('index');
+        Route::match(['get', 'post'], 'add', [CommonImageController::class, 'add'])->name('add');
+        Route::match(['get', 'post'], 'edit/{id}', [CommonImageController::class, 'add'])->name('edit');
+        Route::match(['post'], 'delete/{id}', [CommonImageController::class, 'delete'])->name('delete');
+        Route::match(['post'], 'ajax_img_delete', [CommonImageController::class, 'ajax_img_delete'])->name('ajax_img_delete');
     });
 
     Route::match(['get'], 'logout', [App\Http\Controllers\Admin\AuthController::class, 'logout'])->name('logout');
