@@ -20,8 +20,10 @@ class CommonImageController extends Controller
     public function index()
     {
         $images = CommonImage::with('category')->latest()->get();
+        $commonImageCategories = CommonImageCategory::where('status', 1)->get(); // Fetch categories
         $data['model_data_lists'] = $images;
         $data['module_name'] = $this->module_name;
+        $data['commonImageCategories'] = $commonImageCategories; // Pass categories to the view
         return view('admin.common_images.index', $data);
     }
 
@@ -62,7 +64,7 @@ class CommonImageController extends Controller
             $this->validate($request, $rules);
 
             $req_data = $request->except('images', '_token');
-            
+
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
                     $path = 'common_images/';
