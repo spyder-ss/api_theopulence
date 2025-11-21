@@ -50,6 +50,7 @@ class CommonImageController extends Controller
                 'common_image_category_id' => 'required|exists:common_image_categories,id',
                 'alt_text' => 'nullable|string|max:255',
                 'sort_order' => 'required|integer',
+                'status' => 'required|boolean',
             ];
 
             $ext = 'jpg,jpeg,png,gif,svg';

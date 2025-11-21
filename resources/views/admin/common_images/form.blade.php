@@ -1,5 +1,9 @@
 @extends('layouts.admin.main')
 @section('content')
+    @php
+        $status = isset($model_data->status) ? $model_data->status : 1;
+    @endphp
+
     <div class="flex-1 p-6 overflow-auto bg-gray-50">
         <div class="mb-8">
             <div class="flex items-center justify-between">
@@ -99,6 +103,22 @@
                             @enderror
                         </div>
 
+                        <div>
+                            <label for="status" class="block text-sm font-medium text-gray-700 mb-2">
+                                Status <span class="text-red-500">*</span>
+                            </label>
+
+                            <select name="status" id="status"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('status') border-red-500 @enderror">
+                                <option value="1" {{ old('status', $status) == 1 ? 'selected' : '' }}>Active</option>
+                                <option value="0" {{ old('status', $status) == 0 ? 'selected' : '' }}>Inactive</option>
+                            </select>
+
+                            @error('status')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <div class="lg:col-span-3">
                             <label for="images" class="block text-sm font-medium text-gray-700 mb-2">
                                 Image(s)
@@ -114,7 +134,7 @@
 
                             @if(isset($model_data) && $model_data->image)
                                 <div class="mt-4 flex items-center space-x-2">
-                                    <img src="{{ asset('storage/common_images/' . $model_data->id . '/' . $model_data->image) }}"
+                                    <img src="{{ asset('storage/common_images/' . $model_data->common_image_category_id . '/' . $model_data->image) }}"
                                         alt="{{ $model_data->alt_text }}" class="w-20 h-20 object-cover rounded">
                                     <span class="text-sm text-gray-500">Current image</span>
                                 </div>
