@@ -5,10 +5,10 @@
         <div class="mb-8">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
-                    <div class="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg">
+                    <div class="p-3 bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                     </div>
                     <div>
@@ -34,13 +34,11 @@
                 action="{{ isset($model_data) ? route('admin.gallery-images.add', ['id' => $model_data->id]) : route('admin.gallery-images.add') }}"
                 enctype="multipart/form-data" class="space-y-8">
                 @csrf
-                @if (isset($model_data))
-                @endif
 
                 <div>
                     <div class="flex items-center space-x-3 mb-6">
-                        <div class="p-2 bg-blue-100 rounded-lg">
-                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="p-2 bg-green-100 rounded-lg">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
@@ -54,7 +52,7 @@
                                 Category <span class="text-red-500">*</span>
                             </label>
                             <select name="gallery_category_id" id="gallery_category_id"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('gallery_category_id') border-red-500 @enderror"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('gallery_category_id') border-red-500 @enderror"
                                 required>
                                 <option value="">Select Category</option>
                                 @foreach ($categories as $category)
@@ -74,7 +72,7 @@
                                 Title
                             </label>
                             <input type="text" name="title" id="title" value="{{ old('title', $model_data->title ?? '') }}"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('title') border-red-500 @enderror"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('title') border-red-500 @enderror"
                                 placeholder="Enter title">
                             @error('title')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -86,7 +84,7 @@
                                 Subtitle
                             </label>
                             <input type="text" name="subtitle" id="subtitle" value="{{ old('subtitle', $model_data->subtitle ?? '') }}"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('subtitle') border-red-500 @enderror"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('subtitle') border-red-500 @enderror"
                                 placeholder="Enter subtitle">
                             @error('subtitle')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -98,7 +96,7 @@
                                 Brief Description
                             </label>
                             <textarea name="brief" id="brief"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('brief') border-red-500 @enderror"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('brief') border-red-500 @enderror"
                                 placeholder="Short brief about the image">{{ old('brief', $model_data->brief ?? '') }}</textarea>
                             @error('brief')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -110,7 +108,7 @@
                                 Description
                             </label>
                             <textarea name="description" id="description"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('description') border-red-500 @enderror"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('description') border-red-500 @enderror"
                                 placeholder="Detailed description about the image">{{ old('description', $model_data->description ?? '') }}</textarea>
                             @error('description')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -123,7 +121,7 @@
                             </label>
                             <input type="number" name="sort_order" id="sort_order"
                                 value="{{ old('sort_order', $model_data->sort_order ?? 0) }}"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('sort_order') border-red-500 @enderror"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('sort_order') border-red-500 @enderror"
                                 placeholder="0">
                             @error('sort_order')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -135,7 +133,7 @@
                                 Status <span class="text-red-500">*</span>
                             </label>
                             <select name="status" id="status"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('status') border-red-500 @enderror">
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('status') border-red-500 @enderror">
                                 <option value="1" {{ old('status', $model_data->status ?? 1) == '1' ? 'selected' : '' }}>
                                     Active</option>
                                 <option value="0" {{ old('status', $model_data->status ?? 1) == '0' ? 'selected' : '' }}>
@@ -150,8 +148,8 @@
 
                 <div>
                     <div class="flex items-center space-x-3 mb-6">
-                        <div class="p-2 bg-purple-100 rounded-lg">
-                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="p-2 bg-green-100 rounded-lg">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
@@ -165,7 +163,7 @@
                                 Image <span class="text-red-500">*</span>
                             </label>
                             <input type="file" id="image" name="image" accept="image/*"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('image') border-red-500 @enderror">
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('image') border-red-500 @enderror">
                             @error('image')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -190,11 +188,11 @@
 
                 <div class="flex justify-end space-x-4 pt-8 border-t border-gray-200">
                     <a href="{{ url(getAdminRouteName() . '/gallery_images') }}"
-                        class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                        class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
                         Cancel
                     </a>
                     <button type="submit"
-                        class="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg font-medium shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
+                        class="px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg font-medium shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200">
                         {{ isset($model_data) ? 'Update Image' : 'Create Image' }}
                     </button>
                 </div>
@@ -207,7 +205,7 @@
 <script>
     function deleteImage(id, type) {
         if (confirm('Are you sure you want to delete this image?')) {
-            fetch('{{ route('admin.gallery-images.ajax_img_delete') }}', {
+            fetch('{{ url(getAdminRouteName() . "/gallery_images/ajax_img_delete") }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

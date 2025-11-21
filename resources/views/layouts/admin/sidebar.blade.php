@@ -95,6 +95,29 @@
         </ul>
     </li>
     <li class="nav-item">
+        <a href="#" class="nav-link" data-page="common_images">
+            <i data-lucide="image"></i>
+            <span>Gallery</span>
+            <i data-lucide="chevron-down" class="nav-chevron"></i>
+        </a>
+        <ul class="nav-submenu">
+            <li>
+                <a href="{{ url(getAdminRouteName() . '/common-image-categories') }}"
+                    class="nav-link @if(getCurrentPageUrl() == '/' . getAdminRouteName() . '/common-image-categories') active @endif">
+                    <i data-lucide="folder"></i>
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ url(getAdminRouteName() . '/common-images') }}"
+                    class="nav-link @if(getCurrentPageUrl() == '/' . getAdminRouteName() . '/common-images') active @endif">
+                    <i data-lucide="image"></i>
+                    <span>Images</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li class="nav-item">
         <a href="{{ url(getAdminRouteName() . '/enquiries') }}" class="nav-link"
             class="nav-link @if(getCurrentPageUrl() == '/' . getAdminRouteName() . '/enquiries') active @endif">
             <i data-lucide="message-square"></i>
