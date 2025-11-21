@@ -68,7 +68,7 @@ class CommonImageController extends Controller
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
                     $path = 'common_images/';
-                    $uploaded_data = Helper::UploadImage($image, $path, 768, 768, 336, 336, true, '', 0);
+                    $uploaded_data = Helper::UploadImage($image, $path, 768, 768, 336, 336, true, '', $request->common_image_category_id);
                     if ($uploaded_data['success']) {
                         $req_data['image'] = $uploaded_data['file_name'];
                         $is_saved = CommonImage::create($req_data);
@@ -82,7 +82,9 @@ class CommonImageController extends Controller
                 if ($request->hasFile('images')) {
                     $image = $request->file('images')[0];
                     $path = 'common_images/';
-                    $uploaded_data = Helper::UploadImage($image, $path, 768, 768, 336, 336, true, '', $id);
+                    $commonImage = CommonImage::find($id);
+                    $category_id = $commonImage ? $commonImage->common_image_category_id : '';
+                    $uploaded_data = Helper::UploadImage($image, $path, 768, 768, 336, 336, true, '', $category_id);
                     if ($uploaded_data['success']) {
                         $req_data['image'] = $uploaded_data['file_name'];
                         CommonImage::where('id', $id)->update(['image' => $req_data['image']]);
@@ -91,8 +93,6 @@ class CommonImageController extends Controller
                 $action = 'edit';
             }
 
-            $activity_params['added_by'] = Auth::user()->id;
-            $activity_params['client_id'] = '';
             $activity_params['module'] = $this->module_name;
             $activity_params['action'] = $action;
             $activity_params['table_name'] = $this->table_name;
@@ -122,7 +122,8 @@ class CommonImageController extends Controller
 
             // Delete image from storage
             if ($exist_data->image) {
-                Storage::delete('public/common_images/' . $exist_data->id . '/' . $exist_data->image);
+                $category_id = $exist_data->common_image_category_id;
+                Storage::delete('public/common_images/' . $category_id . '/' . $exist_data->image);
             }
 
             $is_delete = $exist_data->delete();
@@ -164,7 +165,8 @@ class CommonImageController extends Controller
 
             if ($type == 'image') {
                 if ($exist_data->image) {
-                    Storage::delete('public/common_images/' . $exist_data->id . '/' . $exist_data->image);
+                    $category_id = $exist_data->common_image_category_id;
+                    Storage::delete('public/common_images/' . $category_id . '/' . $exist_data->image);
                 }
                 $req['image'] = '';
             }

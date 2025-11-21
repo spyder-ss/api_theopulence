@@ -91,7 +91,7 @@
                                         <div class="flex items-center">
                                             <div class="flex-shrink-0 h-10 w-10">
                                                 @if($image->image)
-                                                    <img class="h-10 w-10 rounded-full object-cover" src="{{ asset('storage/common_images/' . $image->id . '/' . $image->image) }}" alt="{{ $image->alt_text }}">
+                                                    <img class="h-10 w-10 rounded-full object-cover" src="{{ asset('storage/common_images/' . $image->common_image_category_id . '/' . $image->image) }}" alt="{{ $image->alt_text }}">
                                                 @else
                                                     <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-sm">N/A</div>
                                                 @endif

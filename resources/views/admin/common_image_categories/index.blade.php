@@ -115,7 +115,7 @@
 
                                             <form id="deleteForm{{ $category->id }}" method="POST" action="{{ route('admin.common-image-categories.delete', $category->id) }}" class="inline">
                                                 @csrf
-                                                @method('POST')
+                                                @method('DELETE')
                                                 <button type="button"
                                                         onclick="confirmDelete('{{ route('admin.common-image-categories.delete', $category->id) }}', '{{ $category->name }}')"
                                                         class="p-2 text-red-600 hover:text-red-900 hover:bg-red-50 rounded-lg transition-colors duration-200"

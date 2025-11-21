@@ -127,7 +127,7 @@ Route::group(['prefix' => getAdminRouteName(), 'as' => getAdminRouteName() . '.'
         Route::get('/', [GalleryCategoryController::class, 'index'])->name('index');
         Route::match(['get', 'post'], 'add', [GalleryCategoryController::class, 'add'])->name('add');
         Route::match(['get', 'post'], 'edit/{id}', [GalleryCategoryController::class, 'add'])->name('edit');
-        Route::match(['post'], 'delete/{id}', [GalleryCategoryController::class, 'delete'])->name('delete');
+        Route::match(['post', 'delete'], 'delete/{id}', [GalleryCategoryController::class, 'delete'])->name('delete');
     });
 
     Route::group(['prefix' => 'gallery-images', 'as' => 'gallery-images.'], function () {
@@ -158,7 +158,7 @@ Route::group(['prefix' => getAdminRouteName(), 'as' => getAdminRouteName() . '.'
         Route::get('/', [CommonImageCategoryController::class, 'index'])->name('index');
         Route::match(['get', 'post'], 'add', [CommonImageCategoryController::class, 'add'])->name('add');
         Route::match(['get', 'post'], 'edit/{id}', [CommonImageCategoryController::class, 'add'])->name('edit');
-        Route::match(['post'], 'delete/{id}', [CommonImageCategoryController::class, 'delete'])->name('delete');
+        Route::match(['post', 'delete'], 'delete/{id}', [CommonImageCategoryController::class, 'delete'])->name('delete');
     });
 
     Route::group(['prefix' => 'common-images', 'as' => 'common-images.'], function () {

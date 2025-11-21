@@ -6,6 +6,7 @@ use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
 use App\Models\CommonImageCategory;
+use App\Models\CommonImage; // Added this import
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -85,34 +86,38 @@ class CommonImageCategoryController extends Controller
     function delete(Request $request)
     {
         $id = $request->id;
-        $method = $request->method();
 
-        if ($method == "POST") {
-            $exist_data = CommonImageCategory::find($id);
-            if (empty($exist_data)) {
-                return redirect()->back()->with('alert-danger', 'Invalid ' . $this->module_name . '.');
-            }
+        $exist_data = CommonImageCategory::find($id);
+        if (empty($exist_data)) {
+            return redirect()->back()->with('alert-danger', 'Invalid ' . $this->module_name . '.');
+        }
 
-            $is_delete = CommonImageCategory::where('id', $id)->delete();
+        $has_images = CommonImage::where('common_image_category_id', $id)->exists();
 
-            if ($is_delete) {
-                $activity_params['added_by'] = Auth::user()->id;
-                $activity_params['client_id'] = '';
-                $activity_params['module'] = $this->module_name;
-                $activity_params['action'] = 'delete';
-                $activity_params['table_name'] = $this->table_name;
-                $activity_params['description'] = 'delete : ' . $exist_data->name;
-                $activity_params['ip'] = $request->ip();
-                $activity_params['user_agent'] = UserDeviceDetails();
-                $activity_params['data_after_action'] = '';
-                ActivityLog::ActivityLogCreate($activity_params);
+        if ($has_images) {
+            Session::flash('error', 'Cannot delete ' . $this->module_name . ' as it has associated common images. Please delete the images first.');
+            return redirect()->back();
+        }
 
-                Session::flash('success', $this->module_name . ' Has Been Deleted..!');
-                return redirect()->back();
-            } else {
-                Session::flash('error', 'Something Went Wrong..!');
-                return redirect()->back();
-            }
+        $is_delete = CommonImageCategory::where('id', $id)->delete();
+
+        if ($is_delete) {
+            $activity_params['added_by'] = Auth::user()->id;
+            $activity_params['client_id'] = '';
+            $activity_params['module'] = $this->module_name;
+            $activity_params['action'] = 'delete';
+            $activity_params['table_name'] = $this->table_name;
+            $activity_params['description'] = 'delete : ' . $exist_data->name;
+            $activity_params['ip'] = $request->ip();
+            $activity_params['user_agent'] = UserDeviceDetails();
+            $activity_params['data_after_action'] = '';
+            ActivityLog::ActivityLogCreate($activity_params);
+
+            Session::flash('success', $this->module_name . ' Has Been Deleted..!');
+            return redirect()->back();
+        } else {
+            Session::flash('error', 'Something Went Wrong..!');
+            return redirect()->back();
         }
     }
 }
