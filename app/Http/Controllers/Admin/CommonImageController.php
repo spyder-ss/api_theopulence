@@ -56,10 +56,10 @@ class CommonImageController extends Controller
             $ext = 'jpg,jpeg,png,gif,svg';
             if (empty($id)) {
                 $rules['images'] = 'required|array';
-                $rules['images.*'] = 'image|mimes:' . $ext . '|max:2048';
+                $rules['images.*'] = 'image|mimes:' . $ext . '|max:10240'; // Increased to 10MB
             } else {
                 $rules['images'] = 'nullable|array';
-                $rules['images.*'] = 'image|mimes:' . $ext . '|max:2048';
+                $rules['images.*'] = 'image|mimes:' . $ext . '|max:10240'; // Increased to 10MB
             }
 
             $this->validate($request, $rules);
