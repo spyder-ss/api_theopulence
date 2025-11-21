@@ -73,6 +73,13 @@ class CommonImageController extends Controller
                     if ($uploaded_data['success']) {
                         $req_data['image'] = $uploaded_data['file_name'];
                         $is_saved = CommonImage::create($req_data);
+
+                        // Check if this is the first image in its category
+                        $image_count = CommonImage::where('common_image_category_id', $req_data['common_image_category_id'])->count();
+                        if ($image_count === 1) {
+                            $is_saved->is_main_image = true;
+                            $is_saved->save();
+                        }
                     }
                 }
                 $action = 'add';
@@ -148,6 +155,44 @@ class CommonImageController extends Controller
                 return redirect()->back();
             }
         }
+    }
+
+    public function updateField(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:common_images,id',
+            'field' => 'required|in:title,subtitle,is_main_image',
+            'value' => 'nullable',
+        ]);
+
+        $image = CommonImage::find($request->id);
+        if (!$image) {
+            return response()->json(['status' => 'error', 'message' => 'Image not found.']);
+        }
+
+        if ($request->field === 'is_main_image') {
+            // If setting this image as main, unset others in the same category
+            if ((bool) $request->value) {
+                CommonImage::where('common_image_category_id', $image->common_image_category_id)
+                    ->where('id', '!=', $image->id)
+                    ->update(['is_main_image' => false]);
+            }
+            $image->{$request->field} = (bool) $request->value;
+        } else {
+            $image->{$request->field} = $request->value;
+        }
+        $image->save();
+
+        $activity_params['module'] = $this->module_name;
+        $activity_params['action'] = 'update field';
+        $activity_params['table_name'] = $this->table_name;
+        $activity_params['description'] = 'Updated ' . $request->field . ' for image ID: ' . $image->id;
+        $activity_params['ip'] = $request->ip();
+        $activity_params['user_agent'] = UserDeviceDetails();
+        $activity_params['data_after_action'] = json_encode([$request->field => $request->value]);
+        ActivityLog::ActivityLogCreate($activity_params);
+
+        return response()->json(['status' => 'ok', 'message' => 'Field updated successfully.']);
     }
 
     function ajax_img_delete(Request $request)

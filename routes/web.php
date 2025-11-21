@@ -175,6 +175,7 @@ Route::group(['prefix' => getAdminRouteName(), 'as' => getAdminRouteName() . '.'
         Route::match(['get', 'post'], 'edit/{id}', [CommonImageController::class, 'add'])->name('edit');
         Route::match(['post'], 'delete/{id}', [CommonImageController::class, 'delete'])->name('delete');
         Route::match(['post'], 'ajax_img_delete', [CommonImageController::class, 'ajax_img_delete'])->name('ajax_img_delete');
+        Route::match(['post'], 'updateField', [CommonImageController::class, 'updateField'])->name('updateField');
     });
 
     Route::match(['get'], 'logout', [App\Http\Controllers\Admin\AuthController::class, 'logout'])->name('logout');

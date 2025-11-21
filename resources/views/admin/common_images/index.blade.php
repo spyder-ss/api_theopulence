@@ -69,11 +69,20 @@
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 Image Details
                             </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Title
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Subtitle
+                            </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">
                                 Category
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">
                                 Sort Order
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">
+                                Main Image
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">
                                 Status
@@ -97,18 +106,27 @@
                                                 @endif
                                             </div>
                                             <div class="ml-4">
-                                                <div class="text-sm font-medium text-gray-900">{{ $image->alt_text }}</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap hidden lg:table-cell">
-                                        <div class="text-sm text-gray-900">{{ $image->category->name ?? 'N/A' }}</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap hidden lg:table-cell">
-                                        <div class="text-sm text-gray-900">{{ $image->sort_order }}</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap hidden lg:table-cell">
-                                        @if($image->status == 1)
+                                        <div class="text-sm font-medium text-gray-900">{{ $image->alt_text }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <input type="text" value="{{ $image->title }}" class="w-full border border-gray-300 rounded-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" onblur="updateField({{ $image->id }}, 'title', this.value)">
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <input type="text" value="{{ $image->subtitle }}" class="w-full border border-gray-300 rounded-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" onblur="updateField({{ $image->id }}, 'subtitle', this.value)">
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap hidden lg:table-cell">
+                                <div class="text-sm text-gray-900">{{ $image->category->name ?? 'N/A' }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap hidden lg:table-cell">
+                                <div class="text-sm text-gray-900">{{ $image->sort_order }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap hidden lg:table-cell">
+                                <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600" {{ $image->is_main_image ? 'checked' : '' }} onchange="updateField({{ $image->id }}, 'is_main_image', this.checked)">
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap hidden lg:table-cell">
+                                @if($image->status == 1)
                                             <span class="inline-flex px-3 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
                                                 <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
@@ -228,6 +246,41 @@
         document.getElementById('categoryFilter').addEventListener('change', filterImages);
         document.getElementById('statusFilter').addEventListener('change', filterImages);
         document.getElementById('clearFilters').addEventListener('click', clearFilters);
+
+        function updateField(id, field, value) {
+            fetch('{{ route('admin.common-images.updateField') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ id, field, value })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'ok') {
+                    // If is_main_image was updated, uncheck other checkboxes in the same category
+                    if (field === 'is_main_image' && value) {
+                        document.querySelectorAll(`input[type="checkbox"][onchange*="is_main_image"]`).forEach(checkbox => {
+                            const otherId = checkbox.getAttribute('onchange').match(/updateField\((\d+),/)[1];
+                            if (otherId !== id.toString()) {
+                                checkbox.checked = false;
+                            }
+                        });
+                        // Re-check the current one if it was set to true, as the database update might have affected others
+                        document.querySelector(`input[type="checkbox"][onchange*="is_main_image"][onchange*="${id}"]`).checked = true;
+                    }
+                    console.log(data.message);
+                } else {
+                    console.error(data.message);
+                    // Revert UI if update fails
+                    if (field === 'is_main_image') {
+                        document.querySelector(`input[type="checkbox"][onchange*="is_main_image"][onchange*="${id}"]`).checked = !value;
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
 
         function filterImages() {
             const searchTerm = document.getElementById('imageSearch').value.toLowerCase();
