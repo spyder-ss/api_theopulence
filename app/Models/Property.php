@@ -23,6 +23,9 @@ class Property extends Model
         'cancellation_policy',
         'other_important_information',
         'faqs',
+        'price',
+        'external_redirection_url',
+        'is_featured',
     ];
 
     public function amenities()

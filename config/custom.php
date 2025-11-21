@@ -10,4 +10,5 @@ return array(
     'paginate_search_arr' => [15, 25, 50, 75],
 
     'sort_by_search_arr' => ['A-Z', 'Z-A', 'Low-High', 'High-Low'],
+    'ADMIN_ROUTE_NAME' => 'admin',
 );

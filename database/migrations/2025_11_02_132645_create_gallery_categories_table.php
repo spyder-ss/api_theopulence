@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('gallery_categories', function (Blueprint $table) {
             $table->id();
+            $table->integer('parent_id');
             $table->string('name');
             $table->string('slug')->unique();
             $table->boolean('status')->default(1);

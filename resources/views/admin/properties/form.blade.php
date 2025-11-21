@@ -141,6 +141,55 @@
                             @enderror
                         </div>
 
+                        <!-- Price -->
+                        <div>
+                            <label for="price" class="block text-sm font-medium text-gray-700 mb-2">
+                                Price
+                            </label>
+                            <input type="number"
+                                   id="price"
+                                   name="price"
+                                   value="{{ old('price', $model_data->price ?? '') }}"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('price') border-red-500 @enderror"
+                                   placeholder="0.00"
+                                   step="0.01">
+                            @error('price')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- External Redirection URL -->
+                        <div>
+                            <label for="external_redirection_url" class="block text-sm font-medium text-gray-700 mb-2">
+                                External Redirection URL
+                            </label>
+                            <input type="url"
+                                   id="external_redirection_url"
+                                   name="external_redirection_url"
+                                   value="{{ old('external_redirection_url', $model_data->external_redirection_url ?? '') }}"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('external_redirection_url') border-red-500 @enderror"
+                                   placeholder="https://example.com">
+                            @error('external_redirection_url')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Is Featured Checkbox -->
+                        <div class="flex items-center mt-4">
+                            <input type="checkbox"
+                                   id="is_featured"
+                                   name="is_featured"
+                                   value="1"
+                                   {{ old('is_featured', $model_data->is_featured ?? false) ? 'checked' : '' }}
+                                   class="form-checkbox h-5 w-5 text-green-600 rounded focus:ring-green-500">
+                            <label for="is_featured" class="ml-2 block text-sm font-medium text-gray-700">
+                                Mark as Featured Property
+                            </label>
+                            @error('is_featured')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                          <!-- Amenities (Multiple Selection Enabled) -->
                         <div>
                             <label for="amenities" class="block text-sm font-medium text-gray-700 mb-2">
@@ -315,8 +364,8 @@
                 <!-- SEO Section -->
                 <div>
                     <div class="flex items-center space-x-3 mb-6">
-                        <div class="p-2 bg-blue-100 rounded-lg">
-                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="p-2 bg-green-100 rounded-lg">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/>
                             </svg>
                         </div>
@@ -419,10 +468,11 @@
 
         function deletePropertyImage(imageId) {
             if (confirm('Are you sure you want to delete this property image?')) {
-                let url = '{{ url(getAdminRouteName() . "/properties/ajax_property_img_delete") }}';
+                let url = '{{ url(getAdminRouteName() . "/properties/ajax_img_delete") }}';
                 let formData = new FormData();
                 formData.append('_token', '{{ csrf_token() }}');
-                formData.append('image_id', imageId);
+                formData.append('id', imageId);
+                formData.append('type', 'image');
 
                 fetch(url, {
                     method: 'POST',

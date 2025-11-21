@@ -5,7 +5,7 @@
         <div class="mb-8">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
-                    <div class="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg">
+                    <div class="p-3 bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -39,8 +39,8 @@
                 <!-- Basic Information Section -->
                 <div>
                     <div class="flex items-center space-x-3 mb-6">
-                        <div class="p-2 bg-blue-100 rounded-lg">
-                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="p-2 bg-green-100 rounded-lg">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
@@ -55,7 +55,7 @@
                                 Page Name <span class="text-red-500">*</span>
                             </label>
                             <input type="text" id="name" name="name" value="{{ old('name', $model_data->name ?? '') }}"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('name') border-red-500 @enderror"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('name') border-red-500 @enderror"
                                 placeholder="Enter page name" required>
                             @error('name')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -68,7 +68,7 @@
                                 Parent Page
                             </label>
                             <select id="parent_id" name="parent_id"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('parent_id') border-red-500 @enderror">
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('parent_id') border-red-500 @enderror">
                                 <option value="0">Choose parent page (optional)</option>
                                 @if(isset($model_data) && $model_data->parent_id == 0)
                                     <option value="{{ $model_data->parent_id }}" selected>Main Page</option>
@@ -85,7 +85,7 @@
                                 Template
                             </label>
                             <select id="template" name="template"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('template') border-red-500 @enderror">
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('template') border-red-500 @enderror">
                                 <option value="">Choose template</option>
                                 @if(isset($files) && $files)
                                     @foreach($files as $file)
@@ -105,7 +105,7 @@
                             </label>
                             <input type="number" id="sort_order" name="sort_order"
                                 value="{{ old('sort_order', $model_data->sort_order ?? 0) }}"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('sort_order') border-red-500 @enderror"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('sort_order') border-red-500 @enderror"
                                 placeholder="0">
                             @error('sort_order')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -118,7 +118,7 @@
                                 Status <span class="text-red-500">*</span>
                             </label>
                             <select id="status" name="status"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('status') border-red-500 @enderror">
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('status') border-red-500 @enderror">
                                 <option value="1" {{ old('status', $model_data->status ?? 1) == '1' ? 'selected' : '' }}>
                                     Active</option>
                                 <option value="0" {{ old('status', $model_data->status ?? 1) == '0' ? 'selected' : '' }}>
@@ -150,7 +150,7 @@
                                 Brief Description
                             </label>
                             <textarea id="brief" name="brief"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 ckeditor @error('brief') border-red-500 @enderror"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 ckeditor @error('brief') border-red-500 @enderror"
                                 placeholder="Short brief about the page">{{ old('brief', $model_data->brief ?? '') }}</textarea>
                             @error('brief')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -175,8 +175,8 @@
                 <!-- Media Section -->
                 <div>
                     <div class="flex items-center space-x-3 mb-6">
-                        <div class="p-2 bg-purple-100 rounded-lg">
-                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="p-2 bg-green-100 rounded-lg">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
@@ -191,7 +191,7 @@
                                 Page Image (Optional)
                             </label>
                             <input type="file" id="image" name="image" accept="image/*"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('image') border-red-500 @enderror">
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('image') border-red-500 @enderror">
                             @error('image')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -218,7 +218,7 @@
                                 Banner Image (Optional)
                             </label>
                             <input type="file" id="banner_image" name="banner_image" accept="image/*"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('banner_image') border-red-500 @enderror">
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('banner_image') border-red-500 @enderror">
                             @error('banner_image')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -245,7 +245,7 @@
                                 Mobile Banner Image (Optional)
                             </label>
                             <input type="file" id="mobile_banner_image" name="mobile_banner_image" accept="image/*"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('mobile_banner_image') border-red-500 @enderror">
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('mobile_banner_image') border-red-500 @enderror">
                             @error('mobile_banner_image')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -271,8 +271,8 @@
                 <!-- Links & Navigation -->
                 <div>
                     <div class="flex items-center space-x-3 mb-6">
-                        <div class="p-2 bg-orange-100 rounded-lg">
-                            <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="p-2 bg-green-100 rounded-lg">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                             </svg>
@@ -287,7 +287,7 @@
                                 External Link
                             </label>
                             <input type="url" id="link" name="link" value="{{ old('link', $model_data->link ?? '') }}"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('link') border-red-500 @enderror"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('link') border-red-500 @enderror"
                                 placeholder="https://example.com">
                             @error('link')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -301,7 +301,7 @@
                             </label>
                             <input type="url" id="video_link" name="video_link"
                                 value="{{ old('video_link', $model_data->video_link ?? '') }}"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('video_link') border-red-500 @enderror"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('video_link') border-red-500 @enderror"
                                 placeholder="https://youtube.com/watch?v=...">
                             @error('video_link')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -314,7 +314,7 @@
                                 Page Title
                             </label>
                             <input type="text" id="title" name="title" value="{{ old('title', $model_data->title ?? '') }}"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('title') border-red-500 @enderror"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('title') border-red-500 @enderror"
                                 placeholder="SEO friendly title">
                             @error('title')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -328,7 +328,7 @@
                             </label>
                             <input type="text" id="heading" name="heading"
                                 value="{{ old('heading', $model_data->heading ?? '') }}"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('heading') border-red-500 @enderror"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('heading') border-red-500 @enderror"
                                 placeholder="Display heading">
                             @error('heading')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -342,7 +342,7 @@
                             </label>
                             <input type="text" id="sub_heading" name="sub_heading"
                                 value="{{ old('sub_heading', $model_data->sub_heading ?? '') }}"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('sub_heading') border-red-500 @enderror"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('sub_heading') border-red-500 @enderror"
                                 placeholder="Optional sub heading">
                             @error('sub_heading')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -354,10 +354,10 @@
                 <!-- SEO Section -->
                 <div>
                     <div class="flex items-center space-x-3 mb-6">
-                        <div class="p-2 bg-indigo-100 rounded-lg">
-                            <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="p-2 bg-green-100 rounded-lg">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m-9 0h10m-9 0V1m10 3V1m0 3l-7 7m7-9l-7 7m0-7l7 7M4 14l7-7" />
+                                    d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
                             </svg>
                         </div>
                         <h3 class="text-xl font-semibold text-gray-800">SEO Settings</h3>
@@ -371,7 +371,7 @@
                             </label>
                             <input type="text" id="meta_title" name="meta_title"
                                 value="{{ old('meta_title', $model_data->meta_title ?? '') }}"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('meta_title') border-red-500 @enderror"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('meta_title') border-red-500 @enderror"
                                 placeholder="Page meta title for SEO">
                             @error('meta_title')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -385,7 +385,7 @@
                             </label>
                             <input type="text" id="meta_keyword" name="meta_keyword"
                                 value="{{ old('meta_keyword', $model_data->meta_keyword ?? '') }}"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 @error('meta_keyword') border-red-500 @enderror"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('meta_keyword') border-red-500 @enderror"
                                 placeholder="keyword1, keyword2, keyword3">
                             @error('meta_keyword')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -410,11 +410,11 @@
                 <!-- Form Actions -->
                 <div class="flex justify-end space-x-4 pt-8 border-t border-gray-200">
                     <a href="{{ url(getAdminRouteName() . '/cms_pages') }}"
-                        class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                        class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
                         Cancel
                     </a>
                     <button type="submit"
-                        class="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg font-medium shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
+                        class="px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg font-medium shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200">
                         {{ isset($model_data->id) ? 'Update Page' : 'Create Page' }}
                     </button>
                 </div>

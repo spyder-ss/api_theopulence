@@ -5,10 +5,9 @@
         <div class="mb-8">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
-                    <div class="p-3 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg">
+                    <div class="p-3 bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                         </svg>
                     </div>
                     <div>
@@ -35,8 +34,8 @@
                 <!-- Basic Information Section -->
                 <div>
                     <div class="flex items-center space-x-3 mb-6">
-                        <div class="p-2 bg-purple-100 rounded-lg">
-                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="p-2 bg-green-100 rounded-lg">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
                         </div>
@@ -53,7 +52,7 @@
                                    id="name"
                                    name="name"
                                    value="{{ old('name', $website_setting->name ?? '') }}"
-                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors duration-200 @error('name') border-red-500 @enderror"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('name') border-red-500 @enderror"
                                    placeholder="Enter setting name"
                                    required>
                             @error('name')
@@ -71,7 +70,7 @@
                                    id="key"
                                    name="key"
                                    value="{{ old('key') }}"
-                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors duration-200 @error('key') border-red-500 @enderror"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('key') border-red-500 @enderror"
                                    placeholder="e.g., APP_NAME, EMAIL_HOST"
                                    required>
                             @error('key')
@@ -99,7 +98,7 @@
                             </label>
                             <select id="type"
                                     name="type"
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors duration-200 @error('type') border-red-500 @enderror"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('type') border-red-500 @enderror"
                                     {{ isset($website_setting->id) ? 'disabled' : '' }}
                                     required>
                                 <option value="">Select Type</option>
@@ -127,7 +126,7 @@
                             </label>
                             <select id="status"
                                     name="status"
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors duration-200 @error('status') border-red-500 @enderror">
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('status') border-red-500 @enderror">
                                 <option value="">Select Status</option>
                                 <option value="1" {{ old('status', $website_setting->status ?? '') == '1' ? 'selected' : '' }}>Active</option>
                                 <option value="0" {{ old('status', $website_setting->status ?? '') == '0' ? 'selected' : '' }}>Inactive</option>
@@ -164,7 +163,7 @@
                                 <input type="file"
                                        id="value"
                                        name="value"
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors duration-200 @error('value') border-red-500 @enderror">
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('value') border-red-500 @enderror">
                                 @if(isset($website_setting->id) && $website_setting->value)
                                     <div class="mt-2">
                                         <img src="{{ asset('storage/settings/' . $website_setting->value) }}" alt="Current Image" class="h-20 w-20 object-cover rounded-md">
@@ -182,7 +181,7 @@
                                 <textarea id="value"
                                           name="value"
                                           rows="4"
-                                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors duration-200 @error('value') border-red-500 @enderror"
+                                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('value') border-red-500 @enderror"
                                           placeholder="Enter setting value">{{ $settingValue }}</textarea>
                                 @error('value')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -199,7 +198,7 @@
                                                name="value"
                                                value="1"
                                                {{ old('value', $settingValue) == '1' ? 'checked' : '' }}
-                                               class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300">
+                                               class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300">
                                         <span class="ml-3">Yes / True</span>
                                     </label>
                                     <label class="flex items-center">
@@ -207,7 +206,7 @@
                                                name="value"
                                                value="0"
                                                {{ old('value', $settingValue) == '0' || empty($settingValue) ? 'checked' : '' }}
-                                               class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300">
+                                               class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300">
                                         <span class="ml-3">No / False</span>
                                     </label>
                                 </div>
@@ -225,7 +224,7 @@
                                        id="value"
                                        name="value"
                                        value="{{ $settingType === 'password' ? '' : $settingValue }}"
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors duration-200 @error('value') border-red-500 @enderror"
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('value') border-red-500 @enderror"
                                        placeholder="Enter setting value"
                                        {{ $settingType === 'password' && isset($website_setting->id) ? 'placeholder="Leave empty to keep current password"' : '' }}>
                                 
@@ -244,11 +243,11 @@
                 <!-- Form Actions -->
                 <div class="flex justify-end space-x-4 pt-8 border-t border-gray-200">
                     <a href="{{ url(getAdminRouteName() . '/website_settings') }}"
-                       class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200">
+                       class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
                         Cancel
                     </a>
                     <button type="submit"
-                            class="px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-lg font-medium shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-200">
+                            class="px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg font-medium shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200">
                         {{ isset($website_setting->id) ? 'Update Setting' : 'Create Setting' }}
                     </button>
                 </div>
@@ -273,7 +272,7 @@
                         <input type="file"
                                id="value"
                                name="value"
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors duration-200">
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200">
                     </div>
                 `;
             } else if (type === 'textarea') {
@@ -285,7 +284,7 @@
                         <textarea id="value"
                                   name="value"
                                   rows="4"
-                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors duration-200"
+                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200"
                                   placeholder="Enter setting value"></textarea>
                     </div>
                 `;
@@ -300,7 +299,7 @@
                                 <input type="radio"
                                        name="value"
                                        value="1"
-                                       class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300">
+                                       class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300">
                                 <span class="ml-3">Yes / True</span>
                             </label>
                             <label class="flex items-center">
@@ -308,7 +307,7 @@
                                        name="value"
                                        value="0"
                                        checked
-                                       class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300">
+                                       class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300">
                                 <span class="ml-3">No / False</span>
                             </label>
                         </div>
@@ -328,7 +327,7 @@
                         <input type="${inputType}"
                                id="value"
                                name="value"
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors duration-200"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200"
                                placeholder="Enter setting value">
                         ${type === 'url' ? '<p class="mt-1 text-sm text-gray-500">Please include the protocol (http:// or https://)</p>' : ''}
                     </div>

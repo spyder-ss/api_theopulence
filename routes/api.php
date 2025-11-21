@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\BlogApiController;
 use App\Http\Controllers\Api\EnquiryApiController;
+use App\Http\Controllers\Api\CommonImageController;
 use App\Http\Controllers\Api\GalleryApiController;
 use App\Http\Controllers\Api\PropertyApiController;
 use App\Http\Controllers\Api\TestimonialApiController;
@@ -24,6 +25,7 @@ Route::group(['prefix' => 'blogs'], function () {
 Route::group(['prefix' => 'gallery'], function () {
     Route::get('/categories', [GalleryApiController::class, 'categories']);
     Route::get('/images/{slug}', [GalleryApiController::class, 'images']);
+    Route::get('/sub-categories/{slug}', [GalleryApiController::class, 'subCategories']);
 });
 
 Route::group(['prefix' => 'enquiries'], function () {
@@ -33,4 +35,9 @@ Route::group(['prefix' => 'enquiries'], function () {
 Route::group(['prefix' => 'properties'], function () {
     Route::get('/', [PropertyApiController::class, 'index']);
     Route::get('/{slug}', [PropertyApiController::class, 'show']);
+});
+
+Route::group(['prefix' => 'common'], function () {
+    Route::get('categories', [CommonImageController::class, 'categories']);
+    Route::get('images/{slug}', [CommonImageController::class, 'images']);
 });

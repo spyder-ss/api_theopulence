@@ -50,6 +50,9 @@ class PropertyController extends Controller
             $ext = 'jpg,jpeg,png,gif';
             $rules['images'] = 'nullable|array';
             $rules['images.*'] = 'image|mimes:' . $ext;
+            $rules['price'] = 'nullable|numeric';
+            $rules['external_redirection_url'] = 'nullable|url';
+            $rules['is_featured'] = 'nullable|boolean';
             $this->validate($request, $rules);
 
             $req['title'] = $request->title ?? '';
@@ -64,10 +67,13 @@ class PropertyController extends Controller
             $req['cancellation_policy'] = $request->cancellation_policy ?? '';
             $req['other_important_information'] = $request->other_important_information ?? '';
             $req['faqs'] = $request->faqs ?? '';
+            $req['price'] = $request->price ?? null;
+            $req['external_redirection_url'] = $request->external_redirection_url ?? null;
+            $req['is_featured'] = $request->has('is_featured'); // Convert checkbox value to boolean
             $req['status'] = $request->status ?? 1;
 
             if (!empty($id) && is_numeric($id)) {
-                $req['slug'] = Helper::GetSlug('properties', 'slug', '', $request->title);
+                // $req['slug'] = Helper::GetSlug('properties', 'slug', '', $request->title);
                 $is_saved = Property::where('id', $id)->update($req);
                 $action = 'edit';
                 $cms_page_id = $id;
@@ -236,24 +242,29 @@ class PropertyController extends Controller
 
     function ajax_img_delete(Request $request)
     {
-        $id = isset($request->id) ? $request->id : '';
-        $type = isset($request->type) ? $request->type : '';
+        $id = $request->id;
+        $type = $request->type;
 
         $method = $request->method();
-        $req = [];
+        $is_save = false;
 
         if ($method == "POST") {
+            if (empty($id)) {
+                return response()->json(['status' => 'error', 'message' => 'Image ID not provided.']);
+            }
+
             $exist_data = PropertyImage::find($id);
             if (empty($exist_data)) {
-                return response()->json(['status' => 'error', 'message' => $type . ' not found.']);
+                return response()->json(['status' => 'error', 'message' => 'Image not found.']);
             }
 
             if ($type == 'image') {
                 if (file_exists('storage/property_images/' . $exist_data->property_id . '/' . $exist_data->image_path)) {
                     unlink('storage/property_images/' . $exist_data->property_id . '/' . $exist_data->image_path);
                 }
-                $req['image_path'] = '';
                 $is_save = PropertyImage::where('id', $id)->delete();
+            } else {
+                return response()->json(['status' => 'error', 'message' => 'Invalid image type for deletion.']);
             }
 
             if ($is_save) {
@@ -268,10 +279,11 @@ class PropertyController extends Controller
                 $activity_params['data_after_action'] = '';
                 ActivityLog::ActivityLogCreate($activity_params);
 
-                return response()->json(['status' => 'ok', 'message' => $type . ' has been deleted..!']);
+                return response()->json(['status' => 'ok', 'message' => 'Image has been deleted..!']);
             } else {
                 return response()->json(['status' => 'error', 'message' => 'Something Went Wrong..!']);
             }
         }
+        return response()->json(['status' => 'error', 'message' => 'Invalid request method.']);
     }
 }

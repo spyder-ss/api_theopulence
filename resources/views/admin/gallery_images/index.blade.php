@@ -77,8 +77,8 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
-                        @if(isset($images) && $images->count() > 0)
-                            @foreach ($images as $image)
+                        @if(isset($model_data_lists) && $model_data_lists->count() > 0)
+                            @foreach ($model_data_lists as $image)
                                 <tr class="hover:bg-gray-50 transition-colors duration-150" data-status="{{ $image->status }}" data-title="{{ $image->title }}">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">

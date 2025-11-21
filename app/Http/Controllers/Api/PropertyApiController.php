@@ -11,7 +11,7 @@ class PropertyApiController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Property::select('id', 'slug', 'title', 'location', 'guest_capacity', 'bedrooms', 'bathrooms', 'property_brief')
+        $query = Property::select('id', 'slug', 'title', 'location', 'guest_capacity', 'bedrooms', 'bathrooms', 'property_brief', 'price', 'external_redirection_url', 'is_featured')
             ->with('images')
             ->where('status', 1)
             ->where('is_delete', 0)
@@ -20,6 +20,7 @@ class PropertyApiController extends Controller
         $properties = $query->get()->map(function ($item) {
             $img_path = $item->mainImage->image_path ?? '';
             $img_id = $item->mainImage->id ?? '';
+            $property_id = $item->id ?? '';
 
             return [
                 'id' => $item->id,
@@ -30,7 +31,10 @@ class PropertyApiController extends Controller
                 'bedrooms' => $item->bedrooms,
                 'bathrooms' => $item->bathrooms,
                 'property_brief' => $item->property_brief,
-                'image' => Helper::getImageUrl('property_images', $img_id, $img_path),
+                'price' => $item->price,
+                'external_redirection_url' => $item->external_redirection_url,
+                'is_featured' => (bool) $item->is_featured,
+                'image' => Helper::getImageUrl('property_images', $property_id, $img_path),
             ];
         });
 
@@ -61,20 +65,23 @@ class PropertyApiController extends Controller
         }
 
         $propertyData = $property->toArray();
-
         $propertyId = $property->id;
 
         // Transform images
-        $propertyData['images'] = $property->images->map(function ($image) use ($propertyId) {
-            return [
-                'id' => $image->id,
-                'property_id' => $image->property_id,
-                'image' => Helper::getImageUrl('property_images', $propertyId, $image->image_path),
-                'is_main' => $image->is_main,
-                'alt_text' => $image->alt_text,
-                'sort_order' => $image->sort_order,
-            ];
-        });
+        $propertyData['images'] = $property->images()
+            ->orderByDesc('is_main')
+            ->orderBy('sort_order')
+            ->get()
+            ->map(function ($image) use ($propertyId) {
+                return [
+                    'id' => $image->id,
+                    'property_id' => $image->property_id,
+                    'image' => Helper::getImageUrl('property_images', $propertyId, $image->image_path),
+                    'is_main' => $image->is_main,
+                    'alt_text' => $image->alt_text,
+                    'sort_order' => $image->sort_order,
+                ];
+            });
 
         // Transform amenities
         $propertyData['amenities'] = $property->amenities->map(function ($amenity) {

@@ -70,4 +70,26 @@ class GalleryApiController extends Controller
             ],
         ]);
     }
+
+    public function subCategories($slug)
+    {
+        $parentCategory = GalleryCategory::where('slug', $slug)->where('status', 1)->first();
+
+        if (!$parentCategory) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Parent category not found',
+            ], 404);
+        }
+
+        $subCategories = GalleryCategory::where('parent_id', $parentCategory->id)
+            ->where('status', 1)
+            ->orderBy('sort_order', 'asc')
+            ->get(['id', 'name', 'title', 'brief', 'slug']);
+
+        return response()->json([
+            'success' => true,
+            'data' => $subCategories,
+        ]);
+    }
 }

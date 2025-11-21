@@ -5,22 +5,22 @@
         <div class="mb-8">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
-                    <div class="p-3 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg">
+                    <div class="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L14 14m0 0l1.293 1.293a2 2 0 002.828 0L20 10m-2 2a2 2 0 11-4 0 2 2 0 014 0zM4 6h16a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2z"/>
                         </svg>
                     </div>
                     <div>
-                        <h1 class="text-3xl font-bold text-gray-800 mb-1">{{ isset($module_name) ? $module_name : 'Testimonials' }} Management</h1>
-                        <p class="text-gray-600 text-lg">Manage customer testimonials</p>
+                        <h1 class="text-3xl font-bold text-gray-800 mb-1">{{ isset($module_name) ? $module_name : 'Common Images' }} Management</h1>
+                        <p class="text-gray-600 text-lg">Manage common website images</p>
                     </div>
                 </div>
                 <div class="flex space-x-3">
-                    <a href="{{ url(getAdminRouteName() . '/testimonials/add') }}" class="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-6 py-3 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 flex items-center space-x-2">
+                    <a href="{{ route('admin.common-images.add') }}" class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 flex items-center space-x-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                         </svg>
-                        <span>Add Testimonial</span>
+                        <span>Add Image</span>
                     </a>
                 </div>
             </div>
@@ -33,14 +33,21 @@
                 <div class="flex flex-col lg:flex-row gap-4 justify-between items-center">
                     <div class="flex-1 flex items-center gap-4">
                         <div class="relative flex-1 max-w-md">
-                            <input type="text" id="testimonialSearch" placeholder="Search testimonials..."
-                                class="pl-10 pr-4 py-2.5 w-full border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors duration-200">
+                            <input type="text" id="imageSearch" placeholder="Search images..."
+                                class="pl-10 pr-4 py-2.5 w-full border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200">
                             <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 11116.65 16.65z"/>
                             </svg>
                         </div>
 
-                        <select id="statusFilter" class="border border-gray-300 rounded-lg text-sm px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors duration-200">
+                        <select id="categoryFilter" class="border border-gray-300 rounded-lg text-sm px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200">
+                            <option value="all">All Categories</option>
+                            @foreach($commonImageCategories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+
+                        <select id="statusFilter" class="border border-gray-300 rounded-lg text-sm px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200">
                             <option value="all">All Status</option>
                             <option value="1">Active</option>
                             <option value="0">Inactive</option>
@@ -60,13 +67,13 @@
                     <thead class="bg-gray-50 border-b border-gray-100">
                         <tr>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Customer Details
+                                Image Details
                             </th>
-                            {{-- <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">
-                                Designation
-                            </th> --}}
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">
-                                Description
+                                Category
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">
+                                Sort Order
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">
                                 Status
@@ -78,39 +85,31 @@
                     </thead>
                     <tbody class="divide-y divide-gray-100">
                         @if(isset($model_data_lists) && $model_data_lists->count() > 0)
-                            @foreach($model_data_lists as $testimonial)
-                                <tr class="hover:bg-gray-50 transition-colors duration-150" data-status="{{ $testimonial->status }}" data-name="{{ $testimonial->name }}" data-designation="{{ $testimonial->designation }}">
+                            @foreach($model_data_lists as $image)
+                                <tr class="hover:bg-gray-50 transition-colors duration-150" data-status="{{ $image->status }}" data-category="{{ $image->common_image_category_id }}" data-alttext="{{ strtolower($image->alt_text) }}">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div class="flex-shrink-0 h-10 w-10">
-                                                @if($testimonial->image)
-                                                    <img src="{{ asset('storage/testimonials/' . $testimonial->id . '/' . $testimonial->image) }}" alt="{{ $testimonial->name }}" class="h-10 w-10 rounded-full object-cover">
+                                                @if($image->image)
+                                                    <img class="h-10 w-10 rounded-full object-cover" src="{{ asset('storage/common_images/' . $image->common_image_category_id . '/' . $image->image) }}" alt="{{ $image->alt_text }}">
                                                 @else
-                                                    <div class="h-10 w-10 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center">
-                                                        <span class="text-sm font-medium text-white">{{ substr($testimonial->name, 0, 1) }}</span>
-                                                    </div>
+                                                    <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-sm">N/A</div>
                                                 @endif
                                             </div>
                                             <div class="ml-4">
-                                                <div class="text-sm font-medium text-gray-900">{{ $testimonial->name }}</div>
+                                                <div class="text-sm font-medium text-gray-900">{{ $image->alt_text }}</div>
                                             </div>
                                         </div>
                                     </td>
-                                    {{-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 hidden lg:table-cell">
-                                        {{ $testimonial->designation }}
-                                    </td> --}}
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 hidden lg:table-cell max-w-xs">
-                                        <div class="truncate" title="{{ $testimonial->description }}">
-                                            @if(strlen($testimonial->description) > 50)
-                                                {!! substr($testimonial->description, 0, 50) !!}...
-                                            @else
-                                                {!! $testimonial->description !!}
-                                            @endif
-                                        </div>
+                                    <td class="px-6 py-4 whitespace-nowrap hidden lg:table-cell">
+                                        <div class="text-sm text-gray-900">{{ $image->category->name ?? 'N/A' }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap hidden lg:table-cell">
-                                        @if($testimonial->status == 1)
-                                            <span class="inline-flex px-3 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
+                                        <div class="text-sm text-gray-900">{{ $image->sort_order }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap hidden lg:table-cell">
+                                        @if($image->status == 1)
+                                            <span class="inline-flex px-3 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
                                                 <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                                                 </svg>
@@ -127,28 +126,25 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <div class="flex items-center justify-end space-x-2">
-                                            <a href="{{ url(getAdminRouteName() . '/testimonials/add?id=' . $testimonial->id) }}"
-                                               class="p-2 text-purple-600 hover:text-purple-900 hover:bg-purple-50 rounded-lg transition-colors duration-200"
-                                               title="Edit Testimonial">
+                                            <a href="{{ route('admin.common-images.add', ['id' => $image->id]) }}"
+                                               class="p-2 text-blue-600 hover:text-blue-900 hover:bg-blue-50 rounded-lg transition-colors duration-200"
+                                               title="Edit Image">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                                 </svg>
                                             </a>
 
-                                            @if($testimonial->is_delete == 0)
-                                                <form id="deleteForm{{ $testimonial->id }}" method="POST" action="{{ url(getAdminRouteName() . '/testimonials/delete/' . $testimonial->id) }}" class="inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="button"
-                                                           onclick="confirmDelete('{{ url(getAdminRouteName() . '/testimonials/delete/' . $testimonial->id) }}', '{{ $testimonial->name }}')"
-                                                           class="p-2 text-red-600 hover:text-red-900 hover:bg-red-50 rounded-lg transition-colors duration-200"
-                                                           title="Delete Testimonial">
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                                        </svg>
-                                                    </button>
-                                                </form>
-                                            @endif
+                                            <form id="deleteForm{{ $image->id }}" method="POST" action="{{ route('admin.common-images.delete', ['id' => $image->id]) }}" class="inline">
+                                                @csrf
+                                                <button type="button"
+                                                       onclick="confirmDelete('{{ route('admin.common-images.delete', ['id' => $image->id]) }}', '{{ $image->alt_text }}')"
+                                                       class="p-2 text-red-600 hover:text-red-900 hover:bg-red-50 rounded-lg transition-colors duration-200"
+                                                       title="Delete Image">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                    </svg>
+                                                </button>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>
@@ -158,16 +154,15 @@
                                 <td colspan="5" class="px-6 py-12 text-center">
                                     <div class="flex flex-col items-center space-y-3">
                                         <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L14 14m0 0l1.293 1.293a2 2 0 002.828 0L20 10m-2 2a2 2 0 11-4 0 2 2 0 014 0zM4 6h16a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2z"/>
                                         </svg>
-                                        <p class="text-gray-500 text-lg font-medium">No testimonials found</p>
-                                        <p class="text-gray-400 text-sm">Get started by adding your first customer testimonial.</p>
-                                        <a href="{{ url(getAdminRouteName() . '/testimonials/add') }}" class="mt-4 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-6 py-3 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 inline-flex items-center space-x-2">
+                                        <p class="text-gray-500 text-lg font-medium">No common images found</p>
+                                        <p class="text-gray-400 text-sm">Get started by adding your first image.</p>
+                                        <a href="{{ route('admin.common-images.add') }}" class="mt-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 inline-flex items-center space-x-2">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                                             </svg>
-                                            <span>Add Testimonial</span>
+                                            <span>Add Image</span>
                                         </a>
                                     </div>
                                 </td>
@@ -192,11 +187,11 @@
                         </div>
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                             <h3 class="text-lg leading-6 font-medium text-gray-900" id="modalTitle">
-                                Delete Testimonial
+                                Delete Image
                             </h3>
                             <div class="mt-2">
                                 <p class="text-sm text-gray-500" id="modalMessage">
-                                    Are you sure you want to delete this testimonial? This action cannot be undone.
+                                    Are you sure you want to delete this image? This action cannot be undone.
                                 </p>
                             </div>
                         </div>
@@ -205,7 +200,6 @@
                 <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                     <form id="deleteForm" method="POST" class="inline">
                         @csrf
-                        @method('DELETE')
                         <button type="submit" id="confirmDeleteBtn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
                             Delete
                         </button>
@@ -219,9 +213,9 @@
     </div>
 
     <script>
-        function confirmDelete(url, testimonialName) {
+        function confirmDelete(url, imageName) {
             document.getElementById('deleteForm').action = url;
-            document.getElementById('modalMessage').innerHTML = `Are you sure you want to delete the testimonial from "${testimonialName}"? This action cannot be undone.`;
+            document.getElementById('modalMessage').innerHTML = `Are you sure you want to delete the image "${imageName}"? This action cannot be undone.`;
             document.getElementById('deleteModal').classList.remove('hidden');
         }
 
@@ -229,26 +223,28 @@
             document.getElementById('deleteModal').classList.add('hidden');
         });
 
-        // Search functionality
-        document.getElementById('testimonialSearch').addEventListener('input', filterTestimonials);
-        document.getElementById('statusFilter').addEventListener('change', filterTestimonials);
+        // Search and Filter functionality
+        document.getElementById('imageSearch').addEventListener('input', filterImages);
+        document.getElementById('categoryFilter').addEventListener('change', filterImages);
+        document.getElementById('statusFilter').addEventListener('change', filterImages);
         document.getElementById('clearFilters').addEventListener('click', clearFilters);
 
-        function filterTestimonials() {
-            const searchTerm = document.getElementById('testimonialSearch').value.toLowerCase();
+        function filterImages() {
+            const searchTerm = document.getElementById('imageSearch').value.toLowerCase();
+            const categoryFilter = document.getElementById('categoryFilter').value;
             const statusFilter = document.getElementById('statusFilter').value;
-            const rows = document.querySelectorAll('tbody tr[data-name]');
+            const rows = document.querySelectorAll('tbody tr[data-alttext]');
 
             rows.forEach(row => {
-                const name = row.getAttribute('data-name').toLowerCase();
-                const designation = row.getAttribute('data-designation').toLowerCase();
+                const altText = row.getAttribute('data-alttext');
+                const category = row.getAttribute('data-category');
                 const status = row.getAttribute('data-status');
-                const textContent = row.textContent.toLowerCase();
 
-                const matchesSearch = textContent.includes(searchTerm) || name.includes(searchTerm) || designation.includes(searchTerm);
+                const matchesSearch = altText.includes(searchTerm);
+                const matchesCategory = categoryFilter === 'all' || category === categoryFilter;
                 const matchesStatus = statusFilter === 'all' || status === statusFilter;
 
-                if (matchesSearch && matchesStatus) {
+                if (matchesSearch && matchesCategory && matchesStatus) {
                     row.style.display = '';
                 } else {
                     row.style.display = 'none';
@@ -257,9 +253,10 @@
         }
 
         function clearFilters() {
-            document.getElementById('testimonialSearch').value = '';
+            document.getElementById('imageSearch').value = '';
+            document.getElementById('categoryFilter').value = 'all';
             document.getElementById('statusFilter').value = 'all';
-            filterTestimonials();
+            filterImages();
         }
     </script>
 @endsection

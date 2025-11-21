@@ -1,11 +1,12 @@
 /* Admin Layout Styles */
 :root {
-    /* --primary: #cd2c58; */
-    --primary: #003161;
+    /* --primary: #003161; */
+    --primary: #003b33;
     --primary-foreground: #fff;
-    --accent: #e06b80;
+    /* --accent: #e06b80; */
+    --accent: #E7B52E;
     --accent-foreground: #fff;
-    --background: #fefde8;
+    --background: #FFFAEC;
     --foreground: #1f2937;
     --card: #f9fafb;
     --card-foreground: #1f2937;

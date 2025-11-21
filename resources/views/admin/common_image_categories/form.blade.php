@@ -14,15 +14,15 @@
 
                     <div>
                         <h1 class="text-3xl font-bold text-gray-800 mb-1">
-                            {{ $module_name ?? 'Gallery Category Management' }}
+                            {{ $module_name ?? 'Common Image Category Management' }}
                         </h1>
 
-                        <p class="text-gray-600 text-lg">Create and manage gallery categories</p>
+                        <p class="text-gray-600 text-lg">Create and manage common image categories</p>
                     </div>
                 </div>
 
                 <div class="flex space-x-3">
-                    <a href="{{ url(getAdminRouteName() . '/gallery-categories') }}"
+                    <a href="{{ url(getAdminRouteName() . '/common-image-categories') }}"
                         class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 flex items-center space-x-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -38,7 +38,7 @@
         <!-- Form Section -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
             <form method="POST"
-                action="{{ isset($model_data) ? route('admin.gallery-categories.edit', $model_data->id) : route('admin.gallery-categories.add') }}"
+                action="{{ isset($model_data) ? route('admin.common-image-categories.edit', $model_data->id) : route('admin.common-image-categories.add') }}"
                 class="space-y-8">
 
                 @csrf
@@ -57,28 +57,6 @@
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                        <!-- Parent Category -->
-                        <div>
-                            <label for="parent_id" class="block text-sm font-medium text-gray-700 mb-2">
-                                Parent Category
-                            </label>
-
-                            <select id="parent_id" name="parent_id"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('parent_id') border-red-500 @enderror">
-                                <option value="">Select</option>
-
-                                @foreach($gallery_categories as $category)
-                                    <option value="{{ $category->id }}" {{ old('parent_id', $model_data->parent_id ?? '') == $category->id ? 'selected' : '' }}>
-                                        {{ $category->name ?? '' }}
-                                    </option>
-                                @endforeach
-                            </select>
-
-                            @error('parent_id')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
                         <!-- Category Name -->
                         <div>
                             <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
@@ -90,38 +68,6 @@
                                 placeholder="Enter category name" required>
 
                             @error('name')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        @if(isset($model_data) && !empty($model_data->slug))
-                            <div>
-                                <label for="slug" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Slug <span class="text-red-500">*</span>
-                                </label>
-
-                                <input type="text" value="{{ old('slug', $model_data->slug ?? '') }}"
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('slug') border-red-500 @enderror"
-                                    placeholder="Enter category slug" readonly>
-
-                                @error('slug')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-                        @endif
-
-                        <!-- Sort Order -->
-                        <div>
-                            <label for="sort_order" class="block text-sm font-medium text-gray-700 mb-2">
-                                Sort Order
-                            </label>
-
-                            <input type="number" id="sort_order" name="sort_order"
-                                value="{{ old('sort_order', $model_data->sort_order ?? 0) }}"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('sort_order') border-red-500 @enderror"
-                                placeholder="0">
-
-                            @error('sort_order')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
@@ -155,7 +101,7 @@
 
                             <input type="text" id="title" name="title" value="{{ old('title', $model_data->title ?? '') }}"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('title') border-red-500 @enderror"
-                                placeholder="Enter category title" required>
+                                placeholder="Enter category title">
 
                             @error('title')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -179,48 +125,9 @@
                     </div>
                 </div>
 
-                <!-- Field Configuration Section -->
-                <div>
-                    <div class="flex items-center space-x-3 mb-6">
-                        <div class="p-2 bg-green-100 rounded-lg">
-                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 6h16M4 12h16M4 18h16" />
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-800">Field Configuration</h3>
-                    </div>
-
-                    <div class="space-y-4">
-                        <div class="flex items-center">
-                            <input type="checkbox" name="field_configuration[title]" id="title_checkbox" value="1"
-                                class="h-5 w-5 text-green-600 focus:ring-green-500 border-gray-300 rounded" {{ isset($model_data) && ($model_data->field_configuration['title'] ?? false) ? 'checked' : '' }}>
-                            <label for="title_checkbox" class="ml-2 block text-sm text-gray-900">Title</label>
-                        </div>
-
-                        <div class="flex items-center">
-                            <input type="checkbox" name="field_configuration[subtitle]" id="subtitle_checkbox" value="1"
-                                class="h-5 w-5 text-green-600 focus:ring-green-500 border-gray-300 rounded" {{ isset($model_data) && ($model_data->field_configuration['subtitle'] ?? false) ? 'checked' : '' }}>
-                            <label for="subtitle_checkbox" class="ml-2 block text-sm text-gray-900">Subtitle</label>
-                        </div>
-
-                        <div class="flex items-center">
-                            <input type="checkbox" name="field_configuration[brief]" id="brief_checkbox" value="1"
-                                class="h-5 w-5 text-green-600 focus:ring-green-500 border-gray-300 rounded" {{ isset($model_data) && ($model_data->field_configuration['brief'] ?? false) ? 'checked' : '' }}>
-                            <label for="brief_checkbox" class="ml-2 block text-sm text-gray-900">Brief</label>
-                        </div>
-
-                        <div class="flex items-center">
-                            <input type="checkbox" name="field_configuration[description]" id="description_checkbox"
-                                value="1" class="h-5 w-5 text-green-600 focus:ring-green-500 border-gray-300 rounded" {{ isset($model_data) && ($model_data->field_configuration['description'] ?? false) ? 'checked' : '' }}>
-                            <label for="description_checkbox" class="ml-2 block text-sm text-gray-900">Description</label>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Form Actions -->
                 <div class="flex justify-end space-x-4 pt-8 border-t border-gray-200">
-                    <a href="{{ url(getAdminRouteName() . '/gallery_categories') }}"
+                    <a href="{{ url(getAdminRouteName() . '/common-image-categories') }}"
                         class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
                         Cancel
                     </a>

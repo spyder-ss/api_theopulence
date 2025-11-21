@@ -10,9 +10,12 @@ class GalleryCategory extends Model
     use HasFactory;
 
     protected $fillable = [
+        'parent_id',
         'name',
         'slug',
         'field_configuration',
+        'title',
+        'brief',
         'status',
         'sort_order',
     ];

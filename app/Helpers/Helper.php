@@ -176,10 +176,10 @@ class Helper
         return $html;
     }
 
-    public static function getImageUrl($module, $id, $fileName)
+    public static function getImageUrl($module, $categoryId, $fileName)
     {
-        if ($fileName && file_exists('storage/' . $module . '/' . $id . '/' . $fileName)) {
-            return asset('storage/' . $module . '/' . $id . '/' . $fileName);
+        if ($fileName && file_exists('storage/' . $module . '/' . $categoryId . '/' . $fileName)) {
+            return asset('storage/' . $module . '/' . $categoryId . '/' . $fileName);
         }
 
         return '';

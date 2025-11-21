@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
+use App\Models\Property;
 use App\Models\Testimonial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +28,7 @@ class TestimonialController extends Controller
     function add(Request $request)
     {
         $data['module_name'] = 'Add ' . $this->module_name;
+        $data['properties'] = Property::where('status', 1)->get();
         $id = isset($request->id) ? $request->id : '';
         if (!empty($id) && is_numeric($id)) {
             $data['module_name'] = 'Edit ' . $this->module_name;
@@ -41,16 +43,18 @@ class TestimonialController extends Controller
 
         if ($request->method() == 'post' || $request->method() == 'POST') {
             $rules['name'] = 'required';
+            $rules['property_id'] = 'nullable|exists:properties,id';
+            $rules['rating'] = 'nullable|integer|min:1|max:5';
 
             $this->validate($request, $rules);
 
             $req['name'] = $request->name ?? '';
             $req['designation'] = $request->designation ?? '';
-            $req['video'] = $request->video ?? '';
-            $req['testimonial'] = $request->testimonial ?? '';
-            $req['featured'] = $request->featured ?? '0';
+            $req['description'] = $request->description ?? '';
             $req['sort_order'] = $request->sort_order ?? '';
             $req['status'] = $request->status ?? '1';
+            $req['property_id'] = $request->property_id ?? null;
+            $req['rating'] = $request->rating ?? null;
 
             if (!empty($id) && is_numeric($id)) {
                 $is_saved = Testimonial::where('id', $id)->update($req);

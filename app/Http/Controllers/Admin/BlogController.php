@@ -162,7 +162,7 @@ class BlogController extends Controller
         $result['file_name'] = '';
 
         if ($file) {
-            $path = 'blog/';
+            $path = 'common_images/';
             $profile_dimension = Helper::WebsiteSettingsArray(['PROFILE_IMG_HEIGHT', 'PROFILE_IMG_WIDTH', 'PROFILE_THUMB_HEIGHT', 'PROFILE_THUMB_WIDTH']);
 
             $IMG_HEIGHT = $profile_dimension['PROFILE_IMG_HEIGHT']->value ?? 768;
