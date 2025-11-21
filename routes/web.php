@@ -138,7 +138,15 @@ Route::group(['prefix' => getAdminRouteName(), 'as' => getAdminRouteName() . '.'
         Route::match(['post'], 'ajax_img_delete', [GalleryImageController::class, 'ajax_img_delete'])->name('ajax_img_delete');
     });
 
-    Route::group(['prefix' => 'amenities', 'as' => 'amenities.'], routes: function () {
+    Route::group(['prefix' => 'blogs', 'as' => 'blogs.'], function () {
+        Route::get('/', [BlogController::class, 'index'])->name('index');
+        Route::match(['get', 'post'], 'add', [BlogController::class, 'add'])->name('add');
+        Route::match(['get', 'post'], 'edit/{id}', [BlogController::class, 'add'])->name('edit');
+        Route::match(['post'], 'delete/{id}', [BlogController::class, 'delete'])->name('delete');
+        Route::match(['post'], 'ajax_img_delete', [BlogController::class, 'ajax_img_delete'])->name('delete');
+    });
+
+    Route::group(['prefix' => 'amenities', 'as' => 'amenities.'], function () {
         Route::get('/', [AmenityController::class, 'index'])->name('index');
         Route::match(['get', 'post'], 'add', [AmenityController::class, 'add'])->name('add');
         Route::match(['get', 'post'], 'edit/{id}', [AmenityController::class, 'add'])->name('edit');
