@@ -63,6 +63,9 @@
                                 Category Details
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">
+                                Slug
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">
                                 Status
                             </th>
                             <th class="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -84,6 +87,9 @@
                                             <div class="ml-4">
                                                 <div class="text-sm font-medium text-gray-900">{{ $category->name }}</div>
                                             </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap hidden lg:table-cell">
+                                        <div class="text-sm text-gray-900">{{ $category->slug }}</div>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap hidden lg:table-cell">
@@ -217,9 +223,10 @@
             rows.forEach(row => {
                 const name = row.getAttribute('data-name').toLowerCase();
                 const status = row.getAttribute('data-status');
+                const slug = row.querySelector('td:nth-child(2) > div').textContent.toLowerCase(); // Assuming slug is the second column now
                 const textContent = row.textContent.toLowerCase();
 
-                const matchesSearch = textContent.includes(searchTerm);
+                const matchesSearch = textContent.includes(searchTerm) || slug.includes(searchTerm);
                 const matchesStatus = statusFilter === 'all' || status === statusFilter;
 
                 if (matchesSearch && matchesStatus) {

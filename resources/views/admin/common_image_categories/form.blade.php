@@ -72,6 +72,19 @@
                             @enderror
                         </div>
 
+                        <!-- Slug -->
+                        @if(isset($model_data))
+                        <div>
+                            <label for="slug" class="block text-sm font-medium text-gray-700 mb-2">
+                                Slug
+                            </label>
+
+                            <input type="text" id="slug" name="slug" value="{{ old('slug', $model_data->slug ?? '') }}"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200"
+                                placeholder="Auto-generated slug" readonly>
+                        </div>
+                        @endif
+
                         <!-- Status -->
                         <div>
                             <label for="status" class="block text-sm font-medium text-gray-700 mb-2">

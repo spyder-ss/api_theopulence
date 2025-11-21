@@ -8,6 +8,7 @@ class CommonImageCategory extends Model
 {
     protected $fillable = [
         'name',
+        'slug',
         'title',
         'brief',
         'status',

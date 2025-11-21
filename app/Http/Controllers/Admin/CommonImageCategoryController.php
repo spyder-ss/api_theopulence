@@ -56,6 +56,7 @@ class CommonImageCategoryController extends Controller
                 $is_saved = CommonImageCategory::where('id', $id)->update($req);
                 $action = 'edit';
             } else {
+                $req['slug'] = Helper::GetSlug('common_image_categories', 'slug', $id, $request->name);
                 $is_saved = CommonImageCategory::create($req);
                 $action = 'add';
             }
