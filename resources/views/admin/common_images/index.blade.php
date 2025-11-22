@@ -1,53 +1,76 @@
+<meta name="csrf-token" content="{{ csrf_token() }}">
 @extends('layouts.admin.main')
 @section('content')
     <div class="flex-1 p-6 overflow-auto bg-gray-50">
-        <!-- Header Section -->
         <div class="mb-8">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
                     <div class="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L14 14m0 0l1.293 1.293a2 2 0 002.828 0L20 10m-2 2a2 2 0 11-4 0 2 2 0 014 0zM4 6h16a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16l4.586-4.586a2 2 0 012.828 0L14 14m0 0l1.293 1.293a2 2 0 002.828 0L20 10m-2 2a2 2 0 11-4 0 2 2 0 014 0zM4 6h16a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2z" />
                         </svg>
                     </div>
+
                     <div>
-                        <h1 class="text-3xl font-bold text-gray-800 mb-1">{{ isset($module_name) ? $module_name : 'Common Images' }} Management</h1>
+                        <h1 class="text-3xl font-bold text-gray-800 mb-1">
+                            {{ isset($module_name) ? $module_name : 'Common Images' }} Management</h1>
                         <p class="text-gray-600 text-lg">Manage common website images</p>
                     </div>
                 </div>
+
                 <div class="flex space-x-3">
-                    <a href="{{ route('admin.common-images.add') }}" class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 flex items-center space-x-2">
+                    <a href="{{ route('admin.common-images.add') }}"
+                        class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 flex items-center space-x-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                         </svg>
                         <span>Add Image</span>
                     </a>
                 </div>
             </div>
         </div>
-
-        <!-- Main Listing Card -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            <!-- Table Header with Search and Filters -->
+            <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
+                <div class="flex flex-col lg:flex-row gap-4 justify-between items-center">
+                    <div class="flex-1 flex items-center gap-4">
+                        <button id="markAsMain"
+                            class="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-6 py-3 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 flex items-center space-x-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>Mark as Main</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
                 <div class="flex flex-col lg:flex-row gap-4 justify-between items-center">
                     <div class="flex-1 flex items-center gap-4">
                         <div class="relative flex-1 max-w-md">
                             <input type="text" id="imageSearch" placeholder="Search images..."
                                 class="pl-10 pr-4 py-2.5 w-full border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200">
-                            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 11116.65 16.65z"/>
+                            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none"
+                                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 11116.65 16.65z" />
                             </svg>
                         </div>
 
-                        <select id="categoryFilter" class="border border-gray-300 rounded-lg text-sm px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200">
+                        <select id="categoryFilter"
+                            class="border border-gray-300 rounded-lg text-sm px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200">
                             <option value="all">All Categories</option>
-                            @foreach($commonImageCategories as $category)
+                            @foreach ($commonImageCategories as $category)
                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                             @endforeach
                         </select>
 
-                        <select id="statusFilter" class="border border-gray-300 rounded-lg text-sm px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200">
+                        <select id="statusFilter"
+                            class="border border-gray-300 rounded-lg text-sm px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200">
                             <option value="all">All Status</option>
                             <option value="1">Active</option>
                             <option value="0">Inactive</option>
@@ -55,7 +78,8 @@
                     </div>
 
                     <div class="flex items-center space-x-3">
-                        <button id="clearFilters" class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors duration-200">
+                        <button id="clearFilters"
+                            class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors duration-200">
                             Clear Filters
                         </button>
                     </div>
@@ -67,24 +91,24 @@
                     <thead class="bg-gray-50 border-b border-gray-100">
                         <tr>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <input type="checkbox" id="selectAll">
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 Image Details
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 Title
                             </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Subtitle
-                            </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">
+                            <th
+                                class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">
                                 Category
                             </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">
-                                Sort Order
-                            </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">
+                            <th
+                                class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">
                                 Main Image
                             </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">
+                            <th
+                                class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">
                                 Status
                             </th>
                             <th class="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -93,50 +117,64 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
-                        @if(isset($model_data_lists) && $model_data_lists->count() > 0)
-                            @foreach($model_data_lists as $image)
-                                <tr class="hover:bg-gray-50 transition-colors duration-150" data-status="{{ $image->status }}" data-category="{{ $image->common_image_category_id }}" data-alttext="{{ strtolower($image->alt_text) }}">
+                        @if (isset($model_data_lists) && $model_data_lists->count() > 0)
+                            @foreach ($model_data_lists as $image)
+                                <tr class="hover:bg-gray-50 transition-colors duration-150"
+                                    data-status="{{ $image->status }}"
+                                    data-category="{{ $image->common_image_category_id }}"
+                                    data-alttext="{{ strtolower($image->alt_text) }}">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <input type="checkbox" class="image-checkbox" value="{{ $image->id }}">
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div class="flex-shrink-0 h-10 w-10">
-                                                @if($image->image)
-                                                    <img class="h-10 w-10 rounded-full object-cover" src="{{ asset('storage/common_images/' . $image->common_image_category_id . '/' . $image->image) }}" alt="{{ $image->alt_text }}">
+                                                @if ($image->image)
+                                                    <img class="h-10 w-10 rounded-full object-cover"
+                                                        src="{{ asset('storage/common_images/' . $image->common_image_category_id . '/' . $image->image) }}"
+                                                        alt="{{ $image->alt_text }}">
                                                 @else
-                                                    <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-sm">N/A</div>
+                                                    <div
+                                                        class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-sm">
+                                                        N/A</div>
                                                 @endif
                                             </div>
                                             <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">{{ $image->alt_text }}</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <input type="text" value="{{ $image->title }}" class="w-full border border-gray-300 rounded-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" onblur="updateField({{ $image->id }}, 'title', this.value)">
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <input type="text" value="{{ $image->subtitle }}" class="w-full border border-gray-300 rounded-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" onblur="updateField({{ $image->id }}, 'subtitle', this.value)">
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap hidden lg:table-cell">
-                                <div class="text-sm text-gray-900">{{ $image->category->name ?? 'N/A' }}</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap hidden lg:table-cell">
-                                <div class="text-sm text-gray-900">{{ $image->sort_order }}</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap hidden lg:table-cell">
-                                <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600" {{ $image->is_main_image ? 'checked' : '' }} onchange="updateField({{ $image->id }}, 'is_main_image', this.checked)">
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap hidden lg:table-cell">
-                                @if($image->status == 1)
-                                            <span class="inline-flex px-3 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
+                                                <div class="text-sm font-medium text-gray-900">{{ $image->alt_text }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">{{ $image->title }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap hidden lg:table-cell">
+                                        <div class="text-sm text-gray-900">{{ $image->category->name ?? 'N/A' }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap hidden lg:table-cell">
+                                        <span
+                                            class="inline-flex px-3 py-1 text-xs font-medium rounded-full {{ $image->is_main_image ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                            {{ $image->is_main_image ? 'Yes' : 'No' }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap hidden lg:table-cell">
+                                        @if ($image->status == 1)
+                                            <span
+                                                class="inline-flex px-3 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
                                                 <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                                    <path fill-rule="evenodd"
+                                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                        clip-rule="evenodd" />
                                                 </svg>
                                                 Active
                                             </span>
                                         @else
-                                            <span class="inline-flex px-3 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800">
+                                            <span
+                                                class="inline-flex px-3 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800">
                                                 <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                                    <path fill-rule="evenodd"
+                                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                                        clip-rule="evenodd" />
                                                 </svg>
                                                 Inactive
                                             </span>
@@ -145,21 +183,28 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <div class="flex items-center justify-end space-x-2">
                                             <a href="{{ route('admin.common-images.add', ['id' => $image->id]) }}"
-                                               class="p-2 text-blue-600 hover:text-blue-900 hover:bg-blue-50 rounded-lg transition-colors duration-200"
-                                               title="Edit Image">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                                class="p-2 text-blue-600 hover:text-blue-900 hover:bg-blue-50 rounded-lg transition-colors duration-200"
+                                                title="Edit Image">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                 </svg>
                                             </a>
 
-                                            <form id="deleteForm{{ $image->id }}" method="POST" action="{{ route('admin.common-images.delete', ['id' => $image->id]) }}" class="inline">
+                                            <form id="deleteForm{{ $image->id }}" method="POST"
+                                                action="{{ route('admin.common-images.delete', ['id' => $image->id]) }}"
+                                                class="inline">
                                                 @csrf
                                                 <button type="button"
-                                                       onclick="confirmDelete('{{ route('admin.common-images.delete', ['id' => $image->id]) }}', '{{ $image->alt_text }}')"
-                                                       class="p-2 text-red-600 hover:text-red-900 hover:bg-red-50 rounded-lg transition-colors duration-200"
-                                                       title="Delete Image">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                    onclick="confirmDelete('{{ route('admin.common-images.delete', ['id' => $image->id]) }}', '{{ $image->alt_text }}')"
+                                                    class="p-2 text-red-600 hover:text-red-900 hover:bg-red-50 rounded-lg transition-colors duration-200"
+                                                    title="Delete Image">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                     </svg>
                                                 </button>
                                             </form>
@@ -171,14 +216,19 @@
                             <tr>
                                 <td colspan="5" class="px-6 py-12 text-center">
                                     <div class="flex flex-col items-center space-y-3">
-                                        <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L14 14m0 0l1.293 1.293a2 2 0 002.828 0L20 10m-2 2a2 2 0 11-4 0 2 2 0 014 0zM4 6h16a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2z"/>
+                                        <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L14 14m0 0l1.293 1.293a2 2 0 002.828 0L20 10m-2 2a2 2 0 11-4 0 2 2 0 014 0zM4 6h16a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2z" />
                                         </svg>
                                         <p class="text-gray-500 text-lg font-medium">No common images found</p>
                                         <p class="text-gray-400 text-sm">Get started by adding your first image.</p>
-                                        <a href="{{ route('admin.common-images.add') }}" class="mt-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 inline-flex items-center space-x-2">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                        <a href="{{ route('admin.common-images.add') }}"
+                                            class="mt-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 inline-flex items-center space-x-2">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                             </svg>
                                             <span>Add Image</span>
                                         </a>
@@ -192,15 +242,17 @@
         </div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
     <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div
+                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
-                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                        <div
+                            class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
                             <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z" />
                             </svg>
                         </div>
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
@@ -218,11 +270,13 @@
                 <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                     <form id="deleteForm" method="POST" class="inline">
                         @csrf
-                        <button type="submit" id="confirmDeleteBtn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        <button type="submit" id="confirmDeleteBtn"
+                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
                             Delete
                         </button>
                     </form>
-                    <button type="button" id="cancelDeleteBtn" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    <button type="button" id="cancelDeleteBtn"
+                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                         Cancel
                     </button>
                 </div>
@@ -233,7 +287,8 @@
     <script>
         function confirmDelete(url, imageName) {
             document.getElementById('deleteForm').action = url;
-            document.getElementById('modalMessage').innerHTML = `Are you sure you want to delete the image "${imageName}"? This action cannot be undone.`;
+            document.getElementById('modalMessage').innerHTML =
+                `Are you sure you want to delete the image "${imageName}"? This action cannot be undone.`;
             document.getElementById('deleteModal').classList.remove('hidden');
         }
 
@@ -241,46 +296,49 @@
             document.getElementById('deleteModal').classList.add('hidden');
         });
 
-        // Search and Filter functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('selectAll').addEventListener('change', function(e) {
+                document.querySelectorAll('.image-checkbox').forEach(checkbox => {
+                    checkbox.checked = e.target.checked;
+                });
+            });
+
+            document.getElementById('markAsMain').addEventListener('click', function() {
+                const selectedIds = Array.from(document.querySelectorAll('.image-checkbox:checked')).map(
+                    checkbox => checkbox.value);
+
+                if (selectedIds.length === 0) {
+                    alert('Please select at least one image.');
+                    return;
+                }
+
+                fetch('{{ route('admin.common-images.markAsMain') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                .getAttribute('content')
+                        },
+                        body: JSON.stringify({
+                            ids: selectedIds
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'ok') {
+                            location.reload();
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+        });
+
         document.getElementById('imageSearch').addEventListener('input', filterImages);
         document.getElementById('categoryFilter').addEventListener('change', filterImages);
         document.getElementById('statusFilter').addEventListener('change', filterImages);
         document.getElementById('clearFilters').addEventListener('click', clearFilters);
-
-        function updateField(id, field, value) {
-            fetch('{{ route('admin.common-images.updateField') }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ id, field, value })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'ok') {
-                    // If is_main_image was updated, uncheck other checkboxes in the same category
-                    if (field === 'is_main_image' && value) {
-                        document.querySelectorAll(`input[type="checkbox"][onchange*="is_main_image"]`).forEach(checkbox => {
-                            const otherId = checkbox.getAttribute('onchange').match(/updateField\((\d+),/)[1];
-                            if (otherId !== id.toString()) {
-                                checkbox.checked = false;
-                            }
-                        });
-                        // Re-check the current one if it was set to true, as the database update might have affected others
-                        document.querySelector(`input[type="checkbox"][onchange*="is_main_image"][onchange*="${id}"]`).checked = true;
-                    }
-                    console.log(data.message);
-                } else {
-                    console.error(data.message);
-                    // Revert UI if update fails
-                    if (field === 'is_main_image') {
-                        document.querySelector(`input[type="checkbox"][onchange*="is_main_image"][onchange*="${id}"]`).checked = !value;
-                    }
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }
 
         function filterImages() {
             const searchTerm = document.getElementById('imageSearch').value.toLowerCase();

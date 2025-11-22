@@ -157,42 +157,41 @@ class CommonImageController extends Controller
         }
     }
 
-    public function updateField(Request $request)
+    public function markAsMain(Request $request)
     {
         $request->validate([
-            'id' => 'required|exists:common_images,id',
-            'field' => 'required|in:title,subtitle,is_main_image',
-            'value' => 'nullable',
+            'ids' => 'required|array',
+            'ids.*' => 'exists:common_images,id',
         ]);
 
-        $image = CommonImage::find($request->id);
-        if (!$image) {
+        $imageIds = $request->input('ids');
+
+        // First, find the category of the first image to scope the update
+        $firstImage = CommonImage::find($imageIds[0]);
+        if (!$firstImage) {
             return response()->json(['status' => 'error', 'message' => 'Image not found.']);
         }
+        $categoryId = $firstImage->common_image_category_id;
 
-        if ($request->field === 'is_main_image') {
-            // If setting this image as main, unset others in the same category
-            if ((bool) $request->value) {
-                CommonImage::where('common_image_category_id', $image->common_image_category_id)
-                    ->where('id', '!=', $image->id)
-                    ->update(['is_main_image' => false]);
-            }
-            $image->{$request->field} = (bool) $request->value;
-        } else {
-            $image->{$request->field} = $request->value;
-        }
-        $image->save();
+        // Unset all main images in the same category
+        CommonImage::where('common_image_category_id', $categoryId)
+            ->update(['is_main_image' => false]);
+
+        // Set the selected images as main
+        CommonImage::whereIn('id', $imageIds)
+            ->where('common_image_category_id', $categoryId)
+            ->update(['is_main_image' => true]);
 
         $activity_params['module'] = $this->module_name;
-        $activity_params['action'] = 'update field';
+        $activity_params['action'] = 'mark as main';
         $activity_params['table_name'] = $this->table_name;
-        $activity_params['description'] = 'Updated ' . $request->field . ' for image ID: ' . $image->id;
+        $activity_params['description'] = 'Updated main images for category ID: ' . $categoryId;
         $activity_params['ip'] = $request->ip();
         $activity_params['user_agent'] = UserDeviceDetails();
-        $activity_params['data_after_action'] = json_encode([$request->field => $request->value]);
+        $activity_params['data_after_action'] = json_encode($imageIds);
         ActivityLog::ActivityLogCreate($activity_params);
 
-        return response()->json(['status' => 'ok', 'message' => 'Field updated successfully.']);
+        return response()->json(['status' => 'ok', 'message' => 'Main images updated successfully.']);
     }
 
     function ajax_img_delete(Request $request)
