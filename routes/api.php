@@ -40,5 +40,4 @@ Route::group(['prefix' => 'properties'], function () {
 Route::group(['prefix' => 'common'], function () {
     Route::get('categories', [CommonImageController::class, 'categories']);
     Route::get('images/{slug}', [CommonImageController::class, 'images']);
-    Route::post('update-image-field', [CommonImageController::class, 'update']);
 });

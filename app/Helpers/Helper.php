@@ -141,7 +141,7 @@ class Helper
     }
 
 
-    public static function UploadImage($file, $path, $imgHeight, $imgWidth, $thumbHeight, $thumbWidth, $createThumb = true, $oldFile = '', $folderName = '')
+    public static function UploadImage($file, $path, $imgHeight, $imgWidth, $thumbHeight = null, $thumbWidth = null, $createThumb = true, $oldFile = '', $folderName = '')
     {
         // Save to Laravel's storage/app/public/ directory (symlinked to public/storage/)
         $fullPath = storage_path('app/public/' . $path . $folderName);
@@ -178,8 +178,14 @@ class Helper
 
     public static function getImageUrl($module, $categoryId, $fileName)
     {
-        if ($fileName && file_exists('storage/' . $module . '/' . $categoryId . '/' . $fileName)) {
-            return asset('storage/' . $module . '/' . $categoryId . '/' . $fileName);
+        $path = 'storage/' . $module . '/';
+        if (!empty($categoryId)) {
+            $path .= $categoryId . '/';
+        }
+        $path .= $fileName;
+
+        if ($fileName && file_exists($path)) {
+            return asset($path);
         }
 
         return '';
