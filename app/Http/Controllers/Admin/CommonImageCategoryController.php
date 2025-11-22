@@ -55,7 +55,7 @@ class CommonImageCategoryController extends Controller
 
             if ($request->hasFile('image')) {
                 $path = 'common_image_categories/';
-                $uploaded_data = Helper::UploadImage($request->file('image'), $path, 400, 400);
+                $uploaded_data = Helper::UploadImage($request->file('image'), $path, 400, 400, null, null);
                 if ($uploaded_data['success']) {
                     $req['image'] = $uploaded_data['file_name'];
                 }
