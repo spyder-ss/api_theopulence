@@ -44,6 +44,7 @@ class CommonImageCategoryController extends Controller
         if ($request->method() == 'post' || $request->method() == 'POST') {
             $rules['name'] = 'required|string|max:255';
             $rules['status'] = 'required|boolean';
+            $rules['image'] = 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
 
             $this->validate($request, $rules);
 
@@ -51,6 +52,14 @@ class CommonImageCategoryController extends Controller
             $req['title'] = $request->title ?? null;
             $req['brief'] = $request->brief ?? null;
             $req['status'] = $request->status ?? 1;
+
+            if ($request->hasFile('image')) {
+                $path = 'common_image_categories/';
+                $uploaded_data = Helper::UploadImage($request->file('image'), $path, 400, 400);
+                if ($uploaded_data['success']) {
+                    $req['image'] = $uploaded_data['file_name'];
+                }
+            }
 
             if (!empty($id) && is_numeric($id)) {
                 $is_saved = CommonImageCategory::where('id', $id)->update($req);

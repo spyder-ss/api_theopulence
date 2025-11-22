@@ -11,6 +11,7 @@ class CommonImageCategory extends Model
         'slug',
         'title',
         'brief',
+        'image',
         'status',
     ];
 
