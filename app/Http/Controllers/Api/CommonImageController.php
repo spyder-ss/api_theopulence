@@ -16,6 +16,7 @@ class CommonImageController extends Controller
     public function categories(): JsonResponse
     {
         $categories = CommonImageCategory::where('status', 1)
+            ->orderBy('id', 'desc')
             ->get(['id', 'slug', 'name', 'title', 'brief', 'image']);
 
         $categories->map(function ($category) {
@@ -25,16 +26,28 @@ class CommonImageController extends Controller
                 $category->image_url = null;
             }
 
-            $mainImage = CommonImage::where('common_image_category_id', $category->id)
+            $mainImages = CommonImage::where('common_image_category_id', $category->id)
                 ->where('is_main_image', true)
                 ->where('status', 1)
-                ->first();
+                ->get();
 
-            if ($mainImage && $mainImage->image) {
-                $category->main_image_url = Helper::getImageUrl('common_images', $category->id, $mainImage->image);
-            } else {
-                $category->main_image_url = null;
+            $mainImgArr = [];
+            foreach ($mainImages as $key => $mainImage) {
+                if ($mainImage && $mainImage->image) {
+                    $main_image_url = Helper::getImageUrl('common_images', $category->id, $mainImage->image);
+                } else {
+                    $main_image_url = null;
+                }
+
+                $mainImgArr[$key]['image'] = $mainImage->image;
+                $mainImgArr[$key]['image_url'] = $main_image_url;
+                $mainImgArr[$key]['alt_text'] = $mainImage->alt_text;
+                $mainImgArr[$key]['sort_order'] = $mainImage->sort_order;
+                $mainImgArr[$key]['title'] = $mainImage->title;
+                $mainImgArr[$key]['subtitle'] = $mainImage->subtitle;
             }
+
+            $category->main_images = $mainImgArr;
 
             return $category;
         });
