@@ -39,11 +39,10 @@
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
             <form method="POST"
                 action="{{ isset($model_data) ? route('admin.common-image-categories.edit', $model_data->id) : route('admin.common-image-categories.add') }}"
-                class="space-y-8">
+                class="space-y-8" enctype="multipart/form-data">
 
                 @csrf
 
-                <!-- Basic Information Section -->
                 <div>
                     <div class="flex items-center space-x-3 mb-6">
                         <div class="p-2 bg-green-100 rounded-lg">
@@ -57,7 +56,6 @@
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                        <!-- Category Name -->
                         <div>
                             <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
                                 Category Name <span class="text-red-500">*</span>
@@ -72,7 +70,52 @@
                             @enderror
                         </div>
 
-                        <!-- Status -->
+                        @if(isset($model_data))
+                            <div>
+                                <label for="slug" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Slug
+                                </label>
+
+                                <input type="text" id="slug" name="slug" value="{{ old('slug', $model_data->slug ?? '') }}"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200"
+                                    placeholder="Auto-generated slug" readonly>
+                            </div>
+                        @endif
+
+                        <div>
+                            <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
+                                Title
+                            </label>
+
+                            <input type="text" id="title" name="title" value="{{ old('title', $model_data->title ?? '') }}"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('title') border-red-500 @enderror"
+                                placeholder="Enter category title">
+
+                            @error('title')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="image" class="block text-sm font-medium text-gray-700 mb-2">
+                                Image
+                            </label>
+
+                            <input type="file" id="image" name="image"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('image') border-red-500 @enderror">
+
+                            @error('image')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+
+                            @if (isset($model_data) && $model_data->image)
+                                <div class="mt-4">
+                                    <img src="{{ asset('storage/common_image_categories/' . $model_data->image) }}"
+                                        alt="{{ $model_data->name }}" class="w-32 h-32 object-cover rounded-lg">
+                                </div>
+                            @endif
+                        </div>
+
                         <div>
                             <label for="status" class="block text-sm font-medium text-gray-700 mb-2">
                                 Status <span class="text-red-500">*</span>
@@ -93,22 +136,6 @@
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-1 gap-6">
-                        <!-- Title -->
-                        <div>
-                            <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
-                                Title
-                            </label>
-
-                            <input type="text" id="title" name="title" value="{{ old('title', $model_data->title ?? '') }}"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 @error('title') border-red-500 @enderror"
-                                placeholder="Enter category title">
-
-                            @error('title')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Brief Description -->
                         <div>
                             <label for="brief" class="block text-sm font-medium text-gray-700 mb-2">
                                 Brief Description
@@ -125,7 +152,6 @@
                     </div>
                 </div>
 
-                <!-- Form Actions -->
                 <div class="flex justify-end space-x-4 pt-8 border-t border-gray-200">
                     <a href="{{ url(getAdminRouteName() . '/common-image-categories') }}"
                         class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">

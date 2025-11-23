@@ -56,10 +56,10 @@ class CommonImageController extends Controller
             $ext = 'jpg,jpeg,png,gif,svg';
             if (empty($id)) {
                 $rules['images'] = 'required|array';
-                $rules['images.*'] = 'image|mimes:' . $ext . '|max:2048';
+                $rules['images.*'] = 'image|mimes:' . $ext . '|max:10240'; // Increased to 10MB
             } else {
                 $rules['images'] = 'nullable|array';
-                $rules['images.*'] = 'image|mimes:' . $ext . '|max:2048';
+                $rules['images.*'] = 'image|mimes:' . $ext . '|max:10240'; // Increased to 10MB
             }
 
             $this->validate($request, $rules);
@@ -73,6 +73,13 @@ class CommonImageController extends Controller
                     if ($uploaded_data['success']) {
                         $req_data['image'] = $uploaded_data['file_name'];
                         $is_saved = CommonImage::create($req_data);
+
+                        // Check if this is the first image in its category
+                        $image_count = CommonImage::where('common_image_category_id', $req_data['common_image_category_id'])->count();
+                        if ($image_count === 1) {
+                            $is_saved->is_main_image = true;
+                            $is_saved->save();
+                        }
                     }
                 }
                 $action = 'add';
@@ -148,6 +155,43 @@ class CommonImageController extends Controller
                 return redirect()->back();
             }
         }
+    }
+
+    public function markAsMain(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array',
+            'ids.*' => 'exists:common_images,id',
+        ]);
+
+        $imageIds = $request->input('ids');
+
+        // First, find the category of the first image to scope the update
+        $firstImage = CommonImage::find($imageIds[0]);
+        if (!$firstImage) {
+            return response()->json(['status' => 'error', 'message' => 'Image not found.']);
+        }
+        $categoryId = $firstImage->common_image_category_id;
+
+        // Unset all main images in the same category
+        CommonImage::where('common_image_category_id', $categoryId)
+            ->update(['is_main_image' => false]);
+
+        // Set the selected images as main
+        CommonImage::whereIn('id', $imageIds)
+            ->where('common_image_category_id', $categoryId)
+            ->update(['is_main_image' => true]);
+
+        $activity_params['module'] = $this->module_name;
+        $activity_params['action'] = 'mark as main';
+        $activity_params['table_name'] = $this->table_name;
+        $activity_params['description'] = 'Updated main images for category ID: ' . $categoryId;
+        $activity_params['ip'] = $request->ip();
+        $activity_params['user_agent'] = UserDeviceDetails();
+        $activity_params['data_after_action'] = json_encode($imageIds);
+        ActivityLog::ActivityLogCreate($activity_params);
+
+        return response()->json(['status' => 'ok', 'message' => 'Main images updated successfully.']);
     }
 
     function ajax_img_delete(Request $request)

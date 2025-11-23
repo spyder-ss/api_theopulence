@@ -12,6 +12,9 @@ class CommonImage extends Model
         'alt_text',
         'sort_order',
         'status',
+        'title',
+        'subtitle',
+        'is_main_image',
     ];
 
     public function category()
