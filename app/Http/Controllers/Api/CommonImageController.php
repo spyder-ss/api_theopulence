@@ -75,6 +75,16 @@ class CommonImageController extends Controller
             ->where('status', 1)
             ->get(['id', 'image', 'alt_text', 'sort_order']);
 
+        $images->map(function ($image) use ($category) {
+            if ($image && $image->image) {
+                $main_image_url = Helper::getImageUrl('common_images', $category->id, $image->image);
+            } else {
+                $main_image_url = null;
+            }
+
+            $image->image_url = $main_image_url;
+        });
+
         return response()->json([
             'status' => true,
             'message' => 'Common images fetched successfully.',
